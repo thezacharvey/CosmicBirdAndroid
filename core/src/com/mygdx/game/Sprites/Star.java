@@ -70,6 +70,8 @@ public class Star extends SpaceBird {
             starX = cameraWidth+animation.getFrame().getRegionWidth();
         }
         starX-=velocity*dt;
+        circle.set(getX()+starWidth/2,getY()+getHeight()/2,getWidth()/2);
+
     }
 
     private int starY(float prev)
@@ -101,4 +103,5 @@ public class Star extends SpaceBird {
     public float getWidth(){return starWidth;}
     public float getHeight(){return starHeight;}
     public float getY(){return newStarY;}
+    public Circle getCircle(){return circle;}
 }
