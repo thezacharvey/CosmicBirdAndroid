@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -26,9 +27,15 @@ public class SpaceBird extends ApplicationAdapter {
 	private ShapeRenderer shapeRenderer;
 	private Circle circle;
 	private Rectangle birdRect;
+	private BitmapFont scoreFont;
+	private int score;
 
 	@Override
 	public void create () {
+		score = 0;
+		scoreFont= new BitmapFont();
+		scoreFont.setColor(Color.WHITE);
+
 		batch = new SpriteBatch();
 		birdRect = new Rectangle();
 		texture = new Texture("bird.png");
@@ -52,6 +59,7 @@ public class SpaceBird extends ApplicationAdapter {
 		batch.setProjectionMatrix(camera.combined);
 		batch.draw(animation.getFrame(), 0, camera.viewportHeight/2 - animation.getFrame().getRegionHeight()/2);
 		batch.draw(star.getTextureRegion(), star.getX(), star.getY());
+		scoreFont.draw(batch,String.valueOf(score),camera.viewportWidth/2,camera.viewportHeight );
 		batch.end();
 
 		camera.update();
@@ -70,9 +78,11 @@ public class SpaceBird extends ApplicationAdapter {
 		animation.update(Gdx.graphics.getDeltaTime());
 		star.update(dt);
 
-		if (Intersector.overlaps(star.getCircle(),birdRect))
+		if (Intersector.overlaps(star.getCircle(),birdRect) && !star.getCollision())
 		{
 			Gdx.app.log("Cheese","True");
+			score++;
+			star.setCollision(true);
 		}
 
 	}

@@ -30,10 +30,12 @@ public class Star extends SpaceBird {
     private Circle circle;
     private float newStarY;
     private Random random;
+    private boolean collided;
    // private Sprite sprite;
 
     public Star(OrthographicCamera camera) {
 
+        collided =false;
         random =new Random();
         intHeight = (int)camera.viewportHeight;
         intHeight = random.nextInt(intHeight);
@@ -68,6 +70,7 @@ public class Star extends SpaceBird {
         {
             newStarY = starY(newStarY);
             starX = cameraWidth+animation.getFrame().getRegionWidth();
+            collided =false;
         }
         starX-=velocity*dt;
         circle.set(getX()+starWidth/2,getY()+getHeight()/2,getWidth()/2);
@@ -104,4 +107,6 @@ public class Star extends SpaceBird {
     public float getHeight(){return starHeight;}
     public float getY(){return newStarY;}
     public Circle getCircle(){return circle;}
+    public boolean getCollision() {return collided;}
+    public void setCollision(boolean co){ collided =co;}
 }
