@@ -45,12 +45,12 @@ public class Star extends SpaceBird {
 
 
         star = new Texture("star.png");
-        animation = new Animation(new TextureRegion(star), 2, 0.35f);
+        animation = new Animation(new TextureRegion(star), 3, 0.35f);
         starHeight = animation.getFrame().getRegionHeight();
         starWidth = animation.getFrame().getRegionWidth();
         starX = cameraWidth + starWidth;
         newStarY = starY(0);
-        velocity = cameraWidth / 2;
+        velocity = cameraWidth *1.2f;
         circle = new Circle();
        // circle.set(starX,starY,starWidth/2);
 
@@ -59,13 +59,9 @@ public class Star extends SpaceBird {
 
 
     @Override
-    public void render() {
-        update(Gdx.graphics.getDeltaTime());
-        animation.update(Gdx.graphics.getDeltaTime());
-    }
-
-    @Override
     public void update(float dt) {
+
+        animation.update(dt);
         if (starX <= -starWidth)
         {
             newStarY = starY(newStarY);
