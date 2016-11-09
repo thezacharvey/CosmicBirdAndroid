@@ -2,7 +2,6 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -13,11 +12,9 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.Sprites.Bird;
-import com.mygdx.game.Sprites.Star;
-import com.sun.org.apache.regexp.internal.RE;
+import com.mygdx.game.Sprites.Coin;
 
 public class SpaceBird extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -25,7 +22,7 @@ public class SpaceBird extends ApplicationAdapter {
 	private Animation animation;
 	private Texture texture;
 	private OrthographicCamera camera;
-	private Star star;
+	private Coin coin;
 	private ShapeRenderer shapeRenderer;
 	private Circle circle;
 	private Rectangle birdRect;
@@ -47,10 +44,10 @@ public class SpaceBird extends ApplicationAdapter {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()/20);
 		//camera.zoom = 2f;
-		star = new Star(camera);
+		coin = new Coin(camera);
 		circle= new Circle();
 		bird = new Bird(camera);
-		bird.setVelocity(-30);
+		//bird.setVelocity(camera.viewportHeight/100);
 		//birdRect.set(0,camera.viewportHeight/2 - animation.getFrame().getRegionHeight()/2,animation.getFrame().getRegionWidth(),animation.getFrame().getRegionHeight());
 
 	}
@@ -65,8 +62,8 @@ public class SpaceBird extends ApplicationAdapter {
 		batch.setProjectionMatrix(camera.combined);
 		//batch.draw(animation.getFrame(), 0, camera.viewportHeight/2 - animation.getFrame().getRegionHeight()/2);
 		batch.draw(bird.getTextureRegion(),bird.getX(),bird.getY());
-		if (!star.getCollision()) {
-			batch.draw(star.getTextureRegion(), star.getX(), star.getY());
+		if (!coin.getCollision()) {
+			batch.draw(coin.getTextureRegion(), coin.getX(), coin.getY());
 		}
 		scoreFont.draw(batch,String.valueOf(score),camera.viewportWidth/2,camera.viewportHeight );
 		batch.end();
@@ -85,19 +82,15 @@ public class SpaceBird extends ApplicationAdapter {
 	{
 
 		animation.update(Gdx.graphics.getDeltaTime());
-		star.update(dt);
+		coin.update(dt);
 		bird.update(dt);
-		if (Intersector.overlaps(star.getCircle(),bird.getRectangle()) && !star.getCollision())
+		if (Intersector.overlaps(coin.getCircle(),bird.getRectangle()) && !coin.getCollision())
 		{
 			Gdx.app.log("Cheese","True");
 			score++;
-			star.setCollision(true);
+			coin.setCollision(true);
 		}
 
-		if (Gdx.input.justTouched())
-		{
-			bird.setY(bird.getY()+bird.getVelocity());
-		}
 
 	}
 	

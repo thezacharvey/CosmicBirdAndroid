@@ -16,7 +16,7 @@ import java.util.Random;
  * Created by z_ig_ on 11/8/2016.
  */
 
-public class Star extends SpaceBird {
+public class Coin extends SpaceBird {
 
     private Texture star;
     private Animation animation;
@@ -33,7 +33,7 @@ public class Star extends SpaceBird {
     private boolean collided;
    // private Sprite sprite;
 
-    public Star(OrthographicCamera camera) {
+    public Coin(OrthographicCamera camera) {
 
         collided =false;
         random =new Random();

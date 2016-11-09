@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Animation;
@@ -23,11 +24,12 @@ public class Bird extends SpaceBird {
     private float velocity;
     private Rectangle rectangle;
     private boolean collided;
-    Animation animation;
+    private Animation animation;
+    private Vector2 vector2;
     private float gravity;
     private Texture birdTexture;
     public Bird(OrthographicCamera camera){
-        gravity = 3f;
+
         velocity =0f;
         rectangle = new Rectangle();
         camH = camera.viewportHeight;
@@ -36,9 +38,10 @@ public class Bird extends SpaceBird {
         birdWidth = animation.getFrame().getRegionWidth();
         birdHeight = animation.getFrame().getRegionHeight();
         collided =false;
-        birdX = camera.viewportWidth/2 - getWidth()/2;
+        birdX = getWidth()/2;
         birdY = camH/2 - animation.getFrame().getRegionHeight()/2;
-        Vector2 vector2 = new Vector2();
+        gravity = camH /300f;
+
 
     }
 
@@ -46,6 +49,16 @@ public class Bird extends SpaceBird {
     public void update(float dt) {
 
         animation.update(dt);
+
+        if (birdY >= birdHeight/2 || velocity < 0)
+        {
+            velocity = velocity +gravity;
+            birdY -= velocity;
+        }
+        if(Gdx.input.justTouched() && birdY < camH)
+        {
+            velocity = -camH/16;
+        }
 
         rectangle.set(getX(),getY(),getWidth(),getHeight());
     }
@@ -58,6 +71,7 @@ public class Bird extends SpaceBird {
     public TextureRegion getTextureRegion() {return animation.getFrame();}
     public void setVelocity(float v){velocity =v;}
     public float getVelocity(){return velocity;}
+
     public float getX(){return birdX;}
     public float getWidth(){return birdWidth;}
     public float getHeight(){return birdHeight;}
