@@ -23,33 +23,41 @@ public class CameraManager {
         screenWidth = Gdx.graphics.getWidth();
     }
 
+    /*
+    *Testing the screen width and adjusting
+     * below
+    */
+
     public void setCamZoom()
     {
-       // if(screenWidth==768)
 
+        if (screenWidth  > 1440) {
+            camera.setToOrtho(false, screenWidth / 15, screenHeight / 15);
+            return;
+        }
         switch ((int)screenWidth)
         {
-
-
 
             case 1440:
                 camera.setToOrtho(false,screenWidth/14,screenHeight/14);
                 break;
-
             case 1080:
                 camera.setToOrtho(false,screenWidth/9.25f,screenHeight/9.25f);
                 break;
+            case 768:
+                camera.setToOrtho(false,screenWidth/6.85f,screenHeight/6.85f);
+                break;
             case 720:
-                camera.setToOrtho(false,screenWidth/8,screenHeight/8);
+                camera.setToOrtho(false,screenWidth/6,screenHeight/6);
                 break;
             case 480:
-                camera.setToOrtho(false,screenWidth/20,screenHeight/20);
+                camera.setToOrtho(false,screenWidth/4,screenHeight/4);
                 break;
             case 320:
-                camera.setToOrtho(false,screenWidth/23,screenHeight/23);
+                camera.setToOrtho(false,screenWidth/3,screenHeight/3);
                 break;
             case 240:
-                camera.setToOrtho(false,screenWidth/25,screenHeight/25);
+                camera.setToOrtho(false,screenWidth/2,screenHeight/2);
                 break;
             default:
                 break;
