@@ -28,7 +28,7 @@ public class CameraManager {
      * below
     */
 
-    public void setCamZoom()
+    public void setCamSize()
     {
 
         if (screenWidth  > 1440) {
@@ -39,7 +39,7 @@ public class CameraManager {
         {
 
             case 1440:
-                camera.setToOrtho(false,screenWidth/14,screenHeight/14);
+                camera.setToOrtho(false,screenWidth/13,screenHeight/13);
                 break;
             case 1080:
                 camera.setToOrtho(false,screenWidth/9.25f,screenHeight/9.25f);

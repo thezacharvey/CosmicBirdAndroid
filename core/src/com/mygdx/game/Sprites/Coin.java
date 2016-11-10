@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Animation;
 import com.mygdx.game.SpaceBird;
 
@@ -19,6 +20,7 @@ import java.util.Random;
 public class Coin extends SpaceBird {
 
     private Texture star;
+    private Vector2 originXY;
     private Animation animation;
     static float coinX;
     private float cameraWidth;
@@ -52,6 +54,7 @@ public class Coin extends SpaceBird {
         newStarY = starY(0);
         velocity = cameraWidth * 1.15f;
         circle = new Circle();
+        originXY = new Vector2(coinX,newStarY);
        // circle.set(starX,starY,starWidth/2);
 
     }
@@ -102,10 +105,12 @@ public class Coin extends SpaceBird {
 
     public TextureRegion getTextureRegion() {return animation.getFrame();}
     public float getX(){return coinX;}
+    public void setX(float x){coinX = x;}
     public float getWidth(){return starWidth;}
     public float getHeight(){return starHeight;}
     public float getY(){return newStarY;}
     public Circle getCircle(){return circle;}
     public boolean getCollision() {return collided;}
     public void setCollision(boolean co){ collided =co;}
+    public Vector2 getOriginXY(){ return originXY;}
 }

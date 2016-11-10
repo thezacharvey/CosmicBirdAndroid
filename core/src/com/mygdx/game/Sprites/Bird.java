@@ -25,11 +25,13 @@ public class Bird extends SpaceBird {
     private Rectangle rectangle;
     private boolean collided;
     private Animation animation;
-    private Vector2 vector2;
+    private Vector2 originXY;
     private float gravity;
     private Texture birdTexture;
+    private Vector2 mousePos;
     public Bird(OrthographicCamera camera){
 
+        mousePos = new Vector2();
         velocity =0f;
         rectangle = new Rectangle();
         camH = camera.viewportHeight;
@@ -40,6 +42,7 @@ public class Bird extends SpaceBird {
         collided =false;
         birdX = getWidth()/2;
         birdY = camH/2 - animation.getFrame().getRegionHeight()/2;
+        originXY = new Vector2(birdX,birdY);
         gravity = camH /250f;
 
 
@@ -54,18 +57,32 @@ public class Bird extends SpaceBird {
             if(Gdx.input.justTouched() && birdY < camH - texture.getHeight())
             {
                 velocity = -camH/19f;
+               // mousePos.set(Gdx.input.getX(),Gdx.input.getY());
+               // Gdx.app.log("Cheese", String.valueOf(mousePos.x / cameraManager.getCamWidth()));   // possible screen side testing
+
             }
             rectangle.set(getX(),getY(),getWidth(),getHeight());
+
+
+                applyGravity();
+
+
         }
-        if (birdY >= -birdHeight/2 || velocity < 0)   //Adds Gravity  if inside camera
+
+
+
+
+
+}      public void applyGravity()
+    {
+        if (birdY >= birdHeight || velocity < 0)
         {
             velocity = velocity +gravity;
             birdY -= velocity;
         }
 
 
-
-}
+    }
 
     @Override
     public void dispose() {
@@ -80,8 +97,9 @@ public class Bird extends SpaceBird {
     public float getWidth(){return birdWidth;}
     public float getHeight(){return birdHeight;}
     public float getY(){return birdY;}
-    public void setY(float y){birdY +=y;}
+    public void setY(float y){birdY =y;}
     public Rectangle getRectangle(){return rectangle;}
     public boolean getCollision() {return collided;}
     public void setCollision(boolean co){ collided =co;}
+    public Vector2 getOriginXY(){ return originXY;}
 }

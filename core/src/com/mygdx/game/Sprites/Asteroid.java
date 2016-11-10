@@ -3,6 +3,7 @@ package com.mygdx.game.Sprites;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.SpaceBird;
 
 import java.util.Random;
@@ -23,6 +24,7 @@ public class Asteroid extends SpaceBird {
     private float cameraWidth;
     private float newAsteroidY;
     private  float velocity;
+    private Vector2 originXY;
     public Asteroid(OrthographicCamera camera)
     {
         random = new Random();
@@ -36,6 +38,7 @@ public class Asteroid extends SpaceBird {
         circle = new Circle();
         newAsteroidY = asteroidY(0);
         asteroidX = cameraWidth + asteroidWidth;
+        originXY = new Vector2(asteroidX,newAsteroidY);
     }
 
     @Override
@@ -80,10 +83,11 @@ public class Asteroid extends SpaceBird {
         asteroid.dispose();
 
     }
-
+    public void setX(float x){ asteroidX = x;}
     public float getX(){return asteroidX;}
     public float getY(){return  newAsteroidY;}
     public Circle getCircle(){return circle;}
     public Texture getTexture(){return asteroid;}
     public float getWidth(){return asteroidWidth;}
+    public Vector2 getOriginXY(){ return originXY;}
 }

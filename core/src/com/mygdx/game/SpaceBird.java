@@ -10,36 +10,39 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.Managers.CameraManager;
+import com.mygdx.game.Managers.StateManager;
 import com.mygdx.game.Sprites.Asteroid;
 import com.mygdx.game.Sprites.Bird;
 import com.mygdx.game.Sprites.Coin;
-
-import java.util.Random;
 
 public class SpaceBird extends ApplicationAdapter {
 	SpriteBatch batch;
 
 	private Animation animation;
- public static Texture texture;
+ public static Texture texture,gameOver;
+	private Texture tapToPlay;
 	public static boolean birdDead;
 	private OrthographicCamera camera;
 	private Coin coin;
 	private ShapeRenderer shapeRenderer;
 	private BitmapFont scoreFont;
-	private int score;
+	public static int score;
 	private Bird bird;
+	private StateManager stateManager;
 	public static CameraManager cameraManager;
+	public static int gameState;
 	private Asteroid asteroid;
 	@Override
 	public void create () {
 		score = 0;
-		birdDead =false;
+		gameState = 0;		//Menu
+		birdDead =true;
 		scoreFont= new BitmapFont();
 		scoreFont.setColor(Color.WHITE);
+		tapToPlay = new Texture("taptoplay.png");
+		gameOver= new Texture("gameover.png");
 
 		batch = new SpriteBatch();
 		texture = new Texture("score.png");
@@ -49,13 +52,14 @@ public class SpaceBird extends ApplicationAdapter {
 		camera.setToOrtho(false,Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()/20);
 
 		cameraManager = new CameraManager(camera);
-		cameraManager.setCamZoom();
+		cameraManager.setCamSize();
 		camera.zoom = cameraManager.getCamZoom();
 		camera.update();
 
 		coin = new Coin(camera);
 		bird = new Bird(camera);
 		asteroid = new Asteroid(camera);
+		stateManager = new StateManager(bird,asteroid,coin,cameraManager);   //BAC
 
 
 
@@ -76,9 +80,19 @@ public class SpaceBird extends ApplicationAdapter {
 			batch.draw(coin.getTextureRegion(), coin.getX(), coin.getY());
 			//batch.draw(coin2.getTextureRegion(), coin2.getX(), coin2.getY());
 		}
+		if (gameState==0)
+		{
+			batch.draw(tapToPlay,cameraManager.getCamWidth()/2 - tapToPlay.getWidth()/2,cameraManager.getCamHeight()/2 - tapToPlay.getHeight()/2);
+		}
+		else if (gameState==1)
+		{
+			scoreFont.draw(batch,String.valueOf(score),texture.getWidth()*1.15f,camera.viewportHeight );
+			batch.draw(texture,0 ,cameraManager.getCamHeight()-texture.getHeight());
+		}else
+		{
+			batch.draw(gameOver,cameraManager.getCamWidth()/2 - gameOver.getWidth()/2,cameraManager.getCamHeight()/2 - gameOver.getHeight()/2);
+		}
 
-		scoreFont.draw(batch,String.valueOf(score),texture.getWidth()*1.15f,camera.viewportHeight );
-		batch.draw(texture,0 ,cameraManager.getCamHeight()-texture.getHeight());
 		batch.draw(asteroid.getTexture(),asteroid.getX(),asteroid.getY());
 		batch.end();
 
@@ -100,18 +114,19 @@ public class SpaceBird extends ApplicationAdapter {
 		asteroid.update(dt);
 		bird.update(dt);
 
+
 		if (Intersector.overlaps(coin.getCircle(),bird.getRectangle()) && !coin.getCollision())
 		{
 			Gdx.app.log("Cheese","True");
 			score++;
 			coin.setCollision(true);
 		}
-		if (Intersector.overlaps(asteroid.getCircle(),bird.getRectangle()))
+		if (Intersector.overlaps(asteroid.getCircle(),bird.getRectangle()) && gameState ==1 )
 		{
 			birdDead = true;
+			gameState = 2; //dead state
 		}
-
-
+		stateManager.handleState(gameState);
 
 	}
 	
