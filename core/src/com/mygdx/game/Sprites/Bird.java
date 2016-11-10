@@ -47,21 +47,25 @@ public class Bird extends SpaceBird {
 
     @Override
     public void update(float dt) {
+        if (!birdDead)
+        {
+            animation.update(dt);
 
-        animation.update(dt);
-
-        if (birdY >= birdHeight/2 || velocity < 0)
+            if(Gdx.input.justTouched() && birdY < camH)
+            {
+                velocity = -camH/19;
+            }
+            rectangle.set(getX(),getY(),getWidth(),getHeight());
+        }
+        if (birdY >= -birdHeight/2 || velocity < 0)   //Adds Gravity  if inside camera
         {
             velocity = velocity +gravity;
             birdY -= velocity;
         }
-        if(Gdx.input.justTouched() && birdY < camH)
-        {
-            velocity = -camH/16;
-        }
 
-        rectangle.set(getX(),getY(),getWidth(),getHeight());
-    }
+
+
+}
 
     @Override
     public void dispose() {

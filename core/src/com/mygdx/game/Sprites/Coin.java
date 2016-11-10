@@ -20,7 +20,7 @@ public class Coin extends SpaceBird {
 
     private Texture star;
     private Animation animation;
-    static float starX;
+    static float coinX;
     private float cameraWidth;
     private float cameraHeight;
     private float velocity;
@@ -48,7 +48,7 @@ public class Coin extends SpaceBird {
         animation = new Animation(new TextureRegion(star), 3, 0.35f);
         starHeight = animation.getFrame().getRegionHeight();
         starWidth = animation.getFrame().getRegionWidth();
-        starX = cameraWidth + starWidth;
+        coinX = cameraWidth + starWidth;
         newStarY = starY(0);
         velocity = cameraWidth *1.2f;
         circle = new Circle();
@@ -60,36 +60,39 @@ public class Coin extends SpaceBird {
 
     @Override
     public void update(float dt) {
-
-        animation.update(dt);
-        if (starX <= -starWidth)
+        if (!birdDead)
         {
-            newStarY = starY(newStarY);
-            starX = cameraWidth+animation.getFrame().getRegionWidth();
-            collided =false;
+            animation.update(dt);
+            if (coinX <= -starWidth)
+            {
+                newStarY = starY(newStarY);
+                coinX = cameraWidth+animation.getFrame().getRegionWidth();
+                collided =false;
+            }
+            coinX-=velocity*dt;
+            circle.set(getX()+starWidth/2,getY()+getHeight()/2,getWidth()/2);
         }
-        starX-=velocity*dt;
-        circle.set(getX()+starWidth/2,getY()+getHeight()/2,getWidth()/2);
+
 
     }
 
     private int starY(float prev)
     {
         int prevY =(int) prev;
-        int starY  = random.nextInt((int)cameraHeight);
-        if (prevY==starY) {starY += starHeight;}
+        int coinY  = random.nextInt((int)cameraHeight);
+        if (prevY==coinY) {coinY += starHeight;}
         int camH = (int)cameraHeight;
-        int starH = (int)starHeight;
-        if (starY >= camH-starH) {
-            starY = camH - starH;
-            if (prevY==starY) starY-=starH;
+        int coinH = (int)starHeight;
+        if (coinY >= camH-coinH) {
+            coinY = camH - coinH;
+            if (prevY==coinY) coinY-=coinH;
         }
-        if (starY <= starH) {
-            starY = starH;
-            if (prevY==starY) starY+=starH;
+        if (coinY <= coinH) {
+            coinY = coinH;
+            if (prevY==coinY) coinY+=coinH;
         }
 
-        return starY;
+        return coinY;
     }
 
     @Override
@@ -98,7 +101,7 @@ public class Coin extends SpaceBird {
     }
 
     public TextureRegion getTextureRegion() {return animation.getFrame();}
-    public float getX(){return starX;}
+    public float getX(){return coinX;}
     public float getWidth(){return starWidth;}
     public float getHeight(){return starHeight;}
     public float getY(){return newStarY;}
