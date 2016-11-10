@@ -18,11 +18,13 @@ import com.mygdx.game.Sprites.Asteroid;
 import com.mygdx.game.Sprites.Bird;
 import com.mygdx.game.Sprites.Coin;
 
+import java.util.Random;
+
 public class SpaceBird extends ApplicationAdapter {
 	SpriteBatch batch;
 
 	private Animation animation;
-	private Texture texture;
+ public static Texture texture;
 	public static boolean birdDead;
 	private OrthographicCamera camera;
 	private Coin coin;
@@ -38,7 +40,6 @@ public class SpaceBird extends ApplicationAdapter {
 		birdDead =false;
 		scoreFont= new BitmapFont();
 		scoreFont.setColor(Color.WHITE);
-		//asteroid = new Texture("asteroid.png");
 
 		batch = new SpriteBatch();
 		texture = new Texture("score.png");
@@ -46,7 +47,6 @@ public class SpaceBird extends ApplicationAdapter {
 			shapeRenderer = new ShapeRenderer();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()/20);
-		//camera.zoom = 2f;
 
 		cameraManager = new CameraManager(camera);
 		cameraManager.setCamZoom();
@@ -56,8 +56,8 @@ public class SpaceBird extends ApplicationAdapter {
 		coin = new Coin(camera);
 		bird = new Bird(camera);
 		asteroid = new Asteroid(camera);
-		//bird.setVelocity(camera.viewportHeight/100);
-		//birdRect.set(0,camera.viewportHeight/2 - animation.getFrame().getRegionHeight()/2,animation.getFrame().getRegionWidth(),animation.getFrame().getRegionHeight());
+
+
 
 	}
 
@@ -77,8 +77,8 @@ public class SpaceBird extends ApplicationAdapter {
 			//batch.draw(coin2.getTextureRegion(), coin2.getX(), coin2.getY());
 		}
 
-		scoreFont.draw(batch,String.valueOf(score),camera.viewportWidth/2,camera.viewportHeight );
-		batch.draw(texture,cameraManager.getCamWidth()/2 ,cameraManager.getCamHeight()-texture.getHeight());
+		scoreFont.draw(batch,String.valueOf(score),texture.getWidth()*1.15f,camera.viewportHeight );
+		batch.draw(texture,0 ,cameraManager.getCamHeight()-texture.getHeight());
 		batch.draw(asteroid.getTexture(),asteroid.getX(),asteroid.getY());
 		batch.end();
 
@@ -122,5 +122,6 @@ public class SpaceBird extends ApplicationAdapter {
 		bird.dispose();
 		asteroid.dispose();
 		coin.dispose();
+		scoreFont.dispose();
 	}
 }

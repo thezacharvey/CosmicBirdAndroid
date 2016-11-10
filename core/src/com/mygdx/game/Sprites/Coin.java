@@ -50,7 +50,7 @@ public class Coin extends SpaceBird {
         starWidth = animation.getFrame().getRegionWidth();
         coinX = cameraWidth + starWidth;
         newStarY = starY(0);
-        velocity = cameraWidth *1.2f;
+        velocity = cameraWidth * 1.15f;
         circle = new Circle();
        // circle.set(starX,starY,starWidth/2);
 
@@ -79,7 +79,7 @@ public class Coin extends SpaceBird {
     private int starY(float prev)
     {
         int prevY =(int) prev;
-        int coinY  = random.nextInt((int)cameraHeight);
+        int coinY  = random.nextInt((int)cameraHeight  - texture.getHeight());
         if (prevY==coinY) {coinY += starHeight;}
         int camH = (int)cameraHeight;
         int coinH = (int)starHeight;

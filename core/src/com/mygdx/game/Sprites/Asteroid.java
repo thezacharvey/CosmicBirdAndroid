@@ -26,12 +26,13 @@ public class Asteroid extends SpaceBird {
     public Asteroid(OrthographicCamera camera)
     {
         random = new Random();
+
         asteroid = new Texture("asteroid.png");
         asteroidHeight = asteroid.getHeight();
         asteroidWidth = asteroid.getWidth();
         cameraHeight = camera.viewportHeight;
         cameraWidth = camera.viewportWidth;
-        velocity = cameraWidth * 1.4f;
+        velocity = cameraWidth *1.40f;
         circle = new Circle();
         newAsteroidY = asteroidY(0);
         asteroidX = cameraWidth + asteroidWidth;
@@ -54,13 +55,14 @@ public class Asteroid extends SpaceBird {
     }
 
 
+
     private int asteroidY(float prev)
     {
         int prevY =(int) prev;
         int aY  = random.nextInt((int)cameraHeight);
         if (prevY==aY) {aY += asteroidHeight;}
         int camH = (int)cameraHeight;
-        int aH = (int)asteroidHeight;
+        int aH = (int)asteroidHeight;                       //Randomizes asteroid Y
         if (aY >= camH-aH) {
             aY = camH - aH;
             if (prevY==newAsteroidY) newAsteroidY-=aH;

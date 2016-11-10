@@ -63,6 +63,9 @@ public class CameraManager {
                 break;
         }
 
+        camWidth = camera.viewportWidth;
+        camHeight = camera.viewportHeight;
+
     }
 
     public float getCamWidth(){return camWidth;}

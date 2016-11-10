@@ -51,9 +51,9 @@ public class Bird extends SpaceBird {
         {
             animation.update(dt);
 
-            if(Gdx.input.justTouched() && birdY < camH)
+            if(Gdx.input.justTouched() && birdY < camH - texture.getHeight())
             {
-                velocity = -camH/19;
+                velocity = -camH/19f;
             }
             rectangle.set(getX(),getY(),getWidth(),getHeight());
         }
