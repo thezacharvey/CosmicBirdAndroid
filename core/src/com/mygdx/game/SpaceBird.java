@@ -41,7 +41,7 @@ public class SpaceBird extends ApplicationAdapter {
 		//asteroid = new Texture("asteroid.png");
 
 		batch = new SpriteBatch();
-		texture = new Texture("bird.png");
+		texture = new Texture("score.png");
 		animation = new Animation(new TextureRegion(texture),3,0.25f);  //passes texture , frame count, speed
 			shapeRenderer = new ShapeRenderer();
 		camera = new OrthographicCamera();
@@ -64,12 +64,13 @@ public class SpaceBird extends ApplicationAdapter {
 	@Override
 	public void render () {
 		update(Gdx.graphics.getDeltaTime());
+		camera.update();
+
 		Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	//	star.render();
 		batch.begin();
 		batch.setProjectionMatrix(camera.combined);
-		//batch.draw(animation.getFrame(), 0, camera.viewportHeight/2 - animation.getFrame().getRegionHeight()/2);
 		batch.draw(bird.getTextureRegion(),bird.getX(),bird.getY());
 		if (!coin.getCollision()) {
 			batch.draw(coin.getTextureRegion(), coin.getX(), coin.getY());
@@ -77,9 +78,9 @@ public class SpaceBird extends ApplicationAdapter {
 		}
 
 		scoreFont.draw(batch,String.valueOf(score),camera.viewportWidth/2,camera.viewportHeight );
+		batch.draw(texture,cameraManager.getCamWidth()/2 ,cameraManager.getCamHeight()-texture.getHeight());
 		batch.draw(asteroid.getTexture(),asteroid.getX(),asteroid.getY());
 		batch.end();
-		camera.update();
 
 		/*
 		shapeRenderer.setProjectionMatrix(camera.combined);
@@ -118,6 +119,8 @@ public class SpaceBird extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		texture.dispose();
-
+		bird.dispose();
+		asteroid.dispose();
+		coin.dispose();
 	}
 }
