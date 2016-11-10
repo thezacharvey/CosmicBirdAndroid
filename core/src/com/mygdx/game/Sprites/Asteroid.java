@@ -57,9 +57,9 @@ public class Asteroid extends SpaceBird {
     private int asteroidY(float prev)
     {
         int prevY =(int) prev;
-        int aY  = random.nextInt((int)cameraHeight);
+        int aY  = random.nextInt((int)cameraManager.getCamHeight());
         if (prevY==aY) {aY += asteroidHeight;}
-        int camH = (int)cameraHeight;
+        int camH = (int)cameraManager.getCamHeight();
         int aH = (int)asteroidHeight;
         if (aY >= camH-aH) {
             aY = camH - aH;

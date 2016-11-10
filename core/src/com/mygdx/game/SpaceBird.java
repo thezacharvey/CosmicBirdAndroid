@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.game.Managers.CameraManager;
 import com.mygdx.game.Sprites.Asteroid;
 import com.mygdx.game.Sprites.Bird;
 import com.mygdx.game.Sprites.Coin;
@@ -29,6 +30,7 @@ public class SpaceBird extends ApplicationAdapter {
 	private BitmapFont scoreFont;
 	private int score;
 	private Bird bird;
+	public static CameraManager cameraManager;
 	private Asteroid asteroid;
 	@Override
 	public void create () {
@@ -45,6 +47,12 @@ public class SpaceBird extends ApplicationAdapter {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()/20);
 		//camera.zoom = 2f;
+
+		cameraManager = new CameraManager(camera);
+		cameraManager.setCamZoom();
+		camera.zoom = cameraManager.getCamZoom();
+		camera.update();
+
 		coin = new Coin(camera);
 		bird = new Bird(camera);
 		asteroid = new Asteroid(camera);

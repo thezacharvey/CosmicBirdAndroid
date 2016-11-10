@@ -40,7 +40,7 @@ public class Bird extends SpaceBird {
         collided =false;
         birdX = getWidth()/2;
         birdY = camH/2 - animation.getFrame().getRegionHeight()/2;
-        gravity = camH /300f;
+        gravity = camH /250f;
 
 
     }
