@@ -69,13 +69,13 @@ public class StateManager {
     {
         SpaceBird.birdDead =false;
         tapCount =0;
-        bird.setY(bird.getOriginXY().y);
+        bird.setY(bird.getOriginXY().y + bird.getHeight()*2);
         asteroid.setX(asteroid.getOriginXY().x);
         coin.setX(coin.getOriginXY().x);
+        coin.setVelocity(1.15f);
         SpaceBird.score = 0;
         SpaceBird.gameState = 1;
-
-
+        bird.setVelocity(0);
     }
 
 

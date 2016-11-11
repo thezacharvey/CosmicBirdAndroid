@@ -53,29 +53,19 @@ public class Bird extends SpaceBird {
         if (!birdDead)
         {
             animation.update(dt);
-
             if(Gdx.input.justTouched() && birdY < camH - texture.getHeight())
             {
                 velocity = -camH/19f;
                // mousePos.set(Gdx.input.getX(),Gdx.input.getY());
                // Gdx.app.log("Cheese", String.valueOf(mousePos.x / cameraManager.getCamWidth()));   // possible screen side testing
-
             }
             rectangle.set(getX(),getY(),getWidth(),getHeight());
-
-
                 applyGravity();
-
-
         }
-
-
-
-
 
 }      public void applyGravity()
     {
-        if (birdY >= birdHeight || velocity < 0)
+        if (birdY >= -birdHeight/2 || velocity < 0 &&  gameState==1)
         {
             velocity = velocity +gravity;
             birdY -= velocity;

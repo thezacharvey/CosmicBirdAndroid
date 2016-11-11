@@ -113,4 +113,6 @@ public class Coin extends SpaceBird {
     public boolean getCollision() {return collided;}
     public void setCollision(boolean co){ collided =co;}
     public Vector2 getOriginXY(){ return originXY;}
+    public void setVelocity(float v){velocity =cameraWidth * v;}
+    public float getVelocity(){return velocity;}
 }
