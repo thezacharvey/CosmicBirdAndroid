@@ -3,6 +3,7 @@ package com.mygdx.game.Sprites;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
@@ -28,6 +29,7 @@ public class Bird extends SpaceBird {
     private Vector2 originXY;
     private float gravity;
     private Texture birdTexture;
+    private Sprite sprite;
     private Vector2 mousePos;
     public Bird(OrthographicCamera camera){
 
@@ -44,6 +46,9 @@ public class Bird extends SpaceBird {
         birdY = camH/2 - animation.getFrame().getRegionHeight()/2;
         originXY = new Vector2(birdX,birdY);
         gravity = camH /250f;
+        sprite = new Sprite(getTextureRegion());
+        sprite.setX(getX());
+        sprite.setY(getY());
 
 
     }
@@ -53,13 +58,16 @@ public class Bird extends SpaceBird {
         if (!birdDead)
         {
             animation.update(dt);
+           sprite.setRegion(getTextureRegion());
             if(Gdx.input.justTouched() && birdY < camH - texture.getHeight())
             {
                 velocity = -camH/19f;
+                sprite.setRotation(50f);
                // mousePos.set(Gdx.input.getX(),Gdx.input.getY());
                // Gdx.app.log("Cheese", String.valueOf(mousePos.x / cameraManager.getCamWidth()));   // possible screen side testing
             }
             rectangle.set(getX(),getY(),getWidth(),getHeight());
+
                 applyGravity();
         }
 
@@ -69,6 +77,11 @@ public class Bird extends SpaceBird {
         {
             velocity = velocity +gravity;
             birdY -= velocity;
+            sprite.setY(getY());
+         //   if (sprite.getRotation())
+            if (sprite.getRotation() >= -91f)
+            sprite.rotate(-4f);
+
         }
 
 
@@ -82,7 +95,7 @@ public class Bird extends SpaceBird {
     public TextureRegion getTextureRegion() {return animation.getFrame();}
     public void setVelocity(float v){velocity =v;}
     public float getVelocity(){return velocity;}
-
+    public Sprite getSprite(){return sprite;}
     public float getX(){return birdX;}
     public float getWidth(){return birdWidth;}
     public float getHeight(){return birdHeight;}

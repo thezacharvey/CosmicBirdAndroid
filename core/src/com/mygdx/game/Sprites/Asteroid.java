@@ -2,6 +2,7 @@ package com.mygdx.game.Sprites;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.SpaceBird;
@@ -24,6 +25,7 @@ public class Asteroid extends SpaceBird {
     private float cameraWidth;
     private float newAsteroidY;
     private  float velocity;
+    private Sprite sprite;
     private Vector2 originXY;
     public Asteroid(OrthographicCamera camera)
     {
@@ -32,6 +34,9 @@ public class Asteroid extends SpaceBird {
         asteroid = new Texture("asteroid.png");
         asteroidHeight = asteroid.getHeight();
         asteroidWidth = asteroid.getWidth();
+
+       sprite = new Sprite(asteroid);
+
         cameraHeight = camera.viewportHeight;
         cameraWidth = camera.viewportWidth;
         velocity = cameraWidth *1.40f;
@@ -39,20 +44,24 @@ public class Asteroid extends SpaceBird {
         newAsteroidY = asteroidY(0);
         asteroidX = cameraWidth + asteroidWidth;
         originXY = new Vector2(asteroidX,newAsteroidY);
+        sprite.setOrigin(asteroidWidth/2,asteroidHeight/2);
+
     }
 
     @Override
     public void update(float dt) {
 
-        if (!birdDead)
-        {
-            if (asteroidX <= -asteroidWidth)
-            {
-                asteroidX= cameraWidth + asteroidWidth;
+        if (!birdDead) {
+            if (asteroidX <= -asteroidWidth) {
+                asteroidX = cameraWidth + asteroidWidth;
                 newAsteroidY = asteroidY(newAsteroidY);
+
             }
-            asteroidX -=velocity*dt;
-            circle.set(getX()+asteroidWidth/2, newAsteroidY+asteroidHeight/2,getWidth()/2);
+            asteroidX -= velocity * dt;
+
+            sprite.setY(getY()); sprite.setX(getX());
+            sprite.rotate(1.55f);
+            circle.set(getX() + sprite.getWidth() / 2, newAsteroidY + sprite.getHeight() / 2, getWidth() / 2);
         }
 
     }
@@ -87,7 +96,8 @@ public class Asteroid extends SpaceBird {
     public float getX(){return asteroidX;}
     public float getY(){return  newAsteroidY;}
     public Circle getCircle(){return circle;}
-    public Texture getTexture(){return asteroid;}
+    public Sprite getSprite(){return sprite;}
+    public float getHeight(){return asteroidHeight;}
     public float getWidth(){return asteroidWidth;}
     public Vector2 getOriginXY(){ return originXY;}
 }

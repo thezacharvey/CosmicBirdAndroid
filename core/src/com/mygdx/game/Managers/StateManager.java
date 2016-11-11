@@ -46,6 +46,7 @@ public class StateManager {
                     SpaceBird.birdDead = false;
                     SpaceBird.gameState = 1;
                     tapCount=0;
+
                 }
                 break;
             case 1: //playing
@@ -76,6 +77,7 @@ public class StateManager {
         SpaceBird.score = 0;
         SpaceBird.gameState = 1;
         bird.setVelocity(0);
+        bird.getSprite().setRotation(0f);
     }
 
 

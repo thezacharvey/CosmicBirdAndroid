@@ -58,9 +58,10 @@ public class SpaceBird extends ApplicationAdapter {
 		camera.zoom = cameraManager.getCamZoom();
 		camera.update();
 
-		coin = new Coin(camera);
-		bird = new Bird(camera);
 		asteroid = new Asteroid(camera);
+		coin = new Coin(camera,asteroid);
+		bird = new Bird(camera);
+
 		stateManager = new StateManager(bird,asteroid,coin,cameraManager);   //BAC
 		scoreManager = new ScoreManager(score,camera,coin);
 
@@ -78,7 +79,8 @@ public class SpaceBird extends ApplicationAdapter {
 	//	star.render();
 		batch.begin();
 		batch.setProjectionMatrix(camera.combined);
-		batch.draw(bird.getTextureRegion(),bird.getX(),bird.getY());
+		bird.getSprite().draw(batch);
+		//batch.draw(bird.getTextureRegion(),bird.getX(),bird.getY());
 		if (!coin.getCollision()) {
 			batch.draw(coin.getTextureRegion(), coin.getX(), coin.getY());
 			//batch.draw(coin2.getTextureRegion(), coin2.getX(), coin2.getY());
@@ -99,7 +101,11 @@ public class SpaceBird extends ApplicationAdapter {
 			batch.draw(gameOver,cameraManager.getCamWidth()/2 - gameOver.getWidth()/2,cameraManager.getCamHeight()/2 - gameOver.getHeight()/2);
 		}
 
-		batch.draw(asteroid.getTexture(),asteroid.getX(),asteroid.getY());
+		//asteroid.getSprite().setX(asteroid.getX());
+		//asteroid.getSprite().setY(asteroid.getY());
+		asteroid.getSprite().draw(batch);
+
+		//batch.draw(asteroid.getSprite(),asteroid.getX(),asteroid.getY());
 		batch.end();
 
 		/*

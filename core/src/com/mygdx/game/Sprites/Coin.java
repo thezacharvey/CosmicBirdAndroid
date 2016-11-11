@@ -30,13 +30,14 @@ public class Coin extends SpaceBird {
     private float starHeight;
     private int intHeight;
     private Circle circle;
+    private Asteroid asteroid;
     private float newStarY;
     private Random random;
     private boolean collided;
    // private Sprite sprite;
 
-    public Coin(OrthographicCamera camera) {
-
+    public Coin(OrthographicCamera camera,Asteroid asteroid) {
+        this.asteroid = asteroid;
         collided =false;
         random =new Random();
         intHeight = (int)camera.viewportHeight;
@@ -108,7 +109,7 @@ public class Coin extends SpaceBird {
     public void setX(float x){coinX = x;}
     public float getWidth(){return starWidth;}
     public float getHeight(){return starHeight;}
-    public float getY(){return newStarY;}
+    public float getY(){return newStarY + asteroid.getHeight()/1.85f;}
     public Circle getCircle(){return circle;}
     public boolean getCollision() {return collided;}
     public void setCollision(boolean co){ collided =co;}
