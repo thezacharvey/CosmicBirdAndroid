@@ -104,8 +104,7 @@ public class Main extends ApplicationAdapter {
 	public void render () {
 		update(Gdx.graphics.getDeltaTime());
 		camera.update();
-
-		Gdx.gl.glClearColor(0, 0, 0, 0);
+			Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	//	star.render();
 		batch.begin();
@@ -141,6 +140,10 @@ public class Main extends ApplicationAdapter {
 			if (highScoreSprite.getScaleX() <= 1f)
 			{
 				highScoreSprite.scale(.125f);
+			}
+			if (tapToReplaySprite.getScaleX() < 1.75f)
+			{
+				tapToReplaySprite.scale(.125f);
 			}
 			gameSprite.draw(batch);
 			highScoreSprite.draw(batch);
