@@ -31,7 +31,7 @@ public class Coin extends Main {
     private float newStarY;
     private Random random;
     private boolean collided;
-   // private Sprite sprite;
+   // private Sprite gameSprite;
 
     public Coin(OrthographicCamera camera,Asteroid asteroid) {
         this.asteroid = asteroid;
@@ -60,9 +60,7 @@ public class Coin extends Main {
 
     @Override
     public void update(float dt) {
-        if (!birdDead)
-        {
-            animation.update(dt);
+     animation.update(dt);
             if (coinX <= -starWidth)
             {
                 newStarY = starY(newStarY);
@@ -71,7 +69,7 @@ public class Coin extends Main {
             }
             coinX-=velocity*dt;
             circle.set(getX()+starWidth/2,getY()+getHeight()/2,getWidth()/2);
-        }
+
 
 
     }

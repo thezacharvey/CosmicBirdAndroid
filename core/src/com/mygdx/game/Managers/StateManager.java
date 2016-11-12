@@ -81,7 +81,7 @@ public class StateManager {
         Main.gameState = 1;
         bird.setVelocity(0);
         bird.getSprite().setRotation(0f);
-        Main.sprite.setScale(0.5f,0.5f);
+        Main.gameSprite.setScale(0.5f,0.5f);
 
     }
 

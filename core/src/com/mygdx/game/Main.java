@@ -24,7 +24,7 @@ public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
 
 	private Animation animation;
- public static Texture texture,gameOver;
+ public static Texture texture,gameOver,highScore;
 	private Texture tapToPlay;
 	public static boolean birdDead;
 	private OrthographicCamera camera;
@@ -33,7 +33,7 @@ public class Main extends ApplicationAdapter {
 	private BitmapFont scoreFont;
 	public static int score;
 	private Bird bird;
-	public static  Sprite sprite;
+	public static  Sprite gameSprite,highScoreSprite;
 	private ScoreManager scoreManager;
 	private StateManager stateManager;
 	public static CameraManager cameraManager;
@@ -49,6 +49,7 @@ public class Main extends ApplicationAdapter {
 		scoreFont.setColor(Color.WHITE);
 		tapToPlay = new Texture("taptoplay.png");
 		gameOver= new Texture("gameover.png");
+		highScore = new Texture("highscore.png");
 
 
 		batch = new SpriteBatch();
@@ -71,10 +72,15 @@ public class Main extends ApplicationAdapter {
 		stateManager = new StateManager(bird,asteroid,coin,cameraManager,scoreManager);   //BACS
 		scoreMultiplier = new ScoreMultiplier(cameraManager);
 
-		sprite = new Sprite(gameOver);
-		sprite.setScale(0.5f,0.5f);
-		sprite.setY(cameraManager.getCamHeight()/2);
-		sprite.setX(cameraManager.getCamWidth()/2 - sprite.getWidth()/2);
+		gameSprite = new Sprite(gameOver);
+		gameSprite.setScale(0.5f,0.5f);
+		gameSprite.setY(cameraManager.getCamHeight()-gameSprite.getRegionHeight()*2);
+		gameSprite.setX(cameraManager.getCamWidth()/2 - gameSprite.getWidth()/2);
+
+		highScoreSprite = new Sprite(highScore);
+		highScoreSprite.setScale(0.25f,0.25f);
+		highScoreSprite.setY(cameraManager.getCamHeight()-highScoreSprite.getRegionHeight()*8);
+	    highScoreSprite.setX(cameraManager.getCamWidth()/2 -highScoreSprite.getRegionWidth()/2 );
 
 
 	}
@@ -113,11 +119,20 @@ public class Main extends ApplicationAdapter {
 		}else
 		{
 			//	batch.draw(gameOver,cameraManager.getCamWidth()/2 - gameOver.getWidth()/2,cameraManager.getCamHeight()/2 - gameOver.getHeight()/2);
-			if (sprite.getScaleX() < 2.25f)
+			if (gameSprite.getScaleX() < 2.25f)
 			{
-				sprite.scale(.125f);
+				gameSprite.scale(.125f);
 			}
-			sprite.draw(batch);
+			if (highScoreSprite.getScaleX() <= 1f)
+			{
+				highScoreSprite.scale(.125f);
+			}
+			gameSprite.draw(batch);
+			highScoreSprite.draw(batch);
+			if (highScoreSprite.getScaleX() >= .85f)
+			{
+				scoreFont.draw(batch,String.valueOf(scoreManager.getPreferences().getInteger("highScore")),highScoreSprite.getX()+highScoreSprite.getRegionWidth()/2,highScoreSprite.getY() - highScoreSprite.getRegionHeight());
+			}
 
 		}
 

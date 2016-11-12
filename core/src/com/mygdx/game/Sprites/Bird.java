@@ -77,7 +77,7 @@ public class Bird extends Main {
             velocity = velocity +gravity;
             birdY -= velocity;
             sprite.setY(getY() +dt);
-         //   if (sprite.getRotation())
+         //   if (gameSprite.getRotation())
             if (sprite.getRotation() >= -91f)
             sprite.rotate(-cameraManager.getCamHeight()/50f);
 

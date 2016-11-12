@@ -5,6 +5,7 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.mygdx.game.Main;
 import com.mygdx.game.Sprites.Coin;
 import com.mygdx.game.Sprites.ScoreMultiplier;
 
@@ -28,6 +29,9 @@ public class ScoreManager {
             preferences = Gdx.app.getPreferences("My Preferences");
             highScore = 0;
            // preferences.putInteger("highscore", highScore);
+        }else
+        {
+            highScore = getPreferences().getInteger("highScore");
         }
 
 /*
@@ -38,7 +42,7 @@ public class ScoreManager {
 
     public void update(int s) {
         score = s;
-        if (highScore < score) {
+        if (highScore < score && Main.gameState ==1) {
             highScore = score;
             preferences.putInteger("highScore", highScore);
             preferences.flush();
@@ -71,5 +75,5 @@ public class ScoreManager {
     public Preferences getPreferences() {
         return preferences;
     }
-    //public Sprite getSprite(return sprite;);
+    //public Sprite getSprite(return gameSprite;);
 }
