@@ -5,17 +5,16 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Animation;
-import com.mygdx.game.SpaceBird;
+import com.mygdx.game.Main;
 
 /**
  * Created by z_ig_ on 11/8/2016.
  */
 
-public class Bird extends SpaceBird {
+public class Bird extends Main {
 
     private float birdX;
     private float birdWidth;
@@ -58,29 +57,29 @@ public class Bird extends SpaceBird {
         if (!birdDead)
         {
             animation.update(dt);
-           sprite.setRegion(getTextureRegion());
+            sprite.setRegion(getTextureRegion());
             if(Gdx.input.justTouched() && birdY < camH - texture.getHeight())
             {
                 velocity = -camH/19f;
-                sprite.setRotation(50f);
+                sprite.setRotation(cameraManager.getCamHeight()/4f + dt);
                // mousePos.set(Gdx.input.getX(),Gdx.input.getY());
                // Gdx.app.log("Cheese", String.valueOf(mousePos.x / cameraManager.getCamWidth()));   // possible screen side testing
             }
             rectangle.set(getX(),getY(),getWidth(),getHeight());
 
-                applyGravity();
+                applyGravity(dt);
         }
 
-}      public void applyGravity()
+}      public void applyGravity(float dt)
     {
         if (birdY >= -birdHeight/2 || velocity < 0 &&  gameState==1)
         {
             velocity = velocity +gravity;
             birdY -= velocity;
-            sprite.setY(getY());
+            sprite.setY(getY() +dt);
          //   if (sprite.getRotation())
             if (sprite.getRotation() >= -91f)
-            sprite.rotate(-4f);
+            sprite.rotate(-cameraManager.getCamHeight()/50f);
 
         }
 

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -17,8 +18,9 @@ import com.mygdx.game.Managers.StateManager;
 import com.mygdx.game.Sprites.Asteroid;
 import com.mygdx.game.Sprites.Bird;
 import com.mygdx.game.Sprites.Coin;
+import com.mygdx.game.Sprites.ScoreMultiplier;
 
-public class SpaceBird extends ApplicationAdapter {
+public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
 
 	private Animation animation;
@@ -31,11 +33,13 @@ public class SpaceBird extends ApplicationAdapter {
 	private BitmapFont scoreFont;
 	public static int score;
 	private Bird bird;
+	public static  Sprite sprite;
 	private ScoreManager scoreManager;
 	private StateManager stateManager;
 	public static CameraManager cameraManager;
 	public static int gameState;
 	private Asteroid asteroid;
+	private ScoreMultiplier scoreMultiplier;
 	@Override
 	public void create () {
 		score = 0;
@@ -45,6 +49,7 @@ public class SpaceBird extends ApplicationAdapter {
 		scoreFont.setColor(Color.WHITE);
 		tapToPlay = new Texture("taptoplay.png");
 		gameOver= new Texture("gameover.png");
+
 
 		batch = new SpriteBatch();
 		texture = new Texture("score.png");
@@ -62,9 +67,14 @@ public class SpaceBird extends ApplicationAdapter {
 		coin = new Coin(camera,asteroid);
 		bird = new Bird(camera);
 
-		stateManager = new StateManager(bird,asteroid,coin,cameraManager);   //BAC
-		scoreManager = new ScoreManager(score,camera,coin);
+		scoreManager = new ScoreManager(score,coin);
+		stateManager = new StateManager(bird,asteroid,coin,cameraManager,scoreManager);   //BACS
+		scoreMultiplier = new ScoreMultiplier(cameraManager);
 
+		sprite = new Sprite(gameOver);
+		sprite.setScale(0.5f,0.5f);
+		sprite.setY(cameraManager.getCamHeight()/2);
+		sprite.setX(cameraManager.getCamWidth()/2 - sprite.getWidth()/2);
 
 
 	}
@@ -83,11 +93,15 @@ public class SpaceBird extends ApplicationAdapter {
 		//batch.draw(bird.getTextureRegion(),bird.getX(),bird.getY());
 		if (!coin.getCollision()) {
 			batch.draw(coin.getTextureRegion(), coin.getX(), coin.getY());
+
 			//batch.draw(coin2.getTextureRegion(), coin2.getX(), coin2.getY());
 
 		}
+		if (!scoreMultiplier.getCollision()) {
+			scoreMultiplier.getSprite().draw(batch);
+		}
 
-
+			asteroid.getSprite().draw(batch);
 		if (gameState==0)
 		{
 			batch.draw(tapToPlay,cameraManager.getCamWidth()/2 - tapToPlay.getWidth()/2,cameraManager.getCamHeight()/2 - tapToPlay.getHeight()/2);
@@ -98,21 +112,23 @@ public class SpaceBird extends ApplicationAdapter {
 			batch.draw(texture,0 ,cameraManager.getCamHeight()-texture.getHeight());
 		}else
 		{
-			batch.draw(gameOver,cameraManager.getCamWidth()/2 - gameOver.getWidth()/2,cameraManager.getCamHeight()/2 - gameOver.getHeight()/2);
-		}
+			//	batch.draw(gameOver,cameraManager.getCamWidth()/2 - gameOver.getWidth()/2,cameraManager.getCamHeight()/2 - gameOver.getHeight()/2);
+			if (sprite.getScaleX() < 2.25f)
+			{
+				sprite.scale(.125f);
+			}
+			sprite.draw(batch);
 
-		//asteroid.getSprite().setX(asteroid.getX());
-		//asteroid.getSprite().setY(asteroid.getY());
-		asteroid.getSprite().draw(batch);
+		}
 
 		//batch.draw(asteroid.getSprite(),asteroid.getX(),asteroid.getY());
 		batch.end();
 
-		/*
+/*
 		shapeRenderer.setProjectionMatrix(camera.combined);
-		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 		shapeRenderer.setColor(Color.RED);
-		shapeRenderer.circle(asteroid.getCircle().x,asteroid.getCircle().y,asteroid.getCircle().radius);
+		shapeRenderer.circle(scoreMultiplier.getCircle().x,scoreMultiplier.getCircle().y,scoreMultiplier.getCircle().radius);
 		//shapeRenderer.rect(birdRect.x,birdRect.y,birdRect.width,birdRect.height);
        shapeRenderer.end();*/
 
@@ -125,14 +141,21 @@ public class SpaceBird extends ApplicationAdapter {
 		coin.update(dt);
 		asteroid.update(dt);
 		bird.update(dt);
-
+		scoreMultiplier.update(dt);
 
 		if (Intersector.overlaps(coin.getCircle(),bird.getRectangle()) && !coin.getCollision())
 		{
-			Gdx.app.log("Cheese","True");
 			score++;
 			scoreManager.update(score);
 			coin.setCollision(true);
+		//	Gdx.app.log("jooz",String.valueOf(scoreManager.getPreferences().getInteger("highscore")));
+		}
+		if (Intersector.overlaps(scoreMultiplier.getCircle(),bird.getRectangle()) && !scoreMultiplier.getCollision() )
+		{
+			score*=2;
+			scoreManager.update(score);
+			scoreMultiplier.setCollision(true);
+			//	Gdx.app.log("jooz",String.valueOf(scoreManager.getPreferences().getInteger("highscore")));
 		}
 		if (Intersector.overlaps(asteroid.getCircle(),bird.getRectangle()) && gameState ==1 )
 		{

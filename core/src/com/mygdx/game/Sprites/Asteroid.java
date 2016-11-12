@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.SpaceBird;
+import com.mygdx.game.Main;
 
 import java.util.Random;
 
@@ -13,7 +13,7 @@ import java.util.Random;
  * Created by z_ig_ on 11/9/2016.
  */
 
-public class Asteroid extends SpaceBird {
+public class Asteroid extends Main {
 
     private Texture asteroid;
     private Circle circle;
@@ -35,7 +35,7 @@ public class Asteroid extends SpaceBird {
         asteroidHeight = asteroid.getHeight();
         asteroidWidth = asteroid.getWidth();
 
-       sprite = new Sprite(asteroid);
+        sprite = new Sprite(asteroid);
 
         cameraHeight = camera.viewportHeight;
         cameraWidth = camera.viewportWidth;
@@ -51,18 +51,18 @@ public class Asteroid extends SpaceBird {
     @Override
     public void update(float dt) {
 
-        if (!birdDead) {
-            if (asteroidX <= -asteroidWidth) {
-                asteroidX = cameraWidth + asteroidWidth;
-                newAsteroidY = asteroidY(newAsteroidY);
 
-            }
+                if (asteroidX <= -asteroidWidth) {
+                    asteroidX = cameraWidth + asteroidWidth;
+                    newAsteroidY = asteroidY(newAsteroidY);
+
+                }
             asteroidX -= velocity * dt;
 
             sprite.setY(getY()); sprite.setX(getX());
             sprite.rotate(1.55f);
             circle.set(getX() + sprite.getWidth() / 2, newAsteroidY + sprite.getHeight() / 2, getWidth() / 2);
-        }
+
 
     }
 

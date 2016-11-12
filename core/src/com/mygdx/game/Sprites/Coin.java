@@ -1,15 +1,12 @@
 package com.mygdx.game.Sprites;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Animation;
-import com.mygdx.game.SpaceBird;
+import com.mygdx.game.Main;
 
 import java.util.Random;
 
@@ -17,7 +14,7 @@ import java.util.Random;
  * Created by z_ig_ on 11/8/2016.
  */
 
-public class Coin extends SpaceBird {
+public class Coin extends Main {
 
     private Texture star;
     private Vector2 originXY;
@@ -46,14 +43,13 @@ public class Coin extends SpaceBird {
         cameraWidth = camera.viewportWidth;
         cameraHeight = camera.viewportHeight;
 
-
         star = new Texture("star.png");
         animation = new Animation(new TextureRegion(star), 3, 0.35f);
         starHeight = animation.getFrame().getRegionHeight();
         starWidth = animation.getFrame().getRegionWidth();
         coinX = cameraWidth + starWidth;
         newStarY = starY(0);
-        velocity = cameraWidth * 1.15f;
+        velocity = cameraWidth *.95f;
         circle = new Circle();
         originXY = new Vector2(coinX,newStarY);
        // circle.set(starX,starY,starWidth/2);
