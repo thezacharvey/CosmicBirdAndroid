@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Animation;
 import com.mygdx.game.Main;
+import com.mygdx.game.Managers.SoundManager;
 
 /**
  * Created by z_ig_ on 11/8/2016.
@@ -30,7 +31,9 @@ public class Bird extends Main {
     private Texture birdTexture;
     private Sprite sprite;
     private Vector2 mousePos;
+    SoundManager soundManager;
     public Bird(OrthographicCamera camera){
+        soundManager = new SoundManager();
 
         mousePos = new Vector2();
         velocity =0f;
@@ -62,6 +65,7 @@ public class Bird extends Main {
             {
                 velocity = -camH/19f;
                 sprite.setRotation(cameraManager.getCamHeight()/4f + dt);
+                soundManager.play();
                // mousePos.set(Gdx.input.getX(),Gdx.input.getY());
                // Gdx.app.log("Cheese", String.valueOf(mousePos.x / cameraManager.getCamWidth()));   // possible screen side testing
             }
