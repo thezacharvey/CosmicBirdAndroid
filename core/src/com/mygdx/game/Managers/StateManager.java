@@ -78,10 +78,12 @@ public class StateManager {
         coin.setX(coin.getOriginXY().x);
         coin.setVelocity(1.15f);
         Main.score = 0;
+        scoreManager.setNewHighScore(false);
         Main.gameState = 1;
         bird.setVelocity(0);
         bird.getSprite().setRotation(0f);
         Main.gameSprite.setScale(0.5f,0.5f);
+        asteroid.setAsteroidTexture(0);
 
     }
 

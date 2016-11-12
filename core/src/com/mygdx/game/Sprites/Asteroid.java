@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class Asteroid extends Main {
 
-    private Texture asteroid;
+    private Texture asteroid,asteroid2;
     private Circle circle;
     private float  asteroidX;
     private Random random;
@@ -27,14 +27,14 @@ public class Asteroid extends Main {
     private  float velocity;
     private Sprite sprite;
     private Vector2 originXY;
+
     public Asteroid(OrthographicCamera camera)
     {
         random = new Random();
-
+        asteroid2 = new Texture("asteroid2.png");
         asteroid = new Texture("asteroid.png");
         asteroidHeight = asteroid.getHeight();
         asteroidWidth = asteroid.getWidth();
-
         sprite = new Sprite(asteroid);
 
         cameraHeight = camera.viewportHeight;
@@ -55,7 +55,6 @@ public class Asteroid extends Main {
                 if (asteroidX <= -asteroidWidth) {
                     asteroidX = cameraWidth + asteroidWidth;
                     newAsteroidY = asteroidY(newAsteroidY);
-
                 }
             asteroidX -= velocity * dt;
 
@@ -100,4 +99,22 @@ public class Asteroid extends Main {
     public float getHeight(){return asteroidHeight;}
     public float getWidth(){return asteroidWidth;}
     public Vector2 getOriginXY(){ return originXY;}
+    public void setAsteroidTexture(int a)
+    {
+        switch (a)
+        {
+            case 0:
+                sprite.setTexture(asteroid);
+                sprite.setScale(1f,1f);
+                velocity =  cameraWidth *1.40f;
+                break;
+            case 1:
+                sprite.setTexture(asteroid2);
+                sprite.setScale(1.5f,1.5f);
+                velocity =  cameraWidth *1.30f;
+                break;
+            case 2:
+                break;
+        }
+    }
 }

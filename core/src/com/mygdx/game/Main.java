@@ -23,17 +23,18 @@ import com.mygdx.game.Sprites.ScoreMultiplier;
 public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
 
-	private Animation animation;
- public static Texture texture,gameOver,highScore;
+	private Animation animation,newAnimation;
+ public static Texture texture,gameOver,highScore, newTexture,taptoReplay;
 	private Texture tapToPlay;
 	public static boolean birdDead;
 	private OrthographicCamera camera;
 	private Coin coin;
+	private Texture background;
 	private ShapeRenderer shapeRenderer;
 	private BitmapFont scoreFont;
 	public static int score;
 	private Bird bird;
-	public static  Sprite gameSprite,highScoreSprite;
+	public static  Sprite gameSprite,highScoreSprite,newSprite,tapToReplaySprite;
 	private ScoreManager scoreManager;
 	private StateManager stateManager;
 	public static CameraManager cameraManager;
@@ -50,6 +51,8 @@ public class Main extends ApplicationAdapter {
 		tapToPlay = new Texture("taptoplay.png");
 		gameOver= new Texture("gameover.png");
 		highScore = new Texture("highscore.png");
+		newTexture = new Texture("new.png");
+	     taptoReplay = new Texture("replay.png");
 
 
 		batch = new SpriteBatch();
@@ -68,7 +71,7 @@ public class Main extends ApplicationAdapter {
 		coin = new Coin(camera,asteroid);
 		bird = new Bird(camera);
 
-		scoreManager = new ScoreManager(score,coin);
+		scoreManager = new ScoreManager(score,coin,asteroid);
 		stateManager = new StateManager(bird,asteroid,coin,cameraManager,scoreManager);   //BACS
 		scoreMultiplier = new ScoreMultiplier(cameraManager);
 
@@ -79,10 +82,22 @@ public class Main extends ApplicationAdapter {
 
 		highScoreSprite = new Sprite(highScore);
 		highScoreSprite.setScale(0.25f,0.25f);
-		highScoreSprite.setY(cameraManager.getCamHeight()-highScoreSprite.getRegionHeight()*8);
+		highScoreSprite.setY(cameraManager.getCamHeight()/2 - highScoreSprite.getHeight()/4f);
 	    highScoreSprite.setX(cameraManager.getCamWidth()/2 -highScoreSprite.getRegionWidth()/2 );
 
 
+		//backgroundSprite.setY(cameraManager.getCamHeight()/2);
+		//backgroundSprite.setX(cameraManager.getCamWidth()/2);
+
+		newAnimation = new Animation(new TextureRegion(newTexture),2,.25f);
+		newSprite = new Sprite(newAnimation.getFrame());
+		//newSprite.setScale(5f,5f);
+		newSprite.setY(cameraManager.getCamHeight()/2 + newSprite.getHeight());
+		newSprite.setX(cameraManager.getCamWidth()/2 -newSprite.getRegionWidth()/2 );
+
+		tapToReplaySprite = new Sprite(taptoReplay);
+		tapToReplaySprite.setX(cameraManager.getCamWidth()/2 - taptoReplay.getWidth()/2);
+		tapToReplaySprite.setY(tapToPlay.getHeight()/2.35f);
 	}
 
 	@Override
@@ -129,9 +144,13 @@ public class Main extends ApplicationAdapter {
 			}
 			gameSprite.draw(batch);
 			highScoreSprite.draw(batch);
-			if (highScoreSprite.getScaleX() >= .85f)
+			tapToReplaySprite.draw(batch);
+			if (scoreManager.gotNewHighScore())
 			{
-				scoreFont.draw(batch,String.valueOf(scoreManager.getPreferences().getInteger("highScore")),highScoreSprite.getX()+highScoreSprite.getRegionWidth()/2,highScoreSprite.getY() - highScoreSprite.getRegionHeight());
+				newSprite.draw(batch);
+			}
+			if (highScoreSprite.getScaleX() >= 1f)
+			{scoreFont.draw(batch,String.valueOf(scoreManager.getPreferences().getInteger("highScore")), highScoreSprite.getWidth()/2 +5.5f ,highScoreSprite.getY() - highScoreSprite.getRegionHeight());
 			}
 
 		}
@@ -154,9 +173,15 @@ public class Main extends ApplicationAdapter {
 
 		animation.update(Gdx.graphics.getDeltaTime());
 		coin.update(dt);
+		scoreMultiplier.update(dt);
 		asteroid.update(dt);
 		bird.update(dt);
-		scoreMultiplier.update(dt);
+		if (scoreManager.gotNewHighScore())
+		{
+			newAnimation.update(dt);
+			newSprite.setRegion(newAnimation.getFrame());
+		}
+
 
 		if (Intersector.overlaps(coin.getCircle(),bird.getRectangle()) && !coin.getCollision())
 		{

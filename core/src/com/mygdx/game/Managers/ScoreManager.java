@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Main;
+import com.mygdx.game.Sprites.Asteroid;
 import com.mygdx.game.Sprites.Coin;
 import com.mygdx.game.Sprites.ScoreMultiplier;
 
@@ -17,23 +18,18 @@ public class ScoreManager {
     private Coin coin;
     private int score;
     private int highScore;
-    private Sprite gameOverSprite;
-    private Texture gameOverTexture;
+    private Asteroid asteroid;
+   private boolean newHighScore;
     private Preferences preferences;
-    public ScoreManager(int score, Coin coin)
+    public ScoreManager(int score, Coin coin,Asteroid asteroid)
     {
         this.coin = coin;
         this.score = score;
-
-        if (preferences == null) {
+            newHighScore = false;
+            this.asteroid = asteroid;
+            asteroid.setAsteroidTexture(0);
             preferences = Gdx.app.getPreferences("My Preferences");
-            highScore = 0;
-           // preferences.putInteger("highscore", highScore);
-        }else
-        {
-            highScore = getPreferences().getInteger("highScore");
-        }
-
+            highScore = preferences.getInteger("highScore",0);
 /*
         gameOverTexture = new Texture(Gdx.files.internal("gameover.png"));
         gameOverSprite = new Sprite(gameOverTexture);
@@ -42,28 +38,30 @@ public class ScoreManager {
 
     public void update(int s) {
         score = s;
+
+        if (highScore< score)
+        {
+            newHighScore = true;
+        }
+        if (score>30)
+        {
+            asteroid.setAsteroidTexture(1);
+        }
         if (highScore < score && Main.gameState ==1) {
             highScore = score;
             preferences.putInteger("highScore", highScore);
             preferences.flush();
         }
-       switch (score % 2)
+
+       switch (score % 7)
        {
-           case 5:
+           case 0:
                 coin.setVelocity(2);
                break;
-           case 10:
+           case 1:
                coin.setVelocity(.95f);
                break;
-           case 15:
-               coin.setVelocity(2);
-               break;
-           case 20:
-               coin.setVelocity(.95f);
-               break;
-           case 30:
-               coin.setVelocity(2.15f);
-               break;
+
            default:
                break;
        }
@@ -71,6 +69,8 @@ public class ScoreManager {
     }
 
     public int getScore(){return  score;}
+    public boolean gotNewHighScore(){return newHighScore;}
+    public void setNewHighScore(boolean hs){newHighScore = hs;}
     public int getHighScore(){return highScore;}
     public Preferences getPreferences() {
         return preferences;
