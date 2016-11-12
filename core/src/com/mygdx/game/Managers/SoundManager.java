@@ -8,14 +8,27 @@ import com.badlogic.gdx.audio.Sound;
  */
 
 public class SoundManager {
-    private Sound birdSound;
+    private Sound birdSound, coinSound;
     public SoundManager()
     {
         birdSound= Gdx.audio.newSound(Gdx.files.internal("sound/birdsound.mp3"));
+        coinSound = Gdx.audio.newSound(Gdx.files.internal("sound/coinpop.mp3"));
     }
 
-    public void play()
+    public void playSoundEffect(int type)
     {
-        birdSound.play(0.1f);
+        switch (type)
+        {
+            case 0:
+                birdSound.play(0.1f);       //plays bird sound effect
+                break;
+            case 1:
+                 coinSound.play(0.15f);
+                //plays coin sound effect
+                break;
+            default:
+                break;
+        }
+
     }
 }

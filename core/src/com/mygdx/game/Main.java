@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.mygdx.game.Managers.CameraManager;
 import com.mygdx.game.Managers.ScoreManager;
+import com.mygdx.game.Managers.SoundManager;
 import com.mygdx.game.Managers.StateManager;
 import com.mygdx.game.Sprites.Asteroid;
 import com.mygdx.game.Sprites.Bird;
@@ -29,7 +30,6 @@ public class Main extends ApplicationAdapter {
 	public static boolean birdDead;
 	private OrthographicCamera camera;
 	private Coin coin;
-	private Texture background;
 	private ShapeRenderer shapeRenderer;
 	private BitmapFont scoreFont;
 	public static int score;
@@ -41,9 +41,11 @@ public class Main extends ApplicationAdapter {
 	public static int gameState;
 	private Asteroid asteroid;
 	private ScoreMultiplier scoreMultiplier;
+	private SoundManager soundManager;
 	@Override
 	public void create () {
 		score = 0;
+		soundManager = new SoundManager();
 		gameState = 0;		//Menu
 		birdDead =true;
 		scoreFont= new BitmapFont();
@@ -69,7 +71,7 @@ public class Main extends ApplicationAdapter {
 
 		asteroid = new Asteroid(camera);
 		coin = new Coin(camera,asteroid);
-		bird = new Bird(camera);
+		bird = new Bird(camera,soundManager);
 
 		scoreManager = new ScoreManager(score,coin,asteroid);
 		stateManager = new StateManager(bird,asteroid,coin,cameraManager,scoreManager);   //BACS
@@ -84,10 +86,6 @@ public class Main extends ApplicationAdapter {
 		highScoreSprite.setScale(0.25f,0.25f);
 		highScoreSprite.setY(cameraManager.getCamHeight()/2 - highScoreSprite.getHeight()/4f);
 	    highScoreSprite.setX(cameraManager.getCamWidth()/2 -highScoreSprite.getRegionWidth()/2 );
-
-
-		//backgroundSprite.setY(cameraManager.getCamHeight()/2);
-		//backgroundSprite.setX(cameraManager.getCamWidth()/2);
 
 		newAnimation = new Animation(new TextureRegion(newTexture),2,.25f);
 		newSprite = new Sprite(newAnimation.getFrame());
@@ -113,8 +111,6 @@ public class Main extends ApplicationAdapter {
 		//batch.draw(bird.getTextureRegion(),bird.getX(),bird.getY());
 		if (!coin.getCollision()) {
 			batch.draw(coin.getTextureRegion(), coin.getX(), coin.getY());
-
-			//batch.draw(coin2.getTextureRegion(), coin2.getX(), coin2.getY());
 
 		}
 		if (!scoreMultiplier.getCollision()) {
@@ -158,7 +154,6 @@ public class Main extends ApplicationAdapter {
 
 		}
 
-		//batch.draw(asteroid.getSprite(),asteroid.getX(),asteroid.getY());
 		batch.end();
 
 /*
@@ -191,6 +186,7 @@ public class Main extends ApplicationAdapter {
 			score++;
 			scoreManager.update(score);
 			coin.setCollision(true);
+			if (!birdDead)soundManager.playSoundEffect(1); //plays coin sound effect**
 		//	Gdx.app.log("jooz",String.valueOf(scoreManager.getPreferences().getInteger("highscore")));
 		}
 		if (Intersector.overlaps(scoreMultiplier.getCircle(),bird.getRectangle()) && !scoreMultiplier.getCollision() )
@@ -198,6 +194,8 @@ public class Main extends ApplicationAdapter {
 			score*=2;
 			scoreManager.update(score);
 			scoreMultiplier.setCollision(true);
+
+
 			//	Gdx.app.log("jooz",String.valueOf(scoreManager.getPreferences().getInteger("highscore")));
 		}
 		if (Intersector.overlaps(asteroid.getCircle(),bird.getRectangle()) && gameState ==1 )
@@ -217,5 +215,8 @@ public class Main extends ApplicationAdapter {
 		asteroid.dispose();
 		coin.dispose();
 		scoreFont.dispose();
+		newTexture.dispose();
+		tapToPlay.dispose();
+		taptoReplay.dispose();
 	}
 }

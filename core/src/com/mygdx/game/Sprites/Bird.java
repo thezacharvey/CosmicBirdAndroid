@@ -31,9 +31,9 @@ public class Bird extends Main {
     private Texture birdTexture;
     private Sprite sprite;
     private Vector2 mousePos;
-    SoundManager soundManager;
-    public Bird(OrthographicCamera camera){
-        soundManager = new SoundManager();
+   private SoundManager soundManager;
+    public Bird(OrthographicCamera camera, SoundManager soundManager){
+        this.soundManager = soundManager;
 
         mousePos = new Vector2();
         velocity =0f;
@@ -65,7 +65,7 @@ public class Bird extends Main {
             {
                 velocity = -camH/19f;
                 sprite.setRotation(cameraManager.getCamHeight()/4f + dt);
-                soundManager.play();
+                soundManager.playSoundEffect(0);
                // mousePos.set(Gdx.input.getX(),Gdx.input.getY());
                // Gdx.app.log("Cheese", String.valueOf(mousePos.x / cameraManager.getCamWidth()));   // possible screen side testing
             }
