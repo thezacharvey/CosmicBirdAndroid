@@ -20,6 +20,7 @@ public class ScoreManager {
     private int highScore;
     private Asteroid asteroid;
    private boolean newHighScore;
+
     private Preferences preferences;
     public ScoreManager(int score, Coin coin,Asteroid asteroid)
     {
@@ -30,6 +31,7 @@ public class ScoreManager {
             asteroid.setAsteroidTexture(0);
             preferences = Gdx.app.getPreferences("My Preferences");
             highScore = preferences.getInteger("highScore",0);
+
 /*
         gameOverTexture = new Texture(Gdx.files.internal("gameover.png"));
         gameOverSprite = new Sprite(gameOverTexture);
@@ -53,7 +55,7 @@ public class ScoreManager {
             preferences.flush();
         }
 
-       switch (score % 7)
+       switch (score % 3)
        {
            case 0:
                 coin.setVelocity(2);

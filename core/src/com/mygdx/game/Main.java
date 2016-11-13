@@ -20,6 +20,7 @@ import com.mygdx.game.Sprites.Asteroid;
 import com.mygdx.game.Sprites.Bird;
 import com.mygdx.game.Sprites.Coin;
 import com.mygdx.game.Sprites.ScoreMultiplier;
+import com.mygdx.game.Sprites.Sun;
 
 public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -34,6 +35,7 @@ public class Main extends ApplicationAdapter {
 	private BitmapFont scoreFont;
 	public static int score;
 	private Bird bird;
+	private Sun sun;
 	public static  Sprite gameSprite,highScoreSprite,newSprite,tapToReplaySprite;
 	private ScoreManager scoreManager;
 	private StateManager stateManager;
@@ -72,9 +74,10 @@ public class Main extends ApplicationAdapter {
 		asteroid = new Asteroid(camera);
 		coin = new Coin(camera,asteroid);
 		bird = new Bird(camera,soundManager);
+		sun = new Sun(scoreManager,cameraManager);
 
 		scoreManager = new ScoreManager(score,coin,asteroid);
-		stateManager = new StateManager(bird,asteroid,coin,cameraManager,scoreManager);   //BACS
+		stateManager = new StateManager(bird,asteroid,coin,cameraManager,scoreManager,sun);   //BACS
 		scoreMultiplier = new ScoreMultiplier(cameraManager);
 
 		gameSprite = new Sprite(gameOver);
@@ -153,16 +156,16 @@ public class Main extends ApplicationAdapter {
 			}
 
 		}
-
+		sun.getSunSprite().draw(batch);
 		batch.end();
 
-/*
+
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 		shapeRenderer.setColor(Color.RED);
-		shapeRenderer.circle(scoreMultiplier.getCircle().x,scoreMultiplier.getCircle().y,scoreMultiplier.getCircle().radius);
-		//shapeRenderer.rect(birdRect.x,birdRect.y,birdRect.width,birdRect.height);
-       shapeRenderer.end();*/
+		//shapeRenderer.circle(sun.getSunCircle().x,sun.getSunCircle().y,sun.getSunCircle().radius);
+     shapeRenderer.rect(sun.getRectangle().x,sun.getRectangle().y,sun.getRectangle().width, sun.getRectangle().height);
+       shapeRenderer.end();
 
 	}
 
@@ -174,6 +177,8 @@ public class Main extends ApplicationAdapter {
 		scoreMultiplier.update(dt);
 		asteroid.update(dt);
 		bird.update(dt);
+		sun.update(dt);
+
 		if (scoreManager.gotNewHighScore())
 		{
 			newAnimation.update(dt);
@@ -203,6 +208,12 @@ public class Main extends ApplicationAdapter {
 			birdDead = true;
 			gameState = 2; //dead state
 		}
+
+		if (Intersector.overlaps(bird.getRectangle(), sun.getRectangle()))
+		{
+			birdDead = true;
+			gameState = 2;
+		}
 		stateManager.handleState(gameState);
 
 	}
@@ -218,5 +229,6 @@ public class Main extends ApplicationAdapter {
 		newTexture.dispose();
 		tapToPlay.dispose();
 		taptoReplay.dispose();
+		sun.dispose();
 	}
 }

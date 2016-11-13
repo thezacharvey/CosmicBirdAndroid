@@ -6,6 +6,7 @@ import com.mygdx.game.Main;
 import com.mygdx.game.Sprites.Asteroid;
 import com.mygdx.game.Sprites.Bird;
 import com.mygdx.game.Sprites.Coin;
+import com.mygdx.game.Sprites.Sun;
 
 /**
  * Created by z_ig_ on 11/9/2016.
@@ -19,12 +20,14 @@ public class StateManager {
     private ScoreManager scoreManager;
     private Bird bird;
     private Asteroid asteroid;
+    private Sun sun;
     private Coin coin;
        private int tapCount;
     private CameraManager cameraManager;
 
-    public StateManager(Bird bird, Asteroid asteroid, Coin coin, CameraManager cameraManager,ScoreManager scoreManager)
+    public StateManager(Bird bird, Asteroid asteroid, Coin coin, CameraManager cameraManager,ScoreManager scoreManager,Sun sun)
     {
+        this.sun = sun;
         this.scoreManager = scoreManager;
         tapCount=0;
         this.cameraManager = cameraManager;
@@ -84,7 +87,9 @@ public class StateManager {
         bird.getSprite().setRotation(0f);
         Main.gameSprite.setScale(0.5f,0.5f);
         asteroid.setAsteroidTexture(0);
-
+        sun.getSunSprite().setY(-55f);
+        sun.getRectangle().setY(sun.getSunSprite().getY() - sun.getSunSprite().getHeight()/2);
+        sun.setHasVibrated(false);
     }
 
 

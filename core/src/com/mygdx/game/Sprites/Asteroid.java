@@ -109,9 +109,12 @@ public class Asteroid extends Main {
                 velocity =  cameraWidth *1.40f;
                 break;
             case 1:
-                sprite.setTexture(asteroid2);
-                sprite.setScale(1.5f,1.5f);
-                velocity =  cameraWidth *1.55f;
+                if(sprite.getX() < -sprite.getRegionWidth())
+                {
+                    sprite.setTexture(asteroid2);
+                    sprite.setScale(1.5f,1.5f);
+                    velocity =  cameraWidth *1.55f;
+                }
                 break;
             case 2:
                 break;
