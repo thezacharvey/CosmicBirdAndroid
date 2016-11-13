@@ -18,16 +18,19 @@ import com.mygdx.game.Managers.ScoreManager;
 
 public class Sun {
         private boolean hasVibrated;
-    private Texture sunTexture;
+    private Texture sunTexture,warningMessageTexture;
     private Rectangle rectangle;
-    private Sprite sunSprite;
+    private Sprite sunSprite,warningMessageSprite;
     private Animation animation;
     private ScoreManager scoreManager;
     private CameraManager cameraManager;
 
+    private boolean displayWarning;
+
     public Sun(ScoreManager scoreManager, CameraManager cameraManager) {
         this.cameraManager = cameraManager;
         this.scoreManager = scoreManager;
+        displayWarning = false;
         hasVibrated = false;
         sunTexture = new Texture(Gdx.files.internal("sprites/sun.png"));
         rectangle = new Rectangle();
@@ -39,29 +42,47 @@ public class Sun {
         sunSprite.translateY(-55f); //goal negative 15
         rectangle.set(0,sunSprite.getY() - sunSprite.getHeight()/2,cameraManager.getCamWidth(),cameraManager.getCamHeight()/4);
 
+        warningMessageTexture = new Texture(Gdx.files.internal("sprites/warningmessage.png"));
+        warningMessageSprite = new Sprite(warningMessageTexture);
+        warningMessageSprite.setY(cameraManager.getCamHeight()/2);
+        warningMessageSprite.setX(cameraManager.getCamWidth() /2 - warningMessageSprite.getRegionWidth()/2);
+        warningMessageSprite.setScale(0.25f);
+
     }
 
     public void update(float dt) {
 
 
-        if (Main.score % 5 == 0 && Main.score!= 0)
+
+        if (Main.score > 25 && Main.score  < 75&& Main.score!= 0)
         {
             animation.update(dt);
             sunSprite.setRegion(animation.getFrame());
-            if (sunSprite.getY() <- 15f)
+            displayWarning  = true;
+            if (warningMessageSprite.getScaleX() < 1.25f)
             {
-                sunSprite.translateY(0.75f);
+                warningMessageSprite.scale(0.25f);
+            }
+            if (sunSprite.getY() <- 25f)
+            {
+                sunSprite.translateY(0.25f);
+                //displayWarning = false;
                 if(!hasVibrated)
                 {
-
                     Gdx.input.vibrate(new long[]{0,200,100,200},-1);
                     hasVibrated = !hasVibrated;
                 }
+
+            }
+            if (sunSprite.getY()>=-25f)
+            {
+                    displayWarning = false;
             }
 
         }else
-        { if (sunSprite.getY() > -55f)
+        { if (sunSprite.getY() > -55f || Main.gameState ==2)            //turns off warning message if dead or sun at certain possition 
             sunSprite.translateY(-0.75f);
+            displayWarning = false;
         }
 
         rectangle.setY(sunSprite.getY() - sunSprite.getHeight()/2);
@@ -70,6 +91,7 @@ public class Sun {
 
     public void dispose() {
         sunTexture.dispose();
+        warningMessageTexture.dispose();
     }
 
     public Sprite getSunSprite() {
@@ -80,5 +102,7 @@ public class Sun {
         return rectangle;
     }
     public void setHasVibrated(boolean b){hasVibrated=b;}
+    public boolean getDisplayWarning(){return displayWarning;}
+    public Sprite getWarningMessageSprite(){return warningMessageSprite;}
 
 }

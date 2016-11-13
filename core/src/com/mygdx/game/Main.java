@@ -156,16 +156,20 @@ public class Main extends ApplicationAdapter {
 			}
 
 		}
+		if (sun.getDisplayWarning())
+		{
+			sun.getWarningMessageSprite().draw(batch);
+		}
 		sun.getSunSprite().draw(batch);
 		batch.end();
 
 
-		shapeRenderer.setProjectionMatrix(camera.combined);
+		/*shapeRenderer.setProjectionMatrix(camera.combined);
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 		shapeRenderer.setColor(Color.RED);
 		//shapeRenderer.circle(sun.getSunCircle().x,sun.getSunCircle().y,sun.getSunCircle().radius);
-     shapeRenderer.rect(sun.getRectangle().x,sun.getRectangle().y,sun.getRectangle().width, sun.getRectangle().height);
-       shapeRenderer.end();
+    	shapeRenderer.rect(sun.getRectangle().x,sun.getRectangle().y,sun.getRectangle().width, sun.getRectangle().height);
+       shapeRenderer.end();*/
 
 	}
 
