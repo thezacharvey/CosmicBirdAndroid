@@ -54,7 +54,7 @@ public class Sun {
 
 
 
-        if (Main.score > 25 && Main.score  < 75&& Main.score!= 0)
+        if (Main.score > 45 && Main.score  < 350&& Main.score!= 0)
         {
             animation.update(dt);
             sunSprite.setRegion(animation.getFrame());
@@ -80,7 +80,7 @@ public class Sun {
             }
 
         }else
-        { if (sunSprite.getY() > -55f || Main.gameState ==2)            //turns off warning message if dead or sun at certain possition 
+        { if (sunSprite.getY() > -55f || Main.gameState ==2)            //turns off warning message if dead or sun at certain possition
             sunSprite.translateY(-0.75f);
             displayWarning = false;
         }

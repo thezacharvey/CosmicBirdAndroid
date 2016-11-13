@@ -26,7 +26,7 @@ public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
 
 	private Animation animation,newAnimation;
- public static Texture texture,gameOver,highScore, newTexture,taptoReplay;
+ public static Texture texture,gameOver,highScore, newTexture,taptoReplay,bg;
 	private Texture tapToPlay;
 	public static boolean birdDead;
 	private OrthographicCamera camera;
@@ -36,7 +36,7 @@ public class Main extends ApplicationAdapter {
 	public static int score;
 	private Bird bird;
 	private Sun sun;
-	public static  Sprite gameSprite,highScoreSprite,newSprite,tapToReplaySprite;
+	public static  Sprite gameSprite,highScoreSprite,newSprite,tapToReplaySprite,bgSprite;
 	private ScoreManager scoreManager;
 	private StateManager stateManager;
 	public static CameraManager cameraManager;
@@ -57,6 +57,7 @@ public class Main extends ApplicationAdapter {
 		highScore = new Texture("highscore.png");
 		newTexture = new Texture("new.png");
 	     taptoReplay = new Texture("replay.png");
+		bg = new Texture("bg.png");
 
 
 		batch = new SpriteBatch();
@@ -70,6 +71,11 @@ public class Main extends ApplicationAdapter {
 		cameraManager.setCamSize();
 		camera.zoom = cameraManager.getCamZoom();
 		camera.update();
+
+		bgSprite = new Sprite(bg);
+		bgSprite.setX(cameraManager.getCamWidth()/2 - bgSprite.getRegionWidth()/2);
+		bgSprite.setY(cameraManager.getCamHeight()/2 - bgSprite.getHeight()/2);
+		bgSprite.scale(1.75f);
 
 		asteroid = new Asteroid(camera);
 		coin = new Coin(camera,asteroid);
@@ -110,6 +116,7 @@ public class Main extends ApplicationAdapter {
 	//	star.render();
 		batch.begin();
 		batch.setProjectionMatrix(camera.combined);
+		bgSprite.draw(batch);
 		bird.getSprite().draw(batch);
 		//batch.draw(bird.getTextureRegion(),bird.getX(),bird.getY());
 		if (!coin.getCollision()) {
@@ -156,7 +163,7 @@ public class Main extends ApplicationAdapter {
 			}
 
 		}
-		if (sun.getDisplayWarning())
+		if (sun.getDisplayWarning() && gameState ==1)
 		{
 			sun.getWarningMessageSprite().draw(batch);
 		}
@@ -211,6 +218,7 @@ public class Main extends ApplicationAdapter {
 		{
 			birdDead = true;
 			gameState = 2; //dead state
+			soundManager.playSoundEffect(2);
 		}
 
 		if (Intersector.overlaps(bird.getRectangle(), sun.getRectangle()))
