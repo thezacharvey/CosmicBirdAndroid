@@ -59,6 +59,7 @@ public class Main extends ApplicationAdapter {
 
 	@Override
 	public void create () {
+		handler.showAds(false);
 		score = 0;
 		soundManager = new SoundManager();
 		gameState = 0;		//Menu
@@ -103,7 +104,7 @@ public class Main extends ApplicationAdapter {
 
 		gameSprite = new Sprite(gameOver);
 		gameSprite.setScale(0.5f,0.5f);
-		gameSprite.setY(cameraManager.getCamHeight()-gameSprite.getRegionHeight()*2);
+		gameSprite.setY(cameraManager.getCamHeight()-gameSprite.getRegionHeight()*2.25f);
 		gameSprite.setX(cameraManager.getCamWidth()/2 - gameSprite.getWidth()/2);
 
 		highScoreSprite = new Sprite(highScore);
@@ -129,11 +130,6 @@ public class Main extends ApplicationAdapter {
 	@Override
 	public void render () {
 
-		if (Gdx.input.justTouched())
-		{
-			handler.showAds(testAd);
-			testAd =!testAd;
-		}
 
 		update(Gdx.graphics.getDeltaTime());
 		camera.update();
@@ -161,6 +157,7 @@ public class Main extends ApplicationAdapter {
 		else if (gameState==1)
 		{
 			scoreFont.draw(batch,String.valueOf(score), scoreTexture.getWidth()*1.15f,camera.viewportHeight );
+			handler.showAds(false);
 			//batch.draw(scoreTexture,0 ,cameraManager.getCamHeight()- scoreTexture.getHeight());
 
 			if (hasScored)
@@ -174,7 +171,7 @@ public class Main extends ApplicationAdapter {
 		}else
 		{
 			//	batch.draw(gameOver,cameraManager.getCamWidth()/2 - gameOver.getWidth()/2,cameraManager.getCamHeight()/2 - gameOver.getHeight()/2);
-			if (gameSprite.getScaleX() < 2.25f)
+			if (gameSprite.getScaleX() < 2.f)
 			{
 				gameSprite.scale(.125f);
 			}
@@ -186,6 +183,7 @@ public class Main extends ApplicationAdapter {
 			{
 				tapToReplaySprite.scale(.125f);
 			}
+			handler.showAds(true);
 			gameSprite.draw(batch);
 			highScoreSprite.draw(batch);
 			tapToReplaySprite.draw(batch);

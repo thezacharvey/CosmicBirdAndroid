@@ -55,13 +55,14 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 			public void onAdLoaded() {
 				Log.i(TAG,"Ad Loaded");
 			}
+
 		});
 		adView.setAdSize(AdSize.SMART_BANNER);
 		adView.setAdUnitId("ca-app-pub-3124498822044367/9386700138");
 
 
 		AdRequest.Builder  builder = new AdRequest.Builder();
-		builder.addTestDevice("4F044916B96A18DA80C3AB3F8A86B4FB");
+		//builder.addTestDevice("4F044916B96A18DA80C3AB3F8A86B4FB");
 		RelativeLayout.LayoutParams adParams = new RelativeLayout.LayoutParams
 				(
 					RelativeLayout.LayoutParams.WRAP_CONTENT,

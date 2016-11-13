@@ -92,7 +92,7 @@ public class Coin {
             if (prevY==coinY) coinY+=coinH;
         }
 
-        return coinY;
+        return coinY ;
     }
 
     public void dispose() {
