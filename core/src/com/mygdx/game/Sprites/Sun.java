@@ -54,7 +54,7 @@ public class Sun {
 
 
 
-        if (Main.score > 45 && Main.score  < 350&& Main.score!= 0)
+        if (Main.score > 35 && Main.score  < 350&& Main.score!= 0)
         {
             animation.update(dt);
             sunSprite.setRegion(animation.getFrame());

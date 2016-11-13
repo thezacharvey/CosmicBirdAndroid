@@ -77,7 +77,7 @@ public class Coin extends Main {
     private int starY(float prev)
     {
         int prevY =(int) prev;
-        int coinY  = random.nextInt((int)cameraHeight  - texture.getHeight());
+        int coinY  = random.nextInt((int)cameraHeight  - scoreTexture.getHeight());
         if (prevY==coinY) {coinY += starHeight;}
         int camH = (int)cameraHeight;
         int coinH = (int)starHeight;

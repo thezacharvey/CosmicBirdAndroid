@@ -19,7 +19,7 @@ public class ScoreManager {
     private int score;
     private int highScore;
     private Asteroid asteroid;
-   private boolean newHighScore;
+    private boolean newHighScore;
 
     private Preferences preferences;
     public ScoreManager(int score, Coin coin,Asteroid asteroid)
@@ -55,7 +55,7 @@ public class ScoreManager {
             preferences.flush();
         }
 
-       switch (score % 3)
+       switch (score % 6)
        {
            case 0:
                 coin.setVelocity(2);

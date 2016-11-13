@@ -26,17 +26,20 @@ public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
 
 	private Animation animation,newAnimation;
- public static Texture texture,gameOver,highScore, newTexture,taptoReplay,bg;
+ public static Texture scoreTexture,gameOver,highScore, newTexture,taptoReplay,bg,score2Texture;
 	private Texture tapToPlay;
 	public static boolean birdDead;
 	private OrthographicCamera camera;
 	private Coin coin;
 	private ShapeRenderer shapeRenderer;
 	private BitmapFont scoreFont;
+	public static boolean hasPlayed;
 	public static int score;
 	private Bird bird;
+	private boolean hasScored;
 	private Sun sun;
 	public static  Sprite gameSprite,highScoreSprite,newSprite,tapToReplaySprite,bgSprite;
+	private Sprite scoreSprite;
 	private ScoreManager scoreManager;
 	private StateManager stateManager;
 	public static CameraManager cameraManager;
@@ -49,6 +52,7 @@ public class Main extends ApplicationAdapter {
 		score = 0;
 		soundManager = new SoundManager();
 		gameState = 0;		//Menu
+		hasPlayed = false;
 		birdDead =true;
 		scoreFont= new BitmapFont();
 		scoreFont.setColor(Color.WHITE);
@@ -58,11 +62,12 @@ public class Main extends ApplicationAdapter {
 		newTexture = new Texture("new.png");
 	     taptoReplay = new Texture("replay.png");
 		bg = new Texture("bg.png");
-
+		hasScored = false;
 
 		batch = new SpriteBatch();
-		texture = new Texture("score.png");
-		animation = new Animation(new TextureRegion(texture),3,0.25f);  //passes texture , frame count, speed
+		scoreTexture = new Texture("score.png");
+		score2Texture = new Texture("score2.png");
+		animation = new Animation(new TextureRegion(scoreTexture),3,0.25f);  //passes scoreTexture , frame count, speed
 			shapeRenderer = new ShapeRenderer();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,Gdx.graphics.getWidth()/20,Gdx.graphics.getHeight()/20);
@@ -105,6 +110,10 @@ public class Main extends ApplicationAdapter {
 		tapToReplaySprite = new Sprite(taptoReplay);
 		tapToReplaySprite.setX(cameraManager.getCamWidth()/2 - taptoReplay.getWidth()/2);
 		tapToReplaySprite.setY(tapToPlay.getHeight()/2.35f);
+
+		scoreSprite = new Sprite(scoreTexture);
+		scoreSprite.setX(0);
+		scoreSprite.setY(cameraManager.getCamHeight()- scoreSprite.getHeight());
 	}
 
 	@Override
@@ -134,8 +143,17 @@ public class Main extends ApplicationAdapter {
 		}
 		else if (gameState==1)
 		{
-			scoreFont.draw(batch,String.valueOf(score),texture.getWidth()*1.15f,camera.viewportHeight );
-			batch.draw(texture,0 ,cameraManager.getCamHeight()-texture.getHeight());
+			scoreFont.draw(batch,String.valueOf(score), scoreTexture.getWidth()*1.15f,camera.viewportHeight );
+			//batch.draw(scoreTexture,0 ,cameraManager.getCamHeight()- scoreTexture.getHeight());
+
+			if (hasScored)
+			{
+				scoreSprite.setTexture(score2Texture);
+			}else
+			{
+				scoreSprite.setTexture(scoreTexture);
+			}
+			scoreSprite.draw(batch);
 		}else
 		{
 			//	batch.draw(gameOver,cameraManager.getCamWidth()/2 - gameOver.getWidth()/2,cameraManager.getCamHeight()/2 - gameOver.getHeight()/2);
@@ -200,6 +218,7 @@ public class Main extends ApplicationAdapter {
 		if (Intersector.overlaps(coin.getCircle(),bird.getRectangle()) && !coin.getCollision())
 		{
 			score++;
+			hasScored = !hasScored;
 			scoreManager.update(score);
 			coin.setCollision(true);
 			if (!birdDead)soundManager.playSoundEffect(1); //plays coin sound effect**
@@ -208,6 +227,7 @@ public class Main extends ApplicationAdapter {
 		if (Intersector.overlaps(scoreMultiplier.getCircle(),bird.getRectangle()) && !scoreMultiplier.getCollision() )
 		{
 			score*=2;
+			hasScored = !hasScored;
 			scoreManager.update(score);
 			scoreMultiplier.setCollision(true);
 
@@ -225,6 +245,11 @@ public class Main extends ApplicationAdapter {
 		{
 			birdDead = true;
 			gameState = 2;
+			if (!hasPlayed){
+				soundManager.playSoundEffect(2);
+				hasPlayed = true;
+			}
+
 		}
 		stateManager.handleState(gameState);
 
@@ -233,7 +258,7 @@ public class Main extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		texture.dispose();
+		scoreTexture.dispose();
 		bird.dispose();
 		asteroid.dispose();
 		coin.dispose();
@@ -242,5 +267,6 @@ public class Main extends ApplicationAdapter {
 		tapToPlay.dispose();
 		taptoReplay.dispose();
 		sun.dispose();
+		soundManager.dispose();
 	}
 }

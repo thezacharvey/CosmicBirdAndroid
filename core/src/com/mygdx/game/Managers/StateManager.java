@@ -35,7 +35,7 @@ public class StateManager {
             this.coin = coin;
             this.asteroid = asteroid;
 
-       // texture = new Texture("");
+       // scoreTexture = new Texture("");
     }
 
     public void handleState(int gamestate)
@@ -90,6 +90,7 @@ public class StateManager {
         sun.getSunSprite().setY(-55f);
         sun.getRectangle().setY(sun.getSunSprite().getY() - sun.getSunSprite().getHeight()/2);
         sun.setHasVibrated(false);
+        Main.hasPlayed = false;
     }
 
 

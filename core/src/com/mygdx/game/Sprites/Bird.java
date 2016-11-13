@@ -61,7 +61,7 @@ public class Bird extends Main {
         {
             animation.update(dt);
             sprite.setRegion(getTextureRegion());
-            if(Gdx.input.justTouched() && birdY < camH - texture.getHeight())
+            if(Gdx.input.justTouched() && birdY < camH - scoreTexture.getHeight())
             {
                 velocity = -camH/19f;
                 sprite.setRotation(cameraManager.getCamHeight()/4f + dt);

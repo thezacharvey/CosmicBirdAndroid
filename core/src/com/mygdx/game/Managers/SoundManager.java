@@ -35,4 +35,11 @@ public class SoundManager {
         }
 
     }
+
+    public void dispose()
+    {
+        birdSound.dispose();
+        coinSound.dispose();
+        deathsound.dispose();
+    }
 }
