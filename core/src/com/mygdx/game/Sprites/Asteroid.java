@@ -13,7 +13,7 @@ import java.util.Random;
  * Created by z_ig_ on 11/9/2016.
  */
 
-public class Asteroid extends Main {
+public class Asteroid {
 
     private Texture asteroid,asteroid2;
     private Circle circle;
@@ -48,7 +48,7 @@ public class Asteroid extends Main {
 
     }
 
-    @Override
+
     public void update(float dt) {
 
 
@@ -86,7 +86,7 @@ public class Asteroid extends Main {
         return aY;
     }
 
-    @Override
+
     public void dispose() {
         asteroid.dispose();
 

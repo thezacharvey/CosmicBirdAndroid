@@ -15,7 +15,7 @@ import com.mygdx.game.Managers.SoundManager;
  * Created by z_ig_ on 11/8/2016.
  */
 
-public class Bird extends Main {
+public class Bird {
 
     private float birdX;
     private float birdWidth;
@@ -55,16 +55,16 @@ public class Bird extends Main {
 
     }
 
-    @Override
+
     public void update(float dt) {
-        if (!birdDead)
+        if (!Main.birdDead)
         {
             animation.update(dt);
             sprite.setRegion(getTextureRegion());
-            if(Gdx.input.justTouched() && birdY < camH - scoreTexture.getHeight())
+            if(Gdx.input.justTouched() && birdY < camH - Main.scoreTexture.getHeight())
             {
                 velocity = -camH/19f;
-                sprite.setRotation(cameraManager.getCamHeight()/4f + dt);
+                sprite.setRotation(Main.cameraManager.getCamHeight()/4f + dt);
                // mousePos.set(Gdx.input.getX(),Gdx.input.getY());
                // Gdx.app.log("Cheese", String.valueOf(mousePos.x / cameraManager.getCamWidth()));   // possible screen side testing
             }
@@ -79,21 +79,21 @@ public class Bird extends Main {
 
 }      public void applyGravity(float dt)
     {
-        if (birdY >= -birdHeight/2 || velocity < 0 &&  gameState==1)
+        if (birdY >= -birdHeight/2 || velocity < 0 &&  Main.gameState==1)
         {
             velocity = velocity +gravity;
             birdY -= velocity;
             sprite.setY(getY() +dt);
          //   if (gameSprite.getRotation())
             if (sprite.getRotation() >= -91f)
-            sprite.rotate(-cameraManager.getCamHeight()/50f);
+            sprite.rotate(-Main.cameraManager.getCamHeight()/50f);
 
         }
 
 
     }
 
-    @Override
+
     public void dispose() {
         birdTexture.dispose();
     }

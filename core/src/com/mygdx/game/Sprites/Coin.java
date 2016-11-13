@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.AdHandler;
 import com.mygdx.game.Animation;
 import com.mygdx.game.Main;
 
@@ -14,7 +15,7 @@ import java.util.Random;
  * Created by z_ig_ on 11/8/2016.
  */
 
-public class Coin extends Main {
+public class Coin {
 
     private Texture star;
     private Vector2 originXY;
@@ -33,7 +34,8 @@ public class Coin extends Main {
     private boolean collided;
    // private Sprite gameSprite;
 
-    public Coin(OrthographicCamera camera,Asteroid asteroid) {
+    public Coin(OrthographicCamera camera, Asteroid asteroid) {
+
         this.asteroid = asteroid;
         collided =false;
         random =new Random();
@@ -58,8 +60,8 @@ public class Coin extends Main {
 
 
 
-    @Override
-    public void update(float dt) {
+
+      public void update(float dt) {
      animation.update(dt);
             if (coinX <= -starWidth)
             {
@@ -77,7 +79,7 @@ public class Coin extends Main {
     private int starY(float prev)
     {
         int prevY =(int) prev;
-        int coinY  = random.nextInt((int)cameraHeight  - scoreTexture.getHeight());
+        int coinY  = random.nextInt((int)cameraHeight  - Main.scoreTexture.getHeight());
         if (prevY==coinY) {coinY += starHeight;}
         int camH = (int)cameraHeight;
         int coinH = (int)starHeight;
@@ -93,7 +95,6 @@ public class Coin extends Main {
         return coinY;
     }
 
-    @Override
     public void dispose() {
         star.dispose();
     }

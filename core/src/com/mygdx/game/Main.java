@@ -47,6 +47,16 @@ public class Main extends ApplicationAdapter {
 	private Asteroid asteroid;
 	private ScoreMultiplier scoreMultiplier;
 	private SoundManager soundManager;
+	AdHandler handler;
+	boolean testAd;
+
+	public Main(AdHandler handler)
+	{
+		this.handler = handler;
+	}
+
+
+
 	@Override
 	public void create () {
 		score = 0;
@@ -118,6 +128,13 @@ public class Main extends ApplicationAdapter {
 
 	@Override
 	public void render () {
+
+		if (Gdx.input.justTouched())
+		{
+			handler.showAds(testAd);
+			testAd =!testAd;
+		}
+
 		update(Gdx.graphics.getDeltaTime());
 		camera.update();
 			Gdx.gl.glClearColor(0, 0, 0, 0);

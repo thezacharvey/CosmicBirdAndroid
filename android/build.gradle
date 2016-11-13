@@ -18,8 +18,8 @@ android {
         exclude 'META-INF/robovm/ios/robovm.xml'
     }
     defaultConfig {
-        applicationId "com.mygdx.game"
-        minSdkVersion 8
+        applicationId "com.harveytech.cosmicbird"
+        minSdkVersion 9
         targetSdkVersion 23
     }
 }
