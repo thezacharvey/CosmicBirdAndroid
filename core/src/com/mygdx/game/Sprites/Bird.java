@@ -65,9 +65,12 @@ public class Bird extends Main {
             {
                 velocity = -camH/19f;
                 sprite.setRotation(cameraManager.getCamHeight()/4f + dt);
-                soundManager.playSoundEffect(0);
                // mousePos.set(Gdx.input.getX(),Gdx.input.getY());
                // Gdx.app.log("Cheese", String.valueOf(mousePos.x / cameraManager.getCamWidth()));   // possible screen side testing
+            }
+            if (Gdx.input.justTouched())
+            {
+                soundManager.playSoundEffect(0);
             }
             rectangle.set(getX(),getY(),getWidth(),getHeight());
 

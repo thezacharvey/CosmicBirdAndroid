@@ -21,7 +21,7 @@ public class SoundManager {
         switch (type)
         {
             case 0:
-                birdSound.play(0.1f);       //plays bird sound effect
+                birdSound.play(0.15f);       //plays bird sound effect
                 break;
             case 1:
                  coinSound.play(0.15f);
