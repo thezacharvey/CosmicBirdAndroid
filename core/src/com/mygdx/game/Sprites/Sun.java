@@ -19,6 +19,7 @@ import com.mygdx.game.Managers.ScoreManager;
 public class Sun {
         private boolean hasVibrated;
     private Texture sunTexture,warningMessageTexture;
+    private boolean showSun;
     private Rectangle rectangle;
     private Sprite sunSprite,warningMessageSprite;
     private Animation animation;
@@ -31,6 +32,7 @@ public class Sun {
         this.cameraManager = cameraManager;
         this.scoreManager = scoreManager;
         displayWarning = false;
+        showSun =false;
         hasVibrated = false;
         sunTexture = new Texture(Gdx.files.internal("sprites/sun.png"));
         rectangle = new Rectangle();
@@ -53,8 +55,16 @@ public class Sun {
     public void update(float dt) {
 
 
+        if (Main.score % 8 ==0)
+        {
+            showSun = true;
+        }
+        if (Main.score % 12==0) {
+            showSun = false;
+        }
 
-        if (Main.score > 35 && Main.score  < 350&& Main.score!= 0)
+      //  if (Main.score > 35 && Main.score  < 350&& Main.score!= 0)
+        if (showSun)
         {
             animation.update(dt);
             sunSprite.setRegion(animation.getFrame());

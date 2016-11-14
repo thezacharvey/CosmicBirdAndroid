@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Animation;
 import com.mygdx.game.Main;
+import com.mygdx.game.Managers.CameraManager;
 import com.mygdx.game.Managers.SoundManager;
 
 /**
@@ -30,15 +31,14 @@ public class Bird {
     private float gravity;
     private Texture birdTexture;
     private Sprite sprite;
-    private Vector2 mousePos;
+    private CameraManager cameraManager;
    private SoundManager soundManager;
-    public Bird(OrthographicCamera camera, SoundManager soundManager){
+    public Bird(OrthographicCamera camera, SoundManager soundManager, CameraManager cameraManager){
         this.soundManager = soundManager;
-
-        mousePos = new Vector2();
+        this.cameraManager = cameraManager;
         velocity =0f;
         rectangle = new Rectangle();
-        camH = camera.viewportHeight;
+        camH =  cameraManager.getCamHeight();
         birdTexture = new Texture("bird.png");
         animation = new Animation(new TextureRegion(birdTexture),3,0.25f);
         birdWidth = animation.getFrame().getRegionWidth();
@@ -47,7 +47,8 @@ public class Bird {
         birdX = getWidth()/2;
         birdY = camH/2 - animation.getFrame().getRegionHeight()/2;
         originXY = new Vector2(birdX,birdY);
-        gravity = camH /250f;
+
+        gravity = camH /290f;
         sprite = new Sprite(getTextureRegion());
         sprite.setX(getX());
         sprite.setY(getY());
@@ -64,7 +65,7 @@ public class Bird {
             if(Gdx.input.justTouched() && birdY < camH - Main.scoreTexture.getHeight())
             {
                 velocity = -camH/19f;
-                sprite.setRotation(Main.cameraManager.getCamHeight()/4f + dt);
+                sprite.setRotation(cameraManager.getCamHeight()/3f + dt);
                // mousePos.set(Gdx.input.getX(),Gdx.input.getY());
                // Gdx.app.log("Cheese", String.valueOf(mousePos.x / cameraManager.getCamWidth()));   // possible screen side testing
             }

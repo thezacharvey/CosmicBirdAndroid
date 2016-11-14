@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -59,14 +60,17 @@ public class Main extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-		handler.showAds(false);
+		handler.showAds(true);
 		score = 0;
 		soundManager = new SoundManager();
 		gameState = 0;		//Menu
 		hasPlayed = false;
 		birdDead =true;
+
+
 		scoreFont= new BitmapFont();
 		scoreFont.setColor(Color.WHITE);
+
 		tapToPlay = new Texture("taptoplay.png");
 		gameOver= new Texture("gameover.png");
 		highScore = new Texture("highscore.png");
@@ -95,7 +99,7 @@ public class Main extends ApplicationAdapter {
 
 		asteroid = new Asteroid(camera);
 		coin = new Coin(camera,asteroid);
-		bird = new Bird(camera,soundManager);
+		bird = new Bird(camera,soundManager, cameraManager);
 		sun = new Sun(scoreManager,cameraManager);
 
 		scoreManager = new ScoreManager(score,coin,asteroid);
@@ -135,6 +139,11 @@ public class Main extends ApplicationAdapter {
 		camera.update();
 			Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		if (gameState==0||gameState==2)
+		{
+			handler.showAds(true);
+		}
 	//	star.render();
 		batch.begin();
 		batch.setProjectionMatrix(camera.combined);
@@ -145,6 +154,8 @@ public class Main extends ApplicationAdapter {
 			batch.draw(coin.getTextureRegion(), coin.getX(), coin.getY());
 
 		}
+
+
 		if (!scoreMultiplier.getCollision()) {
 			scoreMultiplier.getSprite().draw(batch);
 		}
@@ -183,7 +194,7 @@ public class Main extends ApplicationAdapter {
 			{
 				tapToReplaySprite.scale(.125f);
 			}
-			handler.showAds(true);
+
 			gameSprite.draw(batch);
 			highScoreSprite.draw(batch);
 			tapToReplaySprite.draw(batch);
@@ -222,6 +233,7 @@ public class Main extends ApplicationAdapter {
 		asteroid.update(dt);
 		bird.update(dt);
 		sun.update(dt);
+		Gdx.app.log("FPS",String.valueOf(Gdx.graphics.getFramesPerSecond()));
 
 		if (scoreManager.gotNewHighScore())
 		{

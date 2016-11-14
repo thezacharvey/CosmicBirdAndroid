@@ -109,15 +109,12 @@ public class Asteroid {
                 velocity =  cameraWidth *1.15f;
                 break;
             case 1:
-                if(sprite.getX() < -sprite.getRegionWidth())
-                {
+
                     sprite.setTexture(asteroid2);
                     sprite.setScale(1.5f,1.5f);
                     velocity =  cameraWidth *1.55f;
-                }
                 break;
-            case 2:
-                break;
+
         }
     }
 }

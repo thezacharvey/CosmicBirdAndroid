@@ -11,7 +11,7 @@ public class CameraManager {
 
     private float camWidth, camHeight;
     private float camZoom;
-    private float screenHeight,screenWidth;
+    static float screenHeight,screenWidth;
     private OrthographicCamera camera;
     public CameraManager(OrthographicCamera camera)
     {

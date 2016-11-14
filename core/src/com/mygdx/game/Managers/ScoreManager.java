@@ -17,6 +17,7 @@ import com.mygdx.game.Sprites.ScoreMultiplier;
 public class ScoreManager {
     private Coin coin;
     private int score;
+    private boolean increaseSpeed;
     private int highScore;
     private Asteroid asteroid;
     private boolean newHighScore;
@@ -27,6 +28,7 @@ public class ScoreManager {
         this.coin = coin;
         this.score = score;
             newHighScore = false;
+        increaseSpeed = false;
             this.asteroid = asteroid;
             asteroid.setAsteroidTexture(0);
             preferences = Gdx.app.getPreferences("My Preferences");
@@ -41,41 +43,43 @@ public class ScoreManager {
     public void update(int s) {
         score = s;
 
-        if (highScore< score)
+        if (score % 6 ==0)
         {
+            increaseSpeed = true;
+        }
+        if (score% 9 ==0)
+        {
+            increaseSpeed = false;
+        }
+
+        if (highScore < score) {
             newHighScore = true;
         }
-        if (score>30)
-        {
+        if (s > 30) {
             asteroid.setAsteroidTexture(1);
         }
-        if (highScore < score && Main.gameState ==1) {
+        if (highScore < score && Main.gameState == 1) {
             highScore = score;
             preferences.putInteger("highScore", highScore);
             preferences.flush();
         }
 
-       switch (score % 6)
-       {
-           case 0:
-                coin.setVelocity(2);
-               break;
-           case 1:
-               coin.setVelocity(.95f);
-               break;
+        if (increaseSpeed) {
+            coin.setVelocity(1.65f);
+        }
+        if (!increaseSpeed)
+        {
+            coin.setVelocity(.95f);
+        }
 
-           default:
-               break;
-       }
+
+
 
     }
 
-    public int getScore(){return  score;}
     public boolean gotNewHighScore(){return newHighScore;}
     public void setNewHighScore(boolean hs){newHighScore = hs;}
-    public int getHighScore(){return highScore;}
     public Preferences getPreferences() {
         return preferences;
     }
-    //public Sprite getSprite(return gameSprite;);
 }
