@@ -21,6 +21,7 @@ import com.mygdx.game.Managers.StateManager;
 import com.mygdx.game.Sprites.Asteroid;
 import com.mygdx.game.Sprites.Bird;
 import com.mygdx.game.Sprites.Coin;
+import com.mygdx.game.Sprites.Heart;
 import com.mygdx.game.Sprites.ScoreMultiplier;
 import com.mygdx.game.Sprites.Sun;
 
@@ -46,6 +47,7 @@ public class Main extends ApplicationAdapter {
 	private StateManager stateManager;
 	public static CameraManager cameraManager;
 	public static int gameState;
+																//private Heart heart;
 	private Asteroid asteroid;
 	private ScoreMultiplier scoreMultiplier;
 	private SoundManager soundManager;
@@ -77,6 +79,7 @@ public class Main extends ApplicationAdapter {
 		highScore = new Texture("highscore.png");
 		newTexture = new Texture("new.png");
 	     taptoReplay = new Texture("replay.png");
+
 		//bg = new Texture(Gdx.files.internal("backgrounds/bg2.png"));
 		hasScored = false;
 
@@ -125,13 +128,17 @@ public class Main extends ApplicationAdapter {
 		backgroundManager = new BackgroundManager();
 
 		bgSprite = new Sprite(backgroundManager.getBackground());
-		bgSprite.setX(cameraManager.getCamWidth()/2 - bgSprite.getRegionWidth()/2);
+		bgSprite.setX(cameraManager.getCamWidth()/2 - bgSprite.getRegionWidth()/3.85f);
 		bgSprite.setY(cameraManager.getCamHeight()/2 - bgSprite.getHeight()/2);
 		bgSprite.scale(1.75f);
 
 		scoreManager = new ScoreManager(score,coin,asteroid);
 		stateManager = new StateManager(bird,asteroid,coin,cameraManager,scoreManager,sun,backgroundManager);   //BACS
 		scoreMultiplier = new ScoreMultiplier(cameraManager);
+		//heart = new Heart(cameraManager);
+		// Implement later
+		// please
+
 
 	}
 
@@ -153,11 +160,13 @@ public class Main extends ApplicationAdapter {
 		batch.setProjectionMatrix(camera.combined);
 		bgSprite.draw(batch);
 		bird.getSprite().draw(batch);
+																									//heart.getSprite().draw(batch);
 		//batch.draw(bird.getTextureRegion(),bird.getX(),bird.getY());
 		if (!coin.getCollision()) {
 			batch.draw(coin.getTextureRegion(), coin.getX(), coin.getY());
 
 		}
+
 
 
 		if (!scoreMultiplier.getCollision()) {
@@ -237,6 +246,7 @@ public class Main extends ApplicationAdapter {
 		asteroid.update(dt);
 		bird.update(dt);
 		sun.update(dt);
+																				//heart.update(dt);
 		Gdx.app.log("FPS",String.valueOf(Gdx.graphics.getFramesPerSecond()));
 
 		if (scoreManager.gotNewHighScore())
@@ -299,5 +309,6 @@ public class Main extends ApplicationAdapter {
 		taptoReplay.dispose();
 		sun.dispose();
 		soundManager.dispose();
+												//heart.dispose();
 	}
 }

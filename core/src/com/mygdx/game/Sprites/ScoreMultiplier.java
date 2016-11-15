@@ -24,7 +24,7 @@ public class ScoreMultiplier {
     private float x;
     private float velocity;
     private Circle circle;
-    private Texture texture;
+    private Texture texture[];
     private Sprite sprite;
      private Random random;
     private CameraManager cameraManager;
@@ -32,21 +32,30 @@ public class ScoreMultiplier {
     private float y;
     private float spriteWidth;
     private Animation animation;
+    private boolean changeMulitplier;
     private boolean canSpawn;
+
 
     public ScoreMultiplier(CameraManager cameraManager)
     {
+        changeMulitplier = false;
         this.cameraManager = cameraManager;
+
         canSpawn = false;
         circle = new Circle();
         beenHit = false;
         random = new Random();
         velocity = cameraManager.getCamWidth() *0.45f;
-        texture = new Texture("two.png");
-        animation = new Animation(new TextureRegion(texture),2,0.35f);
+
+        texture = new Texture[2];
+
+        texture[0]=  new Texture(Gdx.files.internal("two.png"));
+        texture[1]=  new Texture(Gdx.files.internal("four.png"));
+
+        animation = new Animation(new TextureRegion(texture[0]),2,0.35f);
 
         sprite = new Sprite(animation.getFrame());
-        spriteWidth = texture.getWidth();
+        spriteWidth = texture[0].getWidth();
 
         y= randomizedY(0);
         x= cameraManager.getCamWidth() + sprite.getRegionWidth();
@@ -74,7 +83,10 @@ public class ScoreMultiplier {
 
     public void update(float dt)
     {
+
+
         animation.update(dt);
+
         switch (Main.score % 5)
         {
             case 0:
