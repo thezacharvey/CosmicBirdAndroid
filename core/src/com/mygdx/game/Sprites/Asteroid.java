@@ -89,7 +89,7 @@ public class Asteroid {
 
     public void dispose() {
         asteroid.dispose();
-
+        asteroid2.dispose();
     }
     public void setX(float x){ asteroidX = x;}
     public float getX(){return asteroidX;}
@@ -106,13 +106,13 @@ public class Asteroid {
             case 0:
                 sprite.setTexture(asteroid);
                 sprite.setScale(1f,1f);
-                velocity =  cameraWidth *1.15f;
+                velocity =  cameraWidth *1.1f;
                 break;
             case 1:
 
                     sprite.setTexture(asteroid2);
-                    sprite.setScale(1.5f,1.5f);
-                    velocity =  cameraWidth *1.55f;
+                    sprite.setScale(1.45f,1.45f);
+                    velocity =  cameraWidth *1.35f;
                 break;
 
         }

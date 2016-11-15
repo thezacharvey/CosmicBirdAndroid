@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
+import com.mygdx.game.Managers.BackgroundManager;
 import com.mygdx.game.Managers.CameraManager;
 import com.mygdx.game.Managers.ScoreManager;
 import com.mygdx.game.Managers.SoundManager;
@@ -27,7 +28,7 @@ public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
 
 	private Animation animation,newAnimation;
- public static Texture scoreTexture,gameOver,highScore, newTexture,taptoReplay,bg,score2Texture;
+ public static Texture scoreTexture,gameOver,highScore, newTexture,taptoReplay,score2Texture;
 	private Texture tapToPlay;
 	public static boolean birdDead;
 	private OrthographicCamera camera;
@@ -49,7 +50,7 @@ public class Main extends ApplicationAdapter {
 	private ScoreMultiplier scoreMultiplier;
 	private SoundManager soundManager;
 	AdHandler handler;
-	boolean testAd;
+	private BackgroundManager backgroundManager;
 
 	public Main(AdHandler handler)
 	{
@@ -76,7 +77,7 @@ public class Main extends ApplicationAdapter {
 		highScore = new Texture("highscore.png");
 		newTexture = new Texture("new.png");
 	     taptoReplay = new Texture("replay.png");
-		bg = new Texture("bg.png");
+		//bg = new Texture(Gdx.files.internal("backgrounds/bg2.png"));
 		hasScored = false;
 
 		batch = new SpriteBatch();
@@ -92,23 +93,14 @@ public class Main extends ApplicationAdapter {
 		camera.zoom = cameraManager.getCamZoom();
 		camera.update();
 
-		bgSprite = new Sprite(bg);
-		bgSprite.setX(cameraManager.getCamWidth()/2 - bgSprite.getRegionWidth()/2);
-		bgSprite.setY(cameraManager.getCamHeight()/2 - bgSprite.getHeight()/2);
-		bgSprite.scale(1.75f);
-
 		asteroid = new Asteroid(camera);
 		coin = new Coin(camera,asteroid);
 		bird = new Bird(camera,soundManager, cameraManager);
 		sun = new Sun(scoreManager,cameraManager);
 
-		scoreManager = new ScoreManager(score,coin,asteroid);
-		stateManager = new StateManager(bird,asteroid,coin,cameraManager,scoreManager,sun);   //BACS
-		scoreMultiplier = new ScoreMultiplier(cameraManager);
-
 		gameSprite = new Sprite(gameOver);
 		gameSprite.setScale(0.5f,0.5f);
-		gameSprite.setY(cameraManager.getCamHeight()-gameSprite.getRegionHeight()*2.25f);
+		gameSprite.setY(cameraManager.getCamHeight()-gameSprite.getRegionHeight()*2.35f);
 		gameSprite.setX(cameraManager.getCamWidth()/2 - gameSprite.getWidth()/2);
 
 		highScoreSprite = new Sprite(highScore);
@@ -129,6 +121,18 @@ public class Main extends ApplicationAdapter {
 		scoreSprite = new Sprite(scoreTexture);
 		scoreSprite.setX(0);
 		scoreSprite.setY(cameraManager.getCamHeight()- scoreSprite.getHeight());
+
+		backgroundManager = new BackgroundManager();
+
+		bgSprite = new Sprite(backgroundManager.getBackground());
+		bgSprite.setX(cameraManager.getCamWidth()/2 - bgSprite.getRegionWidth()/2);
+		bgSprite.setY(cameraManager.getCamHeight()/2 - bgSprite.getHeight()/2);
+		bgSprite.scale(1.75f);
+
+		scoreManager = new ScoreManager(score,coin,asteroid);
+		stateManager = new StateManager(bird,asteroid,coin,cameraManager,scoreManager,sun,backgroundManager);   //BACS
+		scoreMultiplier = new ScoreMultiplier(cameraManager);
+
 	}
 
 	@Override

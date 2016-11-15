@@ -51,7 +51,7 @@ public class CameraManager {
                 camera.setToOrtho(false,screenWidth/6,screenHeight/6);
                 break;
             case 480:
-                camera.setToOrtho(false,screenWidth/4,screenHeight/4);
+                camera.setToOrtho(false,screenWidth/3.78f,screenHeight/3.78f);
                 break;
             case 320:
                 camera.setToOrtho(false,screenWidth/3,screenHeight/3);

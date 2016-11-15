@@ -55,9 +55,10 @@ public class ScoreManager {
         if (highScore < score) {
             newHighScore = true;
         }
-        if (s > 30) {
+        if (s >=80 ) {
             asteroid.setAsteroidTexture(1);
         }
+
         if (highScore < score && Main.gameState == 1) {
             highScore = score;
             preferences.putInteger("highScore", highScore);
@@ -76,6 +77,7 @@ public class ScoreManager {
 
 
     }
+
 
     public boolean gotNewHighScore(){return newHighScore;}
     public void setNewHighScore(boolean hs){newHighScore = hs;}

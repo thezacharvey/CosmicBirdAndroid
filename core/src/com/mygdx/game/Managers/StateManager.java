@@ -14,19 +14,18 @@ import com.mygdx.game.Sprites.Sun;
 
 public class StateManager {
 
-
-    private Texture texture;
-    private boolean gameStarted;
     private ScoreManager scoreManager;
     private Bird bird;
     private Asteroid asteroid;
     private Sun sun;
     private Coin coin;
        private int tapCount;
+    private BackgroundManager backgroundManager;
     private CameraManager cameraManager;
 
-    public StateManager(Bird bird, Asteroid asteroid, Coin coin, CameraManager cameraManager,ScoreManager scoreManager,Sun sun)
+    public StateManager(Bird bird, Asteroid asteroid, Coin coin, CameraManager cameraManager,ScoreManager scoreManager,Sun sun,BackgroundManager backgroundManager)
     {
+        this.backgroundManager = backgroundManager;
         this.sun = sun;
         this.scoreManager = scoreManager;
         tapCount=0;
@@ -91,6 +90,9 @@ public class StateManager {
         sun.getRectangle().setY(sun.getSunSprite().getY() - sun.getSunSprite().getHeight()/2);
         sun.setHasVibrated(false);
         Main.hasPlayed = false;
+       Main.bgSprite.setTexture(backgroundManager.getBackground());
+
+
     }
 
 

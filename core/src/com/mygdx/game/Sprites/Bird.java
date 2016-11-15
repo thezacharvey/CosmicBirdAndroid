@@ -64,7 +64,7 @@ public class Bird {
             sprite.setRegion(getTextureRegion());
             if(Gdx.input.justTouched() && birdY < camH - Main.scoreTexture.getHeight())
             {
-                velocity = -camH/19f;
+                velocity = -cameraManager.getCamHeight() / 19.85f;
                 sprite.setRotation(cameraManager.getCamHeight()/3f + dt);
                // mousePos.set(Gdx.input.getX(),Gdx.input.getY());
                // Gdx.app.log("Cheese", String.valueOf(mousePos.x / cameraManager.getCamWidth()));   // possible screen side testing
