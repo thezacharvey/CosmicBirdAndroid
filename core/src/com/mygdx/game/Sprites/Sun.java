@@ -41,7 +41,7 @@ public class Sun {
         sunSprite.setX(this.cameraManager.getCamWidth() / 2 - sunSprite.getRegionWidth() / 2);
         sunSprite.setY(0);
         sunSprite.setScale(1.75f);
-        sunSprite.translateY(-55f); //goal negative 15
+        sunSprite.translateY(-75f); //goal negative 15
         rectangle.set(0,sunSprite.getY() - sunSprite.getHeight()/2,cameraManager.getCamWidth(),cameraManager.getCamHeight()/4);
 
         warningMessageTexture = new Texture(Gdx.files.internal("sprites/warningmessage.png"));
@@ -75,12 +75,12 @@ public class Sun {
             }
             if (sunSprite.getY() <- 25f)
             {
-                sunSprite.translateY(0.25f);
+                sunSprite.translateY(0.55f);
                 //displayWarning = false;
                 if(!hasVibrated)
                 {
                     Gdx.input.vibrate(new long[]{0,200,100,200},-1);
-                    hasVibrated = !hasVibrated;
+                    hasVibrated = true;
                 }
 
             }
@@ -90,8 +90,8 @@ public class Sun {
             }
 
         }else
-        { if (sunSprite.getY() > -55f || Main.gameState ==2)            //turns off warning message if dead or sun at certain possition
-            sunSprite.translateY(-0.75f);
+        { if (sunSprite.getY() > -75f || Main.gameState ==2)            //turns off warning message if dead or sun at certain possition
+            sunSprite.translateY(-0.95f);
             displayWarning = false;
         }
 
