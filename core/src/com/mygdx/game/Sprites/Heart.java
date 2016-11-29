@@ -49,17 +49,17 @@ public class Heart implements ISpriteInterface {
     }
 
     @Override
-    public float getX() {
+    public float getX(int i) {
         return sprite.getX();
     }
 
     @Override
-    public float getY() {
+    public float getY(int i) {
         return sprite.getY();
     }
 
     @Override
-    public Sprite getSprite() {
+    public Sprite getSprite(int i) {
         return sprite;
     }
 }

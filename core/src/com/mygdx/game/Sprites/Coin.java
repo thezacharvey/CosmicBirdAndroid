@@ -1,7 +1,9 @@
 package com.mygdx.game.Sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
@@ -32,6 +34,7 @@ public class Coin {
     private float newStarY;
     private Random random;
     private boolean collided;
+    private Sprite sprite;
    // private Sprite gameSprite;
 
     public Coin(OrthographicCamera camera, Asteroid asteroid) {
@@ -45,8 +48,8 @@ public class Coin {
         cameraWidth = camera.viewportWidth;
         cameraHeight = camera.viewportHeight;
 
-        star = new Texture("star.png");
-        animation = new Animation(new TextureRegion(star), 3, 0.35f);
+        star = new Texture(Gdx.files.internal("christmas/starchristmas.png"));
+        animation = new Animation(new TextureRegion(star), 3, 1f);
         starHeight = animation.getFrame().getRegionHeight();
         starWidth = animation.getFrame().getRegionWidth();
         coinX = cameraWidth + starWidth;
@@ -54,7 +57,13 @@ public class Coin {
         velocity = cameraWidth *.95f;
         circle = new Circle();
         originXY = new Vector2(coinX,newStarY);
-       // circle.set(starX,starY,starWidth/2);
+
+        sprite = new Sprite(animation.getFrame());
+        sprite.setY(newStarY);
+        sprite.setX(coinX);
+
+
+               // circle.set(starX,starY,starWidth/2);
 
     }
 
@@ -63,14 +72,18 @@ public class Coin {
 
       public void update(float dt) {
      animation.update(dt);
+          //sprite.setRegion(animation.getFrame());
             if (coinX <= -starWidth)
             {
                 newStarY = starY(newStarY);
                 coinX = cameraWidth+animation.getFrame().getRegionWidth();
                 collided =false;
+                sprite.setY(newStarY);
             }
             coinX-=velocity*dt;
-            circle.set(getX()+starWidth/2,getY()+getHeight()/2,getWidth()/2);
+          sprite.setX(coinX);
+            circle.set(getX()+sprite.getRegionWidth()/2,sprite.getY()+sprite.getRegionHeight()/2,sprite.getWidth()/2);
+
 
 
 
@@ -111,4 +124,5 @@ public class Coin {
     public Vector2 getOriginXY(){ return originXY;}
     public void setVelocity(float v){velocity =cameraWidth * v;}
     public float getVelocity(){return velocity;}
+    public Sprite getSprite(){return sprite;}
 }

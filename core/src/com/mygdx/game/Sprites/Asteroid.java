@@ -1,5 +1,6 @@
 package com.mygdx.game.Sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -31,8 +32,8 @@ public class Asteroid {
     public Asteroid(OrthographicCamera camera)
     {
         random = new Random();
-        asteroid2 = new Texture("asteroid2.png");
-        asteroid = new Texture("asteroid.png");
+        asteroid2 = new Texture(Gdx.files.internal("christmas/asteroid2christmas.png"));
+        asteroid = new Texture(Gdx.files.internal("christmas/asteroidsnow.png"));
         asteroidHeight = asteroid.getHeight();
         asteroidWidth = asteroid.getWidth();
         sprite = new Sprite(asteroid);

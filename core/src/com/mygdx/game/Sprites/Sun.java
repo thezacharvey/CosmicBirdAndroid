@@ -44,7 +44,7 @@ public class Sun {
         sunSprite.translateY(-75f); //goal negative 15
         rectangle.set(0,sunSprite.getY() - sunSprite.getHeight()/2,cameraManager.getCamWidth(),cameraManager.getCamHeight()/4);
 
-        warningMessageTexture = new Texture(Gdx.files.internal("sprites/warningmessage.png"));
+        warningMessageTexture = new Texture(Gdx.files.internal("sprites/warningmessagechristmas.png"));
         warningMessageSprite = new Sprite(warningMessageTexture);
         warningMessageSprite.setY(cameraManager.getCamHeight()/2);
         warningMessageSprite.setX(cameraManager.getCamWidth() /2 - warningMessageSprite.getRegionWidth()/2);

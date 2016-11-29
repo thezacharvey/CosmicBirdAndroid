@@ -9,9 +9,9 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 public interface ISpriteInterface {
 
-    public float getX();
-    public float getY();
+    public float getX(int i);
+    public float getY(int i);
     public void update(float dt);
     public void dispose();
-    public Sprite getSprite();
+    public Sprite getSprite(int i);
 }

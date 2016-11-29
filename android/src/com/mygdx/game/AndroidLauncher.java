@@ -37,6 +37,7 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 
 			}
 		}
+
 	};
 
 	@Override

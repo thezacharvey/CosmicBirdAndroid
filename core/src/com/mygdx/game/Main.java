@@ -1,7 +1,6 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -15,14 +14,15 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.mygdx.game.Managers.BackgroundManager;
 import com.mygdx.game.Managers.CameraManager;
+import com.mygdx.game.Managers.LanguageManager;
 import com.mygdx.game.Managers.ScoreManager;
 import com.mygdx.game.Managers.SoundManager;
 import com.mygdx.game.Managers.StateManager;
 import com.mygdx.game.Sprites.Asteroid;
 import com.mygdx.game.Sprites.Bird;
 import com.mygdx.game.Sprites.Coin;
-import com.mygdx.game.Sprites.Heart;
 import com.mygdx.game.Sprites.ScoreMultiplier;
+import com.mygdx.game.Sprites.Snow;
 import com.mygdx.game.Sprites.Sun;
 
 public class Main extends ApplicationAdapter {
@@ -41,18 +41,20 @@ public class Main extends ApplicationAdapter {
 	private Bird bird;
 	private boolean hasScored;
 	private Sun sun;
-	public static  Sprite gameSprite,highScoreSprite,newSprite,tapToReplaySprite,bgSprite;
+   public static Sprite gameSprite,highScoreSprite,newSprite,tapToReplaySprite,bgSprite;
 	private Sprite scoreSprite;
 	private ScoreManager scoreManager;
 	private StateManager stateManager;
 	public static CameraManager cameraManager;
 	public static int gameState;
-																//private Heart heart;
+	private Snow snow;//private Heart heart;
 	private Asteroid asteroid;
+	private boolean canDraw;
 	private ScoreMultiplier scoreMultiplier;
 	private SoundManager soundManager;
 	AdHandler handler;
 	private BackgroundManager backgroundManager;
+	private LanguageManager languageManager;
 
 	public Main(AdHandler handler)
 	{
@@ -64,12 +66,14 @@ public class Main extends ApplicationAdapter {
 	@Override
 	public void create () {
 		handler.showAds(true);
+
 		score = 0;
 		soundManager = new SoundManager();
 		gameState = 0;		//Menu
 		hasPlayed = false;
 		birdDead =true;
 
+		canDraw = true;
 
 		scoreFont= new BitmapFont();
 		scoreFont.setColor(Color.WHITE);
@@ -78,7 +82,7 @@ public class Main extends ApplicationAdapter {
 		gameOver= new Texture("gameover.png");
 		highScore = new Texture("highscore.png");
 		newTexture = new Texture("new.png");
-	     taptoReplay = new Texture("replay.png");
+	     taptoReplay = new Texture(Gdx.files.internal("christmas/replaychristmas.png"));
 
 		//bg = new Texture(Gdx.files.internal("backgrounds/bg2.png"));
 		hasScored = false;
@@ -135,6 +139,10 @@ public class Main extends ApplicationAdapter {
 		scoreManager = new ScoreManager(score,coin,asteroid);
 		stateManager = new StateManager(bird,asteroid,coin,cameraManager,scoreManager,sun,backgroundManager);   //BACS
 		scoreMultiplier = new ScoreMultiplier(cameraManager);
+
+		snow = new Snow(cameraManager);
+		languageManager = new LanguageManager(scoreSprite,gameSprite,highScoreSprite,tapToReplaySprite);
+
 		//heart = new Heart(cameraManager);
 		// Implement later
 		// please
@@ -160,14 +168,24 @@ public class Main extends ApplicationAdapter {
 		batch.setProjectionMatrix(camera.combined);
 		bgSprite.draw(batch);
 		bird.getSprite().draw(batch);
-																									//heart.getSprite().draw(batch);
+
+
+		//heart.getSprite().draw(batch);
 		//batch.draw(bird.getTextureRegion(),bird.getX(),bird.getY());
-		if (!coin.getCollision()) {
-			batch.draw(coin.getTextureRegion(), coin.getX(), coin.getY());
+		if (coin.getCollision()) {
+			if (coin.getSprite().getScaleX() >=0f)
+			{
+				coin.getSprite().scale(-0.35f);
+			}
+			if (coin.getSprite().getScaleX() <=0f)
+			{
+				coin.getSprite().setX(cameraManager.getCamWidth() + coin.getSprite().getWidth());
+			}
 
+		}else
+		{
+			coin.getSprite().setScale(1,1);
 		}
-
-
 
 		if (!scoreMultiplier.getCollision()) {
 			scoreMultiplier.getSprite().draw(batch);
@@ -186,10 +204,10 @@ public class Main extends ApplicationAdapter {
 
 			if (hasScored)
 			{
-				scoreSprite.setTexture(score2Texture);
+				scoreSprite.setTexture(languageManager.getScoreTexture(1));
 			}else
 			{
-				scoreSprite.setTexture(scoreTexture);
+				scoreSprite.setTexture(languageManager.getScoreTexture(0));
 			}
 			scoreSprite.draw(batch);
 		}else
@@ -210,6 +228,7 @@ public class Main extends ApplicationAdapter {
 
 			gameSprite.draw(batch);
 			highScoreSprite.draw(batch);
+			//tapToReplaySprite.setTexture(languageManager.getScoreTexture(0));
 			tapToReplaySprite.draw(batch);
 			if (scoreManager.gotNewHighScore())
 			{
@@ -224,7 +243,18 @@ public class Main extends ApplicationAdapter {
 		{
 			sun.getWarningMessageSprite().draw(batch);
 		}
+
+		for (Sprite sprite : snow.getSpriteArray())
+		{
+			sprite.draw(batch);
+		}
+
+
+			coin.getSprite().draw(batch);
+
 		sun.getSunSprite().draw(batch);
+
+
 		batch.end();
 
 
@@ -239,15 +269,18 @@ public class Main extends ApplicationAdapter {
 
 	public void update(float dt)
 	{
-
 		animation.update(Gdx.graphics.getDeltaTime());
 		coin.update(dt);
 		scoreMultiplier.update(dt);
 		asteroid.update(dt);
 		bird.update(dt);
 		sun.update(dt);
-																				//heart.update(dt);
-		Gdx.app.log("FPS",String.valueOf(Gdx.graphics.getFramesPerSecond()));
+		snow.update(dt);
+
+		Gdx.app.log("Language",java.util.Locale.getDefault().toString());
+
+		//heart.update(dt);
+		//Gdx.app.log("FPS",String.valueOf(Gdx.graphics.getFramesPerSecond()));
 
 		if (scoreManager.gotNewHighScore())
 		{
@@ -295,7 +328,14 @@ public class Main extends ApplicationAdapter {
 		stateManager.handleState(gameState);
 
 	}
-	
+
+	@Override
+	public void resume() {
+
+		languageManager.checkNewLang(java.util.Locale.getDefault().toString());
+		Gdx.app.log("Resumed","true");
+	}
+
 	@Override
 	public void dispose () {
 		batch.dispose();
@@ -309,6 +349,8 @@ public class Main extends ApplicationAdapter {
 		taptoReplay.dispose();
 		sun.dispose();
 		soundManager.dispose();
+		snow.dispose();
+
 												//heart.dispose();
 	}
 }
