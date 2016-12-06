@@ -40,8 +40,8 @@ public class ScoreManager {
         gameOverSprite.setX("")*/
     }
 
-    public void update(int s) {
-        score = s;
+    public void update() {
+        score = Main.score;
 
         if (score % 6 ==0)
         {
@@ -52,15 +52,13 @@ public class ScoreManager {
             increaseSpeed = false;
         }
 
-        if (highScore < score) {
-            newHighScore = true;
-        }
-        if (s >=80 ) {
+        if (score >=80 ) {
             asteroid.setAsteroidTexture(1);
         }
 
         if (highScore < score && Main.gameState == 1) {
             highScore = score;
+            newHighScore = true;
             preferences.putInteger("highScore", highScore);
             preferences.flush();
         }
@@ -78,7 +76,8 @@ public class ScoreManager {
 
     }
 
-
+    public int getHighScore(){return highScore;}
+    public int getScore(){return score;}
     public boolean gotNewHighScore(){return newHighScore;}
     public void setNewHighScore(boolean hs){newHighScore = hs;}
     public Preferences getPreferences() {

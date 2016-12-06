@@ -58,9 +58,11 @@ public class Sun {
         if (Main.score % 8 ==0)
         {
             showSun = true;
+            displayWarning  = true;
         }
         if (Main.score % 12==0) {
             showSun = false;
+            displayWarning = false;
         }
 
       //  if (Main.score > 35 && Main.score  < 350&& Main.score!= 0)
@@ -68,7 +70,6 @@ public class Sun {
         {
             animation.update(dt);
             sunSprite.setRegion(animation.getFrame());
-            displayWarning  = true;
             if (warningMessageSprite.getScaleX() < 1.25f)
             {
                 warningMessageSprite.scale(0.25f);
@@ -77,7 +78,7 @@ public class Sun {
             {
                 sunSprite.translateY(0.55f);
                 //displayWarning = false;
-                if(!hasVibrated)
+                if(!hasVibrated && Main.gameState ==1)
                 {
                     Gdx.input.vibrate(new long[]{0,200,100,200},-1);
                     hasVibrated = true;
@@ -90,9 +91,11 @@ public class Sun {
             }
 
         }else
-        { if (sunSprite.getY() > -75f || Main.gameState ==2)            //turns off warning message if dead or sun at certain possition
-            sunSprite.translateY(-0.95f);
-            displayWarning = false;
+        {
+            if (sunSprite.getY() > -75f || Main.gameState ==2)            //turns off warning message if dead or sun at certain possition
+            {
+                sunSprite.translateY(-0.95f);
+            }
         }
 
         rectangle.setY(sunSprite.getY() - sunSprite.getHeight()/2);
@@ -107,7 +110,6 @@ public class Sun {
     public Sprite getSunSprite() {
         return sunSprite;
     }
-
     public Rectangle getRectangle() {
         return rectangle;
     }

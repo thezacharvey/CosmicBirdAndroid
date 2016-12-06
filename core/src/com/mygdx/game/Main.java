@@ -30,7 +30,8 @@ public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
 
 	private Animation animation,newAnimation;
- public static Texture scoreTexture,gameOver,highScore, newTexture,taptoReplay,score2Texture;
+  private static Texture gameOver,highScore, newTexture,taptoReplay;
+	public static Texture scoreTexture,score2Texture;
 	private Texture tapToPlay;
 	public static boolean birdDead;
 	private OrthographicCamera camera;
@@ -40,7 +41,7 @@ public class Main extends ApplicationAdapter {
 	public static boolean hasPlayed;
 	public static int score;
 	private Bird bird;
-	private boolean hasScored;
+	private boolean hasScored; //changes Score Texture only
 	private Sun sun;
    public static Sprite gameSprite,highScoreSprite,newSprite,tapToReplaySprite,bgSprite;
 	private Sprite scoreSprite;
@@ -49,9 +50,8 @@ public class Main extends ApplicationAdapter {
 	public static CameraManager cameraManager;
 	public static int gameState;
 	private Snow snow;
-	private Heart heart;
+	//private Heart heart;
 	private Asteroid asteroid;
-	private boolean canDraw;
 	private ScoreMultiplier scoreMultiplier;
 	private SoundManager soundManager;
 	AdHandler handler;
@@ -71,11 +71,9 @@ public class Main extends ApplicationAdapter {
 
 		score = 0;
 		soundManager = new SoundManager();
-		gameState = 0;		//Menu
+		gameState = -1;		//Menu
 		hasPlayed = false;
 		birdDead =true;
-
-		canDraw = true;
 
 		scoreFont= new BitmapFont();
 		scoreFont.setColor(Color.WHITE);
@@ -99,7 +97,7 @@ public class Main extends ApplicationAdapter {
 
 		cameraManager = new CameraManager(camera);
 		cameraManager.setCamSize();
-		camera.zoom = cameraManager.getCamZoom();
+		camera.zoom = 125f;
 		camera.update();
 
 		asteroid = new Asteroid(camera);
@@ -155,107 +153,99 @@ public class Main extends ApplicationAdapter {
 	@Override
 	public void render () {
 
-
+		Gdx.gl.glClearColor(0, 0, 0, 0);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		update(Gdx.graphics.getDeltaTime());
 		camera.update();
-			Gdx.gl.glClearColor(0, 0, 0, 0);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 
 		if (gameState==0||gameState==2)
 		{
 			handler.showAds(true);
 		}
-	//	star.render();
+
+
 		batch.begin();
 		batch.setProjectionMatrix(camera.combined);
-		bgSprite.draw(batch);
-		bird.getSprite().draw(batch);
+
+		if (!stateManager.showSplashScreen()) {
 
 
-		//heart.getSprite().draw(batch);
-		//batch.draw(bird.getTextureRegion(),bird.getX(),bird.getY());
-		if (coin.getCollision()) {
-			if (coin.getSprite().getScaleX() >=0f)
-			{
-				coin.getSprite().scale(-0.35f);
+
+			bgSprite.draw(batch);
+			bird.getSprite().draw(batch);
+			//heart.getSprite().draw(batch);
+			//batch.draw(bird.getTextureRegion(),bird.getX(),bird.getY());
+			if (coin.getCollision()) {
+				if (coin.getSprite().getScaleX() >= 0f) {
+					coin.getSprite().scale(-0.35f);
+				}
+				if (coin.getSprite().getScaleX() <= 0f) {
+					coin.getSprite().setX(cameraManager.getCamWidth() + coin.getSprite().getWidth());
+				}
+
+			} else {
+				coin.getSprite().setScale(1, 1);
 			}
-			if (coin.getSprite().getScaleX() <=0f)
-			{
-				coin.getSprite().setX(cameraManager.getCamWidth() + coin.getSprite().getWidth());
+
+			if (!scoreMultiplier.getCollision()) {
+				scoreMultiplier.getSprite().draw(batch);
 			}
-
-		}else
-		{
-			coin.getSprite().setScale(1,1);
-		}
-
-		if (!scoreMultiplier.getCollision()) {
-			scoreMultiplier.getSprite().draw(batch);
-		}
 
 			asteroid.getSprite().draw(batch);
-		if (gameState==0)
-		{
-			batch.draw(tapToPlay,cameraManager.getCamWidth()/2 - tapToPlay.getWidth()/2,cameraManager.getCamHeight()/2 - tapToPlay.getHeight()/2);
-		}
-		else if (gameState==1)
-		{
-			scoreFont.draw(batch,String.valueOf(score), scoreTexture.getWidth()*1.15f,camera.viewportHeight );
-			handler.showAds(false);
-			//batch.draw(scoreTexture,0 ,cameraManager.getCamHeight()- scoreTexture.getHeight());
+			if (gameState == 0) {
+				batch.draw(tapToPlay, cameraManager.getCamWidth() / 2 - tapToPlay.getWidth() / 2, cameraManager.getCamHeight() / 2 - tapToPlay.getHeight() / 2);
+			} else if (gameState == 1) {
+				scoreFont.draw(batch, String.valueOf(score), scoreTexture.getWidth() * 1.15f, camera.viewportHeight);
+				handler.showAds(false);
+				//batch.draw(scoreTexture,0 ,cameraManager.getCamHeight()- scoreTexture.getHeight());
 
-			if (hasScored)
-			{
-				scoreSprite.setTexture(languageManager.getScoreTexture(1));
-			}else
-			{
-				scoreSprite.setTexture(languageManager.getScoreTexture(0));
-			}
-			scoreSprite.draw(batch);
-		}else
-		{
-			//	batch.draw(gameOver,cameraManager.getCamWidth()/2 - gameOver.getWidth()/2,cameraManager.getCamHeight()/2 - gameOver.getHeight()/2);
-			if (gameSprite.getScaleX() < 2.f)
-			{
-				gameSprite.scale(.125f);
-			}
-			if (highScoreSprite.getScaleX() <= 1f)
-			{
-				highScoreSprite.scale(.125f);
-			}
-			if (tapToReplaySprite.getScaleX() < 1.75f)
-			{
-				tapToReplaySprite.scale(.125f);
-			}
+				if (hasScored) {
+					scoreSprite.setTexture(languageManager.getScoreTexture(1));
+				} else {
+					scoreSprite.setTexture(languageManager.getScoreTexture(0));
+				}
+				scoreSprite.draw(batch);
+			} else {
+				//	batch.draw(gameOver,cameraManager.getCamWidth()/2 - gameOver.getWidth()/2,cameraManager.getCamHeight()/2 - gameOver.getHeight()/2);
+				if (gameSprite.getScaleX() < 2.f) {
+					gameSprite.scale(.125f);
+				}
+				if (highScoreSprite.getScaleX() <= 1f) {
+					highScoreSprite.scale(.125f);
+				}
+				if (tapToReplaySprite.getScaleX() < 1.75f) {
+					tapToReplaySprite.scale(.125f);
+				}
 
-			gameSprite.draw(batch);
-			highScoreSprite.draw(batch);
-			//tapToReplaySprite.setTexture(languageManager.getScoreTexture(0));
-			tapToReplaySprite.draw(batch);
-			if (scoreManager.gotNewHighScore())
-			{
-				newSprite.draw(batch);
+				gameSprite.draw(batch);
+				highScoreSprite.draw(batch);
+				//tapToReplaySprite.setTexture(languageManager.getScoreTexture(0));
+				tapToReplaySprite.draw(batch);
+				if (scoreManager.gotNewHighScore()) {
+					newSprite.draw(batch);
+				}
+				if (highScoreSprite.getScaleX() >= 1f) {
+					scoreFont.draw(batch, String.valueOf(scoreManager.getPreferences().getInteger("highScore")), highScoreSprite.getWidth() / 2 + 5.5f, highScoreSprite.getY() - highScoreSprite.getRegionHeight());
+				}
+
 			}
-			if (highScoreSprite.getScaleX() >= 1f)
-			{scoreFont.draw(batch,String.valueOf(scoreManager.getPreferences().getInteger("highScore")), highScoreSprite.getWidth()/2 +5.5f ,highScoreSprite.getY() - highScoreSprite.getRegionHeight());
+			if (sun.getDisplayWarning() && gameState == 1) {
+				sun.getWarningMessageSprite().draw(batch);
 			}
 
-		}
-		if (sun.getDisplayWarning() && gameState ==1)
-		{
-			sun.getWarningMessageSprite().draw(batch);
-		}
-
-		for (Sprite sprite : snow.getSpriteArray())
-		{
-			sprite.draw(batch);
-		}
+			for (Sprite sprite : snow.getSpriteArray()) {
+				sprite.draw(batch);
+			}
 
 
 			coin.getSprite().draw(batch);
+			sun.getSunSprite().draw(batch);
 
-		sun.getSunSprite().draw(batch);
-
+		}else
+		{
+			stateManager.getSplashSprite().draw(batch);
+		}
 
 		batch.end();
 
@@ -279,8 +269,6 @@ public class Main extends ApplicationAdapter {
 		sun.update(dt);
 		snow.update(dt);
 
-		Gdx.app.log("Language",java.util.Locale.getDefault().toString());
-
 		//heart.update(dt);
 		//Gdx.app.log("FPS",String.valueOf(Gdx.graphics.getFramesPerSecond()));
 
@@ -291,20 +279,18 @@ public class Main extends ApplicationAdapter {
 		}
 
 
-		if (Intersector.overlaps(coin.getCircle(),bird.getRectangle()) && !coin.getCollision())
+		if (Intersector.overlaps(coin.getCircle(),bird.getRectangle()) && !coin.getCollision() && gameState !=2)
 		{
 			score++;
 			hasScored = !hasScored;
-			scoreManager.update(score);
 			coin.setCollision(true);
 			if (!birdDead)soundManager.playSoundEffect(1); //plays coin sound effect**
 		//	Gdx.app.log("jooz",String.valueOf(scoreManager.getPreferences().getInteger("highscore")));
 		}
-		if (Intersector.overlaps(scoreMultiplier.getCircle(),bird.getRectangle()) && !scoreMultiplier.getCollision() )
+		if (Intersector.overlaps(scoreMultiplier.getCircle(),bird.getRectangle()) && !scoreMultiplier.getCollision() && gameState !=2)
 		{
 			score*=2;
 			hasScored = !hasScored;
-			scoreManager.update(score);
 			scoreMultiplier.setCollision(true);
 
 
@@ -327,6 +313,8 @@ public class Main extends ApplicationAdapter {
 			}
 
 		}
+
+		scoreManager.update();
 		stateManager.handleState(gameState);
 
 	}
@@ -335,7 +323,6 @@ public class Main extends ApplicationAdapter {
 	public void resume() {
 
 		languageManager.checkNewLang(java.util.Locale.getDefault().toString());
-		Gdx.app.log("Resumed","true");
 	}
 
 	@Override
@@ -352,6 +339,7 @@ public class Main extends ApplicationAdapter {
 		sun.dispose();
 		soundManager.dispose();
 		snow.dispose();
+		stateManager.getSplashSprite().getTexture().dispose();
 
 												//heart.dispose();
 	}

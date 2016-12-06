@@ -103,4 +103,5 @@ public class CameraManager {
     public float getCamWidth(){return camWidth;}
     public float getCamHeight(){return camHeight;}
     public float getCamZoom(){return camZoom;}
+    public OrthographicCamera getCamera(){return camera;}
 }

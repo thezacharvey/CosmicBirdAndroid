@@ -2,6 +2,7 @@ package com.mygdx.game.Managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Main;
 import com.mygdx.game.Sprites.Asteroid;
 import com.mygdx.game.Sprites.Bird;
@@ -19,6 +20,8 @@ public class StateManager {
     private Asteroid asteroid;
     private Sun sun;
     private Coin coin;
+    private Sprite splashSprite;
+    private boolean showSplash;
        private int tapCount;
     private BackgroundManager backgroundManager;
     private CameraManager cameraManager;
@@ -34,6 +37,11 @@ public class StateManager {
             this.coin = coin;
             this.asteroid = asteroid;
 
+        showSplash = true;
+        splashSprite = new Sprite(new Texture(Gdx.files.internal("splash/logo.png")));
+        splashSprite.setPosition(cameraManager.getCamWidth()/2 - splashSprite.getWidth()/2,cameraManager.getCamHeight()/2 - splashSprite.getHeight()/2);
+
+
        // scoreTexture = new Texture("");
     }
 
@@ -41,6 +49,21 @@ public class StateManager {
     {
         switch (gamestate)
         {
+
+            case -1:       //SplashScreen
+
+                if (cameraManager.getCamera().zoom >1.0f)
+                {
+                    cameraManager.getCamera().zoom -= .80f+Gdx.graphics.getDeltaTime();
+        }else
+                {
+                    cameraManager.getCamera().zoom = 1.0f;
+                    showSplash = false;
+                    Main.gameState = 0;
+                }
+
+                break;
+
             case 0:                 //menu
                     Main.birdDead =true;
                     bird.setY(Main.cameraManager.getCamHeight()/2 - bird.getTextureRegion().getRegionHeight()/2);
@@ -71,6 +94,9 @@ public class StateManager {
         }
     }
 
+    public boolean showSplashScreen(){return showSplash;}
+    public Sprite getSplashSprite(){return splashSprite;}
+
     private void resetGame()
     {
         Main.birdDead =false;
@@ -90,7 +116,7 @@ public class StateManager {
         sun.getRectangle().setY(sun.getSunSprite().getY() - sun.getSunSprite().getHeight()/2);
         sun.setHasVibrated(false);
         Main.hasPlayed = false;
-       Main.bgSprite.setTexture(backgroundManager.getBackground());
+        Main.bgSprite.setTexture(backgroundManager.getBackground());
 
 
     }
