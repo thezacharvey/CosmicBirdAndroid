@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
-import com.mygdx.game.AdHandler;
 import com.mygdx.game.Animation;
 import com.mygdx.game.Main;
 

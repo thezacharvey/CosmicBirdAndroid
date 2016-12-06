@@ -28,8 +28,9 @@ public class Asteroid {
     private  float velocity;
     private Sprite sprite;
     private Vector2 originXY;
+    private Main main;
 
-    public Asteroid(OrthographicCamera camera)
+    public Asteroid(OrthographicCamera camera,Main main)
     {
         random = new Random();
         asteroid2 = new Texture(Gdx.files.internal("christmas/asteroid2christmas.png"));
@@ -37,6 +38,7 @@ public class Asteroid {
         asteroidHeight = asteroid.getHeight();
         asteroidWidth = asteroid.getWidth();
         sprite = new Sprite(asteroid);
+        this.main = main;
 
         cameraHeight = camera.viewportHeight;
         cameraWidth = camera.viewportWidth;
@@ -52,10 +54,10 @@ public class Asteroid {
 
     public void update(float dt) {
 
-
                 if (asteroidX <= -asteroidWidth) {
                     asteroidX = cameraWidth + asteroidWidth;
                     newAsteroidY = asteroidY(newAsteroidY);
+                    main.setCanGiveDamage(true);
                 }
             asteroidX -= velocity * dt;
 

@@ -31,13 +31,18 @@ public class Bird {
     private float gravity;
     private Texture birdTexture;
     private Sprite sprite;
+    private boolean hitAnimation;
     private CameraManager cameraManager;
+    private boolean toggle;
+    private int flickerCount;
    private SoundManager soundManager;
     public Bird(OrthographicCamera camera, SoundManager soundManager, CameraManager cameraManager){
         this.soundManager = soundManager;
         this.cameraManager = cameraManager;
+        flickerCount =0;
         velocity =0f;
         rectangle = new Rectangle();
+        hitAnimation = false;
         camH =  cameraManager.getCamHeight();
         birdTexture = new Texture(Gdx.files.internal("christmas/birdchristmas.png"));
         animation = new Animation(new TextureRegion(birdTexture),3,0.15f);
@@ -47,6 +52,8 @@ public class Bird {
         birdX = getWidth()/2;
         birdY = camH/2 - animation.getFrame().getRegionHeight()/2;
         originXY = new Vector2(birdX,birdY);
+
+        toggle =false;
 
         gravity = .53f;
         Gdx.app.log("gravity",String.valueOf(gravity));
@@ -63,6 +70,20 @@ public class Bird {
         if (Main.gameState!=2)
         {
             animation.update(dt);
+            if (hitAnimation && flickerCount <=100) {
+
+                if (toggle)
+                {
+                    sprite.setAlpha(.35f);
+
+                }else
+                {
+                    sprite.setAlpha(.75f);
+                }
+                toggle = !toggle;
+                flickerCount++;
+
+            }else{ sprite.setAlpha(1f);startFlickerAnimation(false);flickerCount =0;}
         }
         if (!Main.birdDead)
         {
@@ -82,9 +103,11 @@ public class Bird {
 
                 applyGravity(dt);
         }
+
         sprite.setRegion(getTextureRegion());
 
-}      public void applyGravity(float dt)
+
+    }      public void applyGravity(float dt)
     {
         if (birdY >= -birdHeight/2 || velocity < 0 &&  Main.gameState==1)
         {
@@ -118,4 +141,5 @@ public class Bird {
     public boolean getCollision() {return collided;}
     public void setCollision(boolean co){ collided =co;}
     public Vector2 getOriginXY(){ return originXY;}
+    public void startFlickerAnimation(boolean b){hitAnimation = b;}
 }

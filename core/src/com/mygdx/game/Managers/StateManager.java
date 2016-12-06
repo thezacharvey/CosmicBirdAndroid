@@ -72,6 +72,7 @@ public class StateManager {
                 if (tapCount >=1) {
                     Main.birdDead = false;
                     Main.gameState = 1;
+                    Main.health =1;
                     tapCount=0;
 
                 }
@@ -117,6 +118,9 @@ public class StateManager {
         sun.setHasVibrated(false);
         Main.hasPlayed = false;
         Main.bgSprite.setTexture(backgroundManager.getBackground());
+        Main.health =1;
+        bird.getSprite().setAlpha(1f);
+        bird.startFlickerAnimation(false);
 
 
     }

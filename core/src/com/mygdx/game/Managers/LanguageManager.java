@@ -60,22 +60,21 @@ public class LanguageManager {
 
     }
 
-    public Texture getScoreTexture(int e){
+    public Texture getScoreTexture(int toggle){
 
-        Gdx.app.log("Lang", Locale.getDefault().toString());
+
         lang = java.util.Locale.getDefault().toString().trim();
 
         if (lang.equals("ja_JP") )
         {
 
-            if (e ==1)
+            if (toggle ==1)
             {
-                scoreSprite.setTexture(texture[2]);
+                scoreSprite.setTexture(texture[6]);
             }else
             {
-                scoreSprite.setTexture(texture[3]);
+                scoreSprite.setTexture(texture[7]);
             }
-
 
             gameSprite.setTexture(gameOver[1]);
             gameSprite.setScale(2.85f,1);
@@ -86,13 +85,12 @@ public class LanguageManager {
         }else if(lang.equals("pt_PR") || lang.equals("pt_BR" ) ||lang.equals("pt_PT"))
         {
 
-
-            if (e ==1)
+            if (toggle ==1)
             {
-                scoreSprite.setTexture(texture[5]);
+                scoreSprite.setTexture(texture[6]);
             }else
             {
-                scoreSprite.setTexture(texture[4]);
+                scoreSprite.setTexture(texture[7]);
             }
 
 
@@ -146,12 +144,12 @@ public class LanguageManager {
 
         else if (lang.equals("en_US")||lang.equals("en_UK")||lang.equals("en_AU") || lang.equals("en_ZA") ||lang.equals("en_CA") )
         {
-            if (e ==1)
+            if (toggle ==1)
             {
-                scoreSprite.setTexture(texture[0]);
+                scoreSprite.setTexture(texture[6]);
             }else
             {
-                scoreSprite.setTexture(texture[1]);
+                scoreSprite.setTexture(texture[7]);
             } //English
 
             gameSprite.setTexture(gameOver[0]);
@@ -160,7 +158,7 @@ public class LanguageManager {
         }
         else
         {
-            if (e ==1)
+            if (toggle ==1)
             {
                 scoreSprite.setTexture(texture[6]);
             }else

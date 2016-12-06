@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Main;
 import com.mygdx.game.Sprites.Asteroid;
 import com.mygdx.game.Sprites.Coin;
+import com.mygdx.game.Sprites.Heart;
 import com.mygdx.game.Sprites.ScoreMultiplier;
 
 /**
@@ -21,23 +22,27 @@ public class ScoreManager {
     private int highScore;
     private Asteroid asteroid;
     private boolean newHighScore;
+    private boolean canDrawHeart;
+
+    private CameraManager cameraManager;
 
     private Preferences preferences;
-    public ScoreManager(int score, Coin coin,Asteroid asteroid)
+    public ScoreManager(int score, Coin coin, Asteroid asteroid,CameraManager cameraManager)
     {
+        canDrawHeart =false;
+
+        this.cameraManager = cameraManager;
         this.coin = coin;
         this.score = score;
-            newHighScore = false;
-        increaseSpeed = false;
-            this.asteroid = asteroid;
-            asteroid.setAsteroidTexture(0);
-            preferences = Gdx.app.getPreferences("My Preferences");
-            highScore = preferences.getInteger("highScore",0);
+        this.asteroid = asteroid;
 
-/*
-        gameOverTexture = new Texture(Gdx.files.internal("gameover.png"));
-        gameOverSprite = new Sprite(gameOverTexture);
-        gameOverSprite.setX("")*/
+        newHighScore = false;
+        increaseSpeed = false;
+
+        asteroid.setAsteroidTexture(0);
+        preferences = Gdx.app.getPreferences("My Preferences");
+        highScore = preferences.getInteger("highScore",0);
+
     }
 
     public void update() {
@@ -50,6 +55,14 @@ public class ScoreManager {
         if (score% 9 ==0)
         {
             increaseSpeed = false;
+        }
+        if (Main.score%12==0 && Main.score!=0)
+        {
+            canDrawHeart = true;
+        }
+        if (Main.health >=3)
+        {
+            canDrawHeart =false;
         }
 
         if (score >=80 ) {
@@ -80,6 +93,8 @@ public class ScoreManager {
     public int getScore(){return score;}
     public boolean gotNewHighScore(){return newHighScore;}
     public void setNewHighScore(boolean hs){newHighScore = hs;}
+    public boolean heartIsDrawable(){return canDrawHeart;}
+    public void setHeartDrawable(boolean b){ canDrawHeart = b;}
     public Preferences getPreferences() {
         return preferences;
     }

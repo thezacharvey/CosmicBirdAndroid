@@ -50,14 +50,15 @@ public class Main extends ApplicationAdapter {
 	public static CameraManager cameraManager;
 	public static int gameState;
 	private Snow snow;
-	//private Heart heart;
+	private Heart heart;
 	private Asteroid asteroid;
 	private ScoreMultiplier scoreMultiplier;
 	private SoundManager soundManager;
 	AdHandler handler;
 	private BackgroundManager backgroundManager;
 	private LanguageManager languageManager;
-
+	public static int health;
+	private boolean canGiveDamage;
 	public Main(AdHandler handler)
 	{
 		this.handler = handler;
@@ -68,13 +69,14 @@ public class Main extends ApplicationAdapter {
 	@Override
 	public void create () {
 		handler.showAds(true);
-
+		health =0;
 		score = 0;
 		soundManager = new SoundManager();
 		gameState = -1;		//Menu
 		hasPlayed = false;
 		birdDead =true;
-
+		canGiveDamage =true;
+		
 		scoreFont= new BitmapFont();
 		scoreFont.setColor(Color.WHITE);
 
@@ -100,10 +102,12 @@ public class Main extends ApplicationAdapter {
 		camera.zoom = 125f;
 		camera.update();
 
-		asteroid = new Asteroid(camera);
+		asteroid = new Asteroid(camera,this);
 		coin = new Coin(camera,asteroid);
 		bird = new Bird(camera,soundManager, cameraManager);
 		sun = new Sun(scoreManager,cameraManager);
+		scoreManager = new ScoreManager(score,coin,asteroid,cameraManager);
+
 
 		gameSprite = new Sprite(gameOver);
 		gameSprite.setScale(0.5f,0.5f);
@@ -125,30 +129,34 @@ public class Main extends ApplicationAdapter {
 		tapToReplaySprite.setX(cameraManager.getCamWidth()/2 - taptoReplay.getWidth()/2);
 		tapToReplaySprite.setY(tapToPlay.getHeight()/2.35f);
 
+		backgroundManager = new BackgroundManager();
+
+
 		scoreSprite = new Sprite(scoreTexture);
 		scoreSprite.setX(0);
-		scoreSprite.setY(cameraManager.getCamHeight()- scoreSprite.getHeight());
+		scoreSprite.setY(scoreSprite.getHeight()/2);
+		scoreSprite.flip(true,false);
 
-		backgroundManager = new BackgroundManager();
 
 		bgSprite = new Sprite(backgroundManager.getBackground());
 		bgSprite.setX(cameraManager.getCamWidth()/2 - bgSprite.getRegionWidth()/3.85f);
 		bgSprite.setY(cameraManager.getCamHeight()/2 - bgSprite.getHeight()/2);
 		bgSprite.scale(1.75f);
 
-		scoreManager = new ScoreManager(score,coin,asteroid);
+
 		stateManager = new StateManager(bird,asteroid,coin,cameraManager,scoreManager,sun,backgroundManager);   //BACS
 		scoreMultiplier = new ScoreMultiplier(cameraManager);
 
 		snow = new Snow(cameraManager);
 		languageManager = new LanguageManager(scoreSprite,gameSprite,highScoreSprite,tapToReplaySprite);
+		heart = new Heart(cameraManager,scoreManager);
+
 
 		//heart = new Heart(cameraManager);
 		// Implement later
 		// please
-
-
 	}
+
 
 	@Override
 	public void render () {
@@ -188,6 +196,11 @@ public class Main extends ApplicationAdapter {
 				coin.getSprite().setScale(1, 1);
 			}
 
+			if (scoreManager.heartIsDrawable())
+			{
+				heart.getSprite(0).draw(batch);
+			}
+
 			if (!scoreMultiplier.getCollision()) {
 				scoreMultiplier.getSprite().draw(batch);
 			}
@@ -196,8 +209,14 @@ public class Main extends ApplicationAdapter {
 			if (gameState == 0) {
 				batch.draw(tapToPlay, cameraManager.getCamWidth() / 2 - tapToPlay.getWidth() / 2, cameraManager.getCamHeight() / 2 - tapToPlay.getHeight() / 2);
 			} else if (gameState == 1) {
-				scoreFont.draw(batch, String.valueOf(score), scoreTexture.getWidth() * 1.15f, camera.viewportHeight);
+
+
+
 				handler.showAds(false);
+
+				scoreSprite.setX(cameraManager.getCamWidth()/2-scoreSprite.getWidth()/2);
+				scoreSprite.setY(scoreSprite.getHeight());
+				scoreFont.draw(batch, String.valueOf(score), cameraManager.getCamWidth()/2, scoreSprite.getHeight());
 				//batch.draw(scoreTexture,0 ,cameraManager.getCamHeight()- scoreTexture.getHeight());
 
 				if (hasScored) {
@@ -237,6 +256,10 @@ public class Main extends ApplicationAdapter {
 			for (Sprite sprite : snow.getSpriteArray()) {
 				sprite.draw(batch);
 			}
+			for (Sprite sprite: heart.getHealthStatus())
+			{
+				sprite.draw(batch);
+			}
 
 
 			coin.getSprite().draw(batch);
@@ -250,12 +273,12 @@ public class Main extends ApplicationAdapter {
 		batch.end();
 
 
-		/*shapeRenderer.setProjectionMatrix(camera.combined);
+		shapeRenderer.setProjectionMatrix(camera.combined);
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 		shapeRenderer.setColor(Color.RED);
-		//shapeRenderer.circle(sun.getSunCircle().x,sun.getSunCircle().y,sun.getSunCircle().radius);
-    	shapeRenderer.rect(sun.getRectangle().x,sun.getRectangle().y,sun.getRectangle().width, sun.getRectangle().height);
-       shapeRenderer.end();*/
+		shapeRenderer.circle(heart.getCircle().x,heart.getCircle().y,heart.getCircle().radius);
+    	//shapeRenderer.rect(sun.getRectangle().x,sun.getRectangle().y,sun.getRectangle().width, sun.getRectangle().height);
+       shapeRenderer.end();
 
 	}
 
@@ -268,6 +291,14 @@ public class Main extends ApplicationAdapter {
 		bird.update(dt);
 		sun.update(dt);
 		snow.update(dt);
+
+
+
+
+
+		//Gdx.app.log("Touch pos",String.valueOf(Gdx.input.getInputProcessor().touchDown(int screenXint screenY, int pointer, int button)));
+
+
 
 		//heart.update(dt);
 		//Gdx.app.log("FPS",String.valueOf(Gdx.graphics.getFramesPerSecond()));
@@ -298,14 +329,25 @@ public class Main extends ApplicationAdapter {
 		}
 		if (Intersector.overlaps(asteroid.getCircle(),bird.getRectangle()) && gameState ==1 )
 		{
-			birdDead = true;
-			gameState = 2; //dead state
+			if (canGiveDamage &&health >0)
+			{
+				health--;
+				canGiveDamage = false;
+				bird.startFlickerAnimation(true);
+			}
+			if (health<=0) {
+				birdDead = true;
+				gameState = 2; //dead state
+			}
 			soundManager.playSoundEffect(2);
+
 		}
 
 		if (Intersector.overlaps(bird.getRectangle(), sun.getRectangle()))
 		{
 			birdDead = true;
+			health = 0;
+
 			gameState = 2;
 			if (!hasPlayed){
 				soundManager.playSoundEffect(2);
@@ -313,9 +355,22 @@ public class Main extends ApplicationAdapter {
 			}
 
 		}
+		if (Intersector.overlaps(heart.getCircle(),bird.getRectangle()))
+		{
+			heart.setCollision(true);
+			if (health <3)
+			{
+				health++;
+				bird.startFlickerAnimation(false);
+			}
+
+
+		}
 
 		scoreManager.update();
+		heart.update(dt);
 		stateManager.handleState(gameState);
+		Gdx.app.log("Health",String.valueOf(health));
 
 	}
 
@@ -340,7 +395,9 @@ public class Main extends ApplicationAdapter {
 		soundManager.dispose();
 		snow.dispose();
 		stateManager.getSplashSprite().getTexture().dispose();
-
-												//heart.dispose();
+		heart.dispose();
+		
 	}
+
+	public void setCanGiveDamage(boolean b){ canGiveDamage = b;}
 }
