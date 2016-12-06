@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
+import java.util.Locale;
+
 /**
  * Created by z_ig_ on 11/27/2016.
  */
@@ -32,13 +34,15 @@ public class LanguageManager {
         replayTexture[1] = new Texture(Gdx.files.internal("Port/replaychristmas.png"));
         replayTexture[2] = new Texture(Gdx.files.internal("japanese/replaychristmas.png"));
 
-        texture = new Texture[6];
+        texture = new Texture[8];
         texture[0] = new Texture(Gdx.files.internal("score.png"));
         texture[1] = new Texture(Gdx.files.internal("score2.png"));
         texture[2] = new Texture(Gdx.files.internal("japanese/score.png"));
         texture[3] = new Texture(Gdx.files.internal("japanese/score2.png"));
         texture[4] = new Texture(Gdx.files.internal("Port/score.png"));
         texture[5] = new Texture(Gdx.files.internal("Port/score2.png"));
+        texture[6] = new Texture(Gdx.files.internal("elseif/score.png"));
+        texture[7] = new Texture(Gdx.files.internal("elseif/score2.png"));
 
         gameOver = new Texture[5];
         gameOver [0] = new Texture(Gdx.files.internal("gameover.png"));
@@ -50,15 +54,18 @@ public class LanguageManager {
         gameOver [6] = new Texture(Gdx.files.internal("Spanish/highscore.PNG"));
         gameOver [7] = new Texture(Gdx.files.internal("French/gameover.png"));
         gameOver [8] = new Texture(Gdx.files.internal("French/highscore.PNG"));
+
+
 */
 
     }
 
     public Texture getScoreTexture(int e){
 
+        Gdx.app.log("Lang", Locale.getDefault().toString());
         lang = java.util.Locale.getDefault().toString().trim();
 
-        if (lang.equals("ja_JP"))
+        if (lang.equals("ja_JP") )
         {
 
             if (e ==1)
@@ -135,19 +142,32 @@ public class LanguageManager {
         }
 
 */
-        else
+
+
+        else if (lang.equals("en_US")||lang.equals("en_UK")||lang.equals("en_AU") || lang.equals("en_ZA") ||lang.equals("en_CA") )
         {
             if (e ==1)
             {
-                scoreSprite.setTexture(texture[1]);
+                scoreSprite.setTexture(texture[0]);
             }else
             {
-                scoreSprite.setTexture(texture[0]);
+                scoreSprite.setTexture(texture[1]);
             } //English
 
             gameSprite.setTexture(gameOver[0]);
 
             tapToReplaySprite.setTexture(replayTexture[0]);
+        }
+        else
+        {
+            if (e ==1)
+            {
+                scoreSprite.setTexture(texture[6]);
+            }else
+            {
+                scoreSprite.setTexture(texture[7]);
+            } //English
+
         }
         return scoreSprite.getTexture();            //English
 

@@ -21,6 +21,7 @@ import com.mygdx.game.Managers.StateManager;
 import com.mygdx.game.Sprites.Asteroid;
 import com.mygdx.game.Sprites.Bird;
 import com.mygdx.game.Sprites.Coin;
+import com.mygdx.game.Sprites.Heart;
 import com.mygdx.game.Sprites.ScoreMultiplier;
 import com.mygdx.game.Sprites.Snow;
 import com.mygdx.game.Sprites.Sun;
@@ -47,7 +48,8 @@ public class Main extends ApplicationAdapter {
 	private StateManager stateManager;
 	public static CameraManager cameraManager;
 	public static int gameState;
-	private Snow snow;//private Heart heart;
+	private Snow snow;
+	private Heart heart;
 	private Asteroid asteroid;
 	private boolean canDraw;
 	private ScoreMultiplier scoreMultiplier;

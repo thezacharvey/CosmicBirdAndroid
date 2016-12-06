@@ -15,7 +15,7 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
 
-    version = '1.17.0'
+    version = '1.17.1'
     ext {
         appName = "CosmicBird"
         gdxVersion = '1.9.4'

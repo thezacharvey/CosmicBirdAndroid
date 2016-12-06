@@ -77,7 +77,7 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 
 		adView.loadAd(builder.build());
 		setContentView(layout);
-		//Gdx.app.log("Virbrate", PackageManager.Fea);
+
 	}
 
 	@Override
