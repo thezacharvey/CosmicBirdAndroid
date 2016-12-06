@@ -25,18 +25,21 @@ public class Heart implements ISpriteInterface {
     private ScoreManager scoreManager;
     private Sprite[] healthStatus;
     private boolean pulse;
+    private Main main;
+    private float heartscale;
 
 
 
-
-    public Heart(CameraManager cameraManager, ScoreManager scoreManager)
+    public Heart(CameraManager cameraManager, ScoreManager scoreManager,Main main)
     {
         hasCollided = false;
-
+        this.main = main;
         this.scoreManager = scoreManager;
         circle = new Circle();
         this.cameraManager = cameraManager;
 
+
+        heartscale  = 1.25f;
 
         velocity = cameraManager.getCamWidth()/125f;
 
@@ -46,17 +49,35 @@ public class Heart implements ISpriteInterface {
         sprite.setScale(1.25f);
 
         healthStatus = new Sprite[3];
-        int gap= 0;
+       float gap= cameraManager.getCamWidth()/2 - sprite.getWidth()/2f;
+       float ygap=0;
+        float scoreX = main.getScoreXY().x - sprite.getWidth()*1.25f;
         for (int i=0; i < healthStatus.length;i++)
         {
             healthStatus[i] = new Sprite(new Texture(Gdx.files.internal("heart.png")));
-            healthStatus[i].setPosition(cameraManager.getCamWidth()- healthStatus[i].getWidth()*2 - gap,sprite.getHeight() *1.25f);
+
+
+
             if (i>0)
             {
                 healthStatus[i].setScale(.25f,.25f);
                 healthStatus[i].setAlpha(0);
+                ygap =  healthStatus[i].getHeight()*2f;
             }
-            gap += healthStatus[i].getWidth()*1.75f;
+            if (i== healthStatus.length-1)
+            {
+                ygap *=2f;
+                healthStatus[i].setPosition( gap,cameraManager.getCamHeight()/2-sprite.getHeight()/2 + ygap);
+            }else
+            {
+                healthStatus[i].setPosition(gap, cameraManager.getCamHeight()/2-sprite.getHeight()/2 + ygap);
+            }
+
+
+
+
+
+
         }
 
         circle.set(sprite.getX(),sprite.getY(),sprite.getWidth()/2);
@@ -102,7 +123,7 @@ public class Heart implements ISpriteInterface {
                         }
                     }else
                     {
-                        if (healthStatus[i].getScaleX() <=1.5f) {
+                        if (healthStatus[i].getScaleX() <=heartscale) {
                             pulse = false;
                             healthStatus[i].setAlpha(1f);
                             healthStatus[i].scale(0.05f);
@@ -129,7 +150,7 @@ public class Heart implements ISpriteInterface {
                         }
                     }else
                     {
-                        if  (healthStatus[i].getScaleX() <=1.5f)
+                        if  (healthStatus[i].getScaleX() <=heartscale)
                         {
                             healthStatus[i].setAlpha(1f);
                             healthStatus[i].scale(0.05f);
@@ -141,7 +162,7 @@ public class Heart implements ISpriteInterface {
 
                 for (Sprite sprite: healthStatus)
                 {
-                    if (sprite.getScaleX() <=1.5f)
+                    if (sprite.getScaleX() <=heartscale)
                     {
                         sprite.setAlpha(1f);
                         sprite.scale(0.05f);

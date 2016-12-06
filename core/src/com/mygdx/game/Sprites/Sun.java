@@ -46,7 +46,7 @@ public class Sun {
 
         warningMessageTexture = new Texture(Gdx.files.internal("sprites/warningmessagechristmas.png"));
         warningMessageSprite = new Sprite(warningMessageTexture);
-        warningMessageSprite.setY(cameraManager.getCamHeight()/2);
+        warningMessageSprite.setY(cameraManager.getCamHeight()/1.25f);
         warningMessageSprite.setX(cameraManager.getCamWidth() /2 - warningMessageSprite.getRegionWidth()/2);
         warningMessageSprite.setScale(0.25f);
 

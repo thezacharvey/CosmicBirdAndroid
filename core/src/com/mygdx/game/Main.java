@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Managers.BackgroundManager;
 import com.mygdx.game.Managers.CameraManager;
 import com.mygdx.game.Managers.LanguageManager;
@@ -71,6 +72,8 @@ public class Main extends ApplicationAdapter {
 		handler.showAds(true);
 		health =0;
 		score = 0;
+
+
 		soundManager = new SoundManager();
 		gameState = -1;		//Menu
 		hasPlayed = false;
@@ -133,7 +136,7 @@ public class Main extends ApplicationAdapter {
 
 
 		scoreSprite = new Sprite(scoreTexture);
-		scoreSprite.setX(0);
+		scoreSprite.setX(cameraManager.getCamWidth()/2-scoreSprite.getWidth()/2);
 		scoreSprite.setY(scoreSprite.getHeight()/2);
 		scoreSprite.flip(true,false);
 
@@ -149,7 +152,7 @@ public class Main extends ApplicationAdapter {
 
 		snow = new Snow(cameraManager);
 		languageManager = new LanguageManager(scoreSprite,gameSprite,highScoreSprite,tapToReplaySprite);
-		heart = new Heart(cameraManager,scoreManager);
+		heart = new Heart(cameraManager,scoreManager,this);
 
 
 		//heart = new Heart(cameraManager);
@@ -214,9 +217,10 @@ public class Main extends ApplicationAdapter {
 
 				handler.showAds(false);
 
-				scoreSprite.setX(cameraManager.getCamWidth()/2-scoreSprite.getWidth()/2);
-				scoreSprite.setY(scoreSprite.getHeight());
-				scoreFont.draw(batch, String.valueOf(score), cameraManager.getCamWidth()/2, scoreSprite.getHeight());
+
+				//scoreSprite.setY(scoreSprite.getHeight());
+				//scoreSprite.setPosition(heart.getHealthStatus()[0].getX()+ scoreSprite.getWidth()/1.25f,heart.getHealthStatus()[0].getY()-scoreSprite.getHeight());
+
 				//batch.draw(scoreTexture,0 ,cameraManager.getCamHeight()- scoreTexture.getHeight());
 
 				if (hasScored) {
@@ -224,7 +228,9 @@ public class Main extends ApplicationAdapter {
 				} else {
 					scoreSprite.setTexture(languageManager.getScoreTexture(0));
 				}
-				scoreSprite.draw(batch);
+				//scoreSprite.draw(batch);
+
+				scoreFont.draw(batch, String.valueOf(score), autoAudjustScorePos().x,autoAudjustScorePos().y);
 			} else {
 				//	batch.draw(gameOver,cameraManager.getCamWidth()/2 - gameOver.getWidth()/2,cameraManager.getCamHeight()/2 - gameOver.getHeight()/2);
 				if (gameSprite.getScaleX() < 2.f) {
@@ -249,9 +255,6 @@ public class Main extends ApplicationAdapter {
 				}
 
 			}
-			if (sun.getDisplayWarning() && gameState == 1) {
-				sun.getWarningMessageSprite().draw(batch);
-			}
 
 			for (Sprite sprite : snow.getSpriteArray()) {
 				sprite.draw(batch);
@@ -261,24 +264,47 @@ public class Main extends ApplicationAdapter {
 				sprite.draw(batch);
 			}
 
-
-			coin.getSprite().draw(batch);
 			sun.getSunSprite().draw(batch);
 
 		}else
 		{
 			stateManager.getSplashSprite().draw(batch);
 		}
+		coin.getSprite().draw(batch);
+		if (sun.getDisplayWarning() && gameState == 1) {
+			sun.getWarningMessageSprite().draw(batch);
+		}
+
 
 		batch.end();
 
 
-		shapeRenderer.setProjectionMatrix(camera.combined);
-		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-		shapeRenderer.setColor(Color.RED);
-		shapeRenderer.circle(heart.getCircle().x,heart.getCircle().y,heart.getCircle().radius);
+	//	shapeRenderer.setProjectionMatrix(camera.combined);
+	//	shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+	//	shapeRenderer.setColor(Color.RED);
+	//	shapeRenderer.circle(heart.getCircle().x,heart.getCircle().y,heart.getCircle().radius);
     	//shapeRenderer.rect(sun.getRectangle().x,sun.getRectangle().y,sun.getRectangle().width, sun.getRectangle().height);
-       shapeRenderer.end();
+      // shapeRenderer.end();
+
+	}
+
+	private Vector2 autoAudjustScorePos() {
+
+
+		int length = String.valueOf(score).length();
+		Gdx.app.log("SSS",String.valueOf(length));
+		int multiple = length;
+		if (length==1)
+		{
+			multiple+= 1.25f;
+		}else if (length==2)
+		{
+			multiple-=.25f;
+		}
+		float y= cameraManager.getCamHeight()/2-heart.getHealthStatus()[0].getHeight();
+		float x =cameraManager.getCamWidth()/2-heart.getHealthStatus()[0].getWidth()/multiple;
+		return new Vector2(x,y);
+
 
 	}
 
@@ -329,6 +355,7 @@ public class Main extends ApplicationAdapter {
 		}
 		if (Intersector.overlaps(asteroid.getCircle(),bird.getRectangle()) && gameState ==1 )
 		{
+			soundManager.playSoundEffect(2);
 			if (canGiveDamage &&health >0)
 			{
 				health--;
@@ -339,7 +366,8 @@ public class Main extends ApplicationAdapter {
 				birdDead = true;
 				gameState = 2; //dead state
 			}
-			soundManager.playSoundEffect(2);
+
+
 
 		}
 
@@ -370,7 +398,6 @@ public class Main extends ApplicationAdapter {
 		scoreManager.update();
 		heart.update(dt);
 		stateManager.handleState(gameState);
-		Gdx.app.log("Health",String.valueOf(health));
 
 	}
 
@@ -400,4 +427,5 @@ public class Main extends ApplicationAdapter {
 	}
 
 	public void setCanGiveDamage(boolean b){ canGiveDamage = b;}
+	public Vector2 getScoreXY(){return new Vector2(cameraManager.getCamWidth()/2,scoreSprite.getHeight());}
 }
