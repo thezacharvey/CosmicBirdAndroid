@@ -230,7 +230,7 @@ public class Main extends ApplicationAdapter {
 				}
 				//scoreSprite.draw(batch);
 
-				scoreFont.draw(batch, String.valueOf(score), autoAudjustScorePos().x,autoAudjustScorePos().y);
+				scoreFont.draw(batch, String.valueOf(score), autoAudjustScorePos(false).x,autoAudjustScorePos(false).y);
 			} else {
 				//	batch.draw(gameOver,cameraManager.getCamWidth()/2 - gameOver.getWidth()/2,cameraManager.getCamHeight()/2 - gameOver.getHeight()/2);
 				if (gameSprite.getScaleX() < 2.f) {
@@ -251,7 +251,7 @@ public class Main extends ApplicationAdapter {
 					newSprite.draw(batch);
 				}
 				if (highScoreSprite.getScaleX() >= 1f) {
-					scoreFont.draw(batch, String.valueOf(scoreManager.getPreferences().getInteger("highScore")), highScoreSprite.getWidth() / 2 + 5.5f, highScoreSprite.getY() - highScoreSprite.getRegionHeight());
+					scoreFont.draw(batch, String.valueOf(scoreManager.getPreferences().getInteger("highScore")),autoAudjustScorePos(true).x,autoAudjustScorePos(true).y);
 				}
 
 			}
@@ -288,19 +288,20 @@ public class Main extends ApplicationAdapter {
 
 	}
 
-	private Vector2 autoAudjustScorePos() {
+	private Vector2 autoAudjustScorePos(boolean isHighScore) {
 
+		int length;
 
-		int length = String.valueOf(score).length();
-		Gdx.app.log("SSS",String.valueOf(length));
-		int multiple = length;
-		if (length==1)
+		if (isHighScore)
 		{
-			multiple+= 1.25f;
-		}else if (length==2)
+			length = String.valueOf(scoreManager.getPreferences().getInteger("highScore")).length();
+		}else
 		{
-			multiple-=.25f;
+			length = String.valueOf(score).length();
 		}
+
+		float multiple = 2.25f / length ;
+
 		float y= cameraManager.getCamHeight()/2-heart.getHealthStatus()[0].getHeight();
 		float x =cameraManager.getCamWidth()/2-heart.getHealthStatus()[0].getWidth()/multiple;
 		return new Vector2(x,y);
