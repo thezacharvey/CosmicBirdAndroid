@@ -17,7 +17,7 @@ import java.util.Random;
 public class Asteroid {
 
     private Texture asteroid,asteroid2;
-    private Circle circle;
+    private Circle asteroidCircle[];
     private float  asteroidX;
     private Random random;
     private float cameraHeight;
@@ -26,47 +26,99 @@ public class Asteroid {
     private float cameraWidth;
     private float newAsteroidY;
     private  float velocity;
-    private Sprite sprite;
+    private Sprite sprite[];
     private Vector2 originXY;
     private Main main;
+    private float fallSpeed;
 
     public Asteroid(OrthographicCamera camera,Main main)
     {
+        fallSpeed = 0f;
         random = new Random();
         asteroid2 = new Texture(Gdx.files.internal("christmas/asteroid2christmas.png"));
         asteroid = new Texture(Gdx.files.internal("christmas/asteroidsnow.png"));
         asteroidHeight = asteroid.getHeight();
         asteroidWidth = asteroid.getWidth();
-        sprite = new Sprite(asteroid);
+
         this.main = main;
 
         cameraHeight = camera.viewportHeight;
         cameraWidth = camera.viewportWidth;
         velocity = cameraWidth *1.40f;
-        circle = new Circle();
+
         newAsteroidY = asteroidY(0);
         asteroidX = cameraWidth + asteroidWidth;
         originXY = new Vector2(asteroidX,newAsteroidY);
-        sprite.setOrigin(asteroidWidth/2,asteroidHeight/2);
+
+        sprite = new Sprite[2];
+        sprite[0] = new Sprite(asteroid);
+        sprite[1] = new Sprite(new Texture(Gdx.files.internal("christmas/metorite.png")));
+        sprite[0].setOrigin(asteroidWidth/2,asteroidHeight/2);
+        sprite[1].setOrigin(sprite[1].getWidth()/2,sprite[1].getHeight()/2);
+
+
+        asteroidCircle = new Circle[2];
+
+
+        for (int i =0; i < asteroidCircle.length; i++)
+        {
+            asteroidCircle[i] = new Circle();
+           asteroidCircle[i].setRadius(sprite[i].getWidth()/2);
+        }
+
+        Gdx.app.log("BUG",String.valueOf(asteroidCircle.length));
+
+
 
     }
 
 
     public void update(float dt) {
 
-                if (asteroidX <= -asteroidWidth) {
-                    asteroidX = cameraWidth + asteroidWidth;
-                    newAsteroidY = asteroidY(newAsteroidY);
+//        if (asteroidX <= -asteroidWidth) {
+//                    asteroidX = cameraWidth + asteroidWidth;
+//                    newAsteroidY = asteroidY(newAsteroidY);
+//
+//        }
+
+
+            float rotate = 1.55f;
+            float moveSpeed = 1f;
+
+            for (int i=0; i <sprite.length;i++)
+            {
+
+
+                if (sprite[i].getX() < -sprite[i].getWidth())
+                {
+                    sprite[i].setX(cameraWidth + sprite[i].getWidth());
+                    sprite[i].setY(asteroidY(sprite[i].getY()));
                     main.setCanGiveDamage(true);
                 }
-            asteroidX -= velocity * dt;
+                if (i>0)
+                {
+                    moveSpeed = .5f;
+                    rotate=-1.55f;
+                   // fallSpeed = -.25f;
+                }
+                sprite[i].rotate(rotate);
+                sprite[i].translateX((-velocity *dt )* moveSpeed);
+                sprite[i].translateY(fallSpeed);
+                asteroidCircle[i].setPosition(sprite[i].getX() + sprite[i].getWidth()/2,sprite[i].getY() + sprite[i].getHeight()/2);
+                asteroidCircle[i].setRadius(sprite[i].getWidth()/2);
+            }
 
-            sprite.setY(getY()); sprite.setX(getX());
-            sprite.rotate(1.55f);
-            circle.set(getX() + sprite.getWidth() / 2, newAsteroidY + sprite.getHeight() / 2, getWidth() / 2);
+
+
+
+
+
+
 
 
     }
+
+    public void setFallSpeed(float f){fallSpeed = f;}
 
 
 
@@ -93,12 +145,13 @@ public class Asteroid {
     public void dispose() {
         asteroid.dispose();
         asteroid2.dispose();
+        sprite[1].getTexture().dispose();
     }
     public void setX(float x){ asteroidX = x;}
     public float getX(){return asteroidX;}
     public float getY(){return  newAsteroidY;}
-    public Circle getCircle(){return circle;}
-    public Sprite getSprite(){return sprite;}
+    public Circle[] getCircleArr(){return asteroidCircle;}
+    public Sprite[] getSpriteArr(){return sprite;}
     public float getHeight(){return asteroidHeight;}
     public float getWidth(){return asteroidWidth;}
     public Vector2 getOriginXY(){ return originXY;}
@@ -107,14 +160,14 @@ public class Asteroid {
         switch (a)
         {
             case 0:
-                sprite.setTexture(asteroid);
-                sprite.setScale(1f,1f);
+                sprite[0].setTexture(asteroid);
+                sprite[0].setScale(1f,1f);
                 velocity =  cameraWidth *.85f;
                 break;
             case 1:
 
-                    sprite.setTexture(asteroid2);
-                    sprite.setScale(1.45f,1.45f);
+                    sprite[0].setTexture(asteroid2);
+                    sprite[0].setScale(1.45f,1.45f);
                     velocity =  cameraWidth *1.15f;
                 break;
 

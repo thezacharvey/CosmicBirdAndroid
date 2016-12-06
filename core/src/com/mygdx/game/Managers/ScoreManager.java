@@ -65,8 +65,16 @@ public class ScoreManager {
             canDrawHeart =false;
         }
 
-        if (score >=80 ) {
+        if (score >=1500 ) {
             asteroid.setAsteroidTexture(1);
+        }
+        if (score % 300==0)
+        {
+            asteroid.setFallSpeed(-.25f);
+        }
+        if (score % 550==0)
+        {
+            asteroid.setFallSpeed(0f);
         }
 
         if (highScore < score && Main.gameState == 1) {

@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Managers.BackgroundManager;
@@ -185,7 +186,7 @@ public class Main extends ApplicationAdapter {
 
 			bgSprite.draw(batch);
 			bird.getSprite().draw(batch);
-			//heart.getSprite().draw(batch);
+			//heart.getSpriteArr().draw(batch);
 			//batch.draw(bird.getTextureRegion(),bird.getX(),bird.getY());
 			if (coin.getCollision()) {
 				if (coin.getSprite().getScaleX() >= 0f) {
@@ -208,7 +209,11 @@ public class Main extends ApplicationAdapter {
 				scoreMultiplier.getSprite().draw(batch);
 			}
 
-			asteroid.getSprite().draw(batch);
+			    asteroid.getSpriteArr()[0].draw(batch);
+			if (score >=800) {
+				asteroid.getSpriteArr()[1].draw(batch);
+			}
+
 			if (gameState == 0) {
 				batch.draw(tapToPlay, cameraManager.getCamWidth() / 2 - tapToPlay.getWidth() / 2, cameraManager.getCamHeight() / 2 - tapToPlay.getHeight() / 2);
 			} else if (gameState == 1) {
@@ -279,12 +284,16 @@ public class Main extends ApplicationAdapter {
 		batch.end();
 
 
-	//	shapeRenderer.setProjectionMatrix(camera.combined);
-	//	shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-	//	shapeRenderer.setColor(Color.RED);
-	//	shapeRenderer.circle(heart.getCircle().x,heart.getCircle().y,heart.getCircle().radius);
+		//shapeRenderer.setProjectionMatrix(camera.combined);
+		//shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+		//shapeRenderer.setColor(Color.RED);
+		//for (Circle circle : asteroid.getCircleArr())
+		//{
+			//shapeRenderer.circle(circle.x,circle.y,circle.radius);
+		//}
+
     	//shapeRenderer.rect(sun.getRectangle().x,sun.getRectangle().y,sun.getRectangle().width, sun.getRectangle().height);
-      // shapeRenderer.end();
+      //shapeRenderer.end();
 
 	}
 
@@ -354,23 +363,30 @@ public class Main extends ApplicationAdapter {
 
 			//	Gdx.app.log("jooz",String.valueOf(scoreManager.getPreferences().getInteger("highscore")));
 		}
-		if (Intersector.overlaps(asteroid.getCircle(),bird.getRectangle()) && gameState ==1 )
-		{
-			soundManager.playSoundEffect(2);
-			if (canGiveDamage &&health >0)
-			{
-				health--;
-				canGiveDamage = false;
-				bird.startFlickerAnimation(true);
+
+
+
+
+		for (int i=0; i < asteroid.getCircleArr().length;i++) {
+
+
+
+			if (Intersector.overlaps(asteroid.getCircleArr()[i],bird.getRectangle())&&gameState == 1 && i ==0 ||Intersector.overlaps(asteroid.getCircleArr()[i],bird.getRectangle())&&gameState == 1 && score >=800){
+				soundManager.playSoundEffect(2);
+				if (canGiveDamage && health > 0) {
+					health--;
+					canGiveDamage = false;
+					bird.startFlickerAnimation(true);
+				}
+				if (health <= 0) {
+					birdDead = true;
+					gameState = 2; //dead state
+				}
+
+
 			}
-			if (health<=0) {
-				birdDead = true;
-				gameState = 2; //dead state
-			}
-
-
-
 		}
+
 
 		if (Intersector.overlaps(bird.getRectangle(), sun.getRectangle()))
 		{

@@ -121,6 +121,7 @@ public class StateManager {
         Main.health =1;
         bird.getSprite().setAlpha(1f);
         bird.startFlickerAnimation(false);
+        asteroid.setFallSpeed(0);
 
 
     }
