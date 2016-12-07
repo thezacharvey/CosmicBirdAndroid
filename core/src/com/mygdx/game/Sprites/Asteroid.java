@@ -55,6 +55,7 @@ public class Asteroid {
         sprite[1] = new Sprite(new Texture(Gdx.files.internal("christmas/metorite.png")));
         sprite[0].setOrigin(asteroidWidth/2,asteroidHeight/2);
         sprite[1].setOrigin(sprite[1].getWidth()/2,sprite[1].getHeight()/2);
+        sprite[1].scale(-.5f);
 
 
         asteroidCircle = new Circle[2];
@@ -65,9 +66,6 @@ public class Asteroid {
             asteroidCircle[i] = new Circle();
            asteroidCircle[i].setRadius(sprite[i].getWidth()/2);
         }
-
-        Gdx.app.log("BUG",String.valueOf(asteroidCircle.length));
-
 
 
     }
@@ -99,13 +97,15 @@ public class Asteroid {
                 {
                     moveSpeed = .5f;
                     rotate=-1.55f;
-                   // fallSpeed = -.25f;
+                    asteroidCircle[1].setRadius(sprite[1].getWidth()/2.75f);
+                    //fallSpeed = -.15f;
+                    sprite[1].translateY(fallSpeed);
                 }
                 sprite[i].rotate(rotate);
                 sprite[i].translateX((-velocity *dt )* moveSpeed);
-                sprite[i].translateY(fallSpeed);
+                //sprite[i].translateY(fallSpeed);
                 asteroidCircle[i].setPosition(sprite[i].getX() + sprite[i].getWidth()/2,sprite[i].getY() + sprite[i].getHeight()/2);
-                asteroidCircle[i].setRadius(sprite[i].getWidth()/2);
+                //asteroidCircle[i].setRadius(sprite[i].getWidth()/2);
             }
 
 

@@ -116,7 +116,7 @@ public class Bird {
             sprite.setY(getY() +dt);
          //   if (gameSprite.getRotation())
             if (sprite.getRotation() >= -91f)
-            sprite.rotate(-Main.cameraManager.getCamHeight()/60f);
+            sprite.rotate(-Main.cameraManager.getCamHeight()/sprite.getWidth()/4.75f);
 
         }
 

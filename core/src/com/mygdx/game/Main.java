@@ -143,9 +143,9 @@ public class Main extends ApplicationAdapter {
 
 
 		bgSprite = new Sprite(backgroundManager.getBackground());
-		bgSprite.setX(cameraManager.getCamWidth()/2 - bgSprite.getRegionWidth()/3.85f);
+		bgSprite.setX(cameraManager.getCamWidth()/2 + bgSprite.getRegionWidth()/3.85f);
 		bgSprite.setY(cameraManager.getCamHeight()/2 - bgSprite.getHeight()/2);
-		bgSprite.scale(1.75f);
+		bgSprite.scale(2f);
 
 
 		stateManager = new StateManager(bird,asteroid,coin,cameraManager,scoreManager,sun,backgroundManager);   //BACS
@@ -183,7 +183,7 @@ public class Main extends ApplicationAdapter {
 		if (!stateManager.showSplashScreen()) {
 
 
-
+			bgSprite.setX(cameraManager.getCamWidth() /2);
 			bgSprite.draw(batch);
 			bird.getSprite().draw(batch);
 			//heart.getSpriteArr().draw(batch);
@@ -210,8 +210,9 @@ public class Main extends ApplicationAdapter {
 			}
 
 			    asteroid.getSpriteArr()[0].draw(batch);
-			if (score >=800) {
+			if (score  > 300 && score < 1250) {
 				asteroid.getSpriteArr()[1].draw(batch);
+				//asteroid.getCircleArr()[1].setPosition(asteroid.getSpriteArr()[1].getX(),asteroid.getSpriteArr()[1].getY());
 			}
 
 			if (gameState == 0) {
@@ -284,16 +285,16 @@ public class Main extends ApplicationAdapter {
 		batch.end();
 
 
-		//shapeRenderer.setProjectionMatrix(camera.combined);
-		//shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-		//shapeRenderer.setColor(Color.RED);
-		//for (Circle circle : asteroid.getCircleArr())
-		//{
-			//shapeRenderer.circle(circle.x,circle.y,circle.radius);
-		//}
+		/*shapeRenderer.setProjectionMatrix(camera.combined);
+		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+		shapeRenderer.setColor(Color.RED);
+		for (Circle circle : asteroid.getCircleArr())
+		{
+			shapeRenderer.circle(circle.x,circle.y,circle.radius);
+		}
 
-    	//shapeRenderer.rect(sun.getRectangle().x,sun.getRectangle().y,sun.getRectangle().width, sun.getRectangle().height);
-      //shapeRenderer.end();
+    	shapeRenderer.rect(sun.getRectangle().x,sun.getRectangle().y,sun.getRectangle().width, sun.getRectangle().height);
+      shapeRenderer.end();*/
 
 	}
 
@@ -370,8 +371,7 @@ public class Main extends ApplicationAdapter {
 		for (int i=0; i < asteroid.getCircleArr().length;i++) {
 
 
-
-			if (Intersector.overlaps(asteroid.getCircleArr()[i],bird.getRectangle())&&gameState == 1 && i ==0 ||Intersector.overlaps(asteroid.getCircleArr()[i],bird.getRectangle())&&gameState == 1 && score >=800){
+			if (Intersector.overlaps(asteroid.getCircleArr()[i],bird.getRectangle())&&gameState == 1 && i ==0 ||Intersector.overlaps(asteroid.getCircleArr()[i],bird.getRectangle())&&gameState == 1 && score >300 && score <1250){
 				soundManager.playSoundEffect(2);
 				if (canGiveDamage && health > 0) {
 					health--;

@@ -68,14 +68,15 @@ public class ScoreManager {
         if (score >=1500 ) {
             asteroid.setAsteroidTexture(1);
         }
-        if (score % 300==0)
+        if (score > 300 && score <1250f)
         {
             asteroid.setFallSpeed(-.25f);
-        }
-        if (score % 550==0)
+        }else
         {
-            asteroid.setFallSpeed(0f);
+            asteroid.setFallSpeed(0);
+
         }
+
 
         if (highScore < score && Main.gameState == 1) {
             highScore = score;

@@ -39,14 +39,14 @@ public class Heart implements ISpriteInterface {
         this.cameraManager = cameraManager;
 
 
-        heartscale  = 1.25f;
-
         velocity = cameraManager.getCamWidth()/125f;
 
         sprite = new Sprite(new Texture(Gdx.files.internal("heart.png")));
         sprite.setX(cameraManager.getCamWidth() + sprite.getWidth());
         sprite.setY(randomY());
         sprite.setScale(1.25f);
+
+        heartscale  = 1.5f;
 
         healthStatus = new Sprite[3];
        float gap= cameraManager.getCamWidth()/2 - sprite.getWidth()/2f;
