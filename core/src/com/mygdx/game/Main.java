@@ -27,6 +27,7 @@ import com.mygdx.game.Sprites.Heart;
 import com.mygdx.game.Sprites.ScoreMultiplier;
 import com.mygdx.game.Sprites.Snow;
 import com.mygdx.game.Sprites.Sun;
+import com.mygdx.game.UI.UiManager;
 
 public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
@@ -61,6 +62,8 @@ public class Main extends ApplicationAdapter {
 	private LanguageManager languageManager;
 	public static int health;
 	private boolean canGiveDamage;
+	private UiManager uiManager;
+
 	public Main(AdHandler handler)
 	{
 		this.handler = handler;
@@ -73,7 +76,6 @@ public class Main extends ApplicationAdapter {
 		handler.showAds(true);
 		health =0;
 		score = 0;
-
 
 		soundManager = new SoundManager();
 		gameState = -1;		//Menu
@@ -154,11 +156,8 @@ public class Main extends ApplicationAdapter {
 		snow = new Snow(cameraManager);
 		languageManager = new LanguageManager(scoreSprite,gameSprite,highScoreSprite,tapToReplaySprite);
 		heart = new Heart(cameraManager,scoreManager,this);
-
-
-		//heart = new Heart(cameraManager);
-		// Implement later
-		// please
+		//uiManager = new UiManager(cameraManager);
+		//implement later
 	}
 
 
@@ -185,7 +184,10 @@ public class Main extends ApplicationAdapter {
 
 			bgSprite.setX(cameraManager.getCamWidth() /2);
 			bgSprite.draw(batch);
+
 			bird.getSprite().draw(batch);
+
+
 			//heart.getSpriteArr().draw(batch);
 			//batch.draw(bird.getTextureRegion(),bird.getX(),bird.getY());
 			if (coin.getCollision()) {
@@ -203,6 +205,7 @@ public class Main extends ApplicationAdapter {
 			if (scoreManager.heartIsDrawable())
 			{
 				heart.getSprite(0).draw(batch);
+
 			}
 
 			if (!scoreMultiplier.getCollision()) {
@@ -210,10 +213,10 @@ public class Main extends ApplicationAdapter {
 			}
 
 			    asteroid.getSpriteArr()[0].draw(batch);
-			if (score  > 300 && score < 1250) {
 				asteroid.getSpriteArr()[1].draw(batch);
+
 				//asteroid.getCircleArr()[1].setPosition(asteroid.getSpriteArr()[1].getX(),asteroid.getSpriteArr()[1].getY());
-			}
+
 
 			if (gameState == 0) {
 				batch.draw(tapToPlay, cameraManager.getCamWidth() / 2 - tapToPlay.getWidth() / 2, cameraManager.getCamHeight() / 2 - tapToPlay.getHeight() / 2);
@@ -223,11 +226,6 @@ public class Main extends ApplicationAdapter {
 
 				handler.showAds(false);
 
-
-				//scoreSprite.setY(scoreSprite.getHeight());
-				//scoreSprite.setPosition(heart.getHealthStatus()[0].getX()+ scoreSprite.getWidth()/1.25f,heart.getHealthStatus()[0].getY()-scoreSprite.getHeight());
-
-				//batch.draw(scoreTexture,0 ,cameraManager.getCamHeight()- scoreTexture.getHeight());
 
 				if (hasScored) {
 					scoreSprite.setTexture(languageManager.getScoreTexture(1));
@@ -275,6 +273,7 @@ public class Main extends ApplicationAdapter {
 		}else
 		{
 			stateManager.getSplashSprite().draw(batch);
+
 		}
 		coin.getSprite().draw(batch);
 		if (sun.getDisplayWarning() && gameState == 1) {
@@ -282,8 +281,11 @@ public class Main extends ApplicationAdapter {
 		}
 
 
-		batch.end();
+		//batch.draw(uiManager.getSprite(2),cameraManager.getCamWidth()/2,cameraManager.getCamHeight()/2);
 
+		//uiManager.getUiSprite().draw(batch);
+
+		batch.end();
 
 		/*shapeRenderer.setProjectionMatrix(camera.combined);
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -371,7 +373,7 @@ public class Main extends ApplicationAdapter {
 		for (int i=0; i < asteroid.getCircleArr().length;i++) {
 
 
-			if (Intersector.overlaps(asteroid.getCircleArr()[i],bird.getRectangle())&&gameState == 1 && i ==0 ||Intersector.overlaps(asteroid.getCircleArr()[i],bird.getRectangle())&&gameState == 1 && score >300 && score <1250){
+			if (Intersector.overlaps(asteroid.getCircleArr()[i],bird.getRectangle())&&gameState == 1 && i ==0 ||Intersector.overlaps(asteroid.getCircleArr()[i],bird.getRectangle())&&gameState == 1 ){
 				soundManager.playSoundEffect(2);
 				if (canGiveDamage && health > 0) {
 					health--;

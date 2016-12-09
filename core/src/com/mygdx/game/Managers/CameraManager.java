@@ -23,20 +23,16 @@ public class CameraManager {
         screenWidth = Gdx.graphics.getWidth();
     }
 
-    /*
-    *Testing the screen width and adjusting
-     * below
-    */
-
     public void setCamSize()
     {
 
-            Gdx.app.log("ScreenWidth", String.valueOf(screenWidth));
 
-       // if (screenWidth  > 1440) {
-            //camera.setToOrtho(false, screenWidth / 15, screenHeight / 15);
-          //  return;
-        //}
+        if (screenWidth > 2560)
+        {
+            camera.setToOrtho(false,screenWidth/13f,screenHeight/13f);
+            return;
+        }
+
         switch ((int)screenWidth)
         {
 

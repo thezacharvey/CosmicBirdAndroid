@@ -27,12 +27,16 @@ public class Asteroid {
     private float newAsteroidY;
     private  float velocity;
     private Sprite sprite[];
+    private boolean secondaryAsteroidCanSpawn;
     private Vector2 originXY;
     private Main main;
     private float fallSpeed;
+    private boolean Visible;
 
     public Asteroid(OrthographicCamera camera,Main main)
     {
+        Visible =false;
+        secondaryAsteroidCanSpawn = false;
         fallSpeed = 0f;
         random = new Random();
         asteroid2 = new Texture(Gdx.files.internal("christmas/asteroid2christmas.png"));
@@ -83,12 +87,18 @@ public class Asteroid {
             float rotate = 1.55f;
             float moveSpeed = 1f;
 
+
+
             for (int i=0; i <sprite.length;i++)
             {
 
 
                 if (sprite[i].getX() < -sprite[i].getWidth())
                 {
+                    if (i>0)
+                    {
+                        Visible = false;
+                    }
                     sprite[i].setX(cameraWidth + sprite[i].getWidth());
                     sprite[i].setY(asteroidY(sprite[i].getY()));
                     main.setCanGiveDamage(true);
@@ -99,7 +109,7 @@ public class Asteroid {
                     rotate=-1.55f;
                     asteroidCircle[1].setRadius(sprite[1].getWidth()/2.75f);
                     //fallSpeed = -.15f;
-                    sprite[1].translateY(fallSpeed);
+                   // sprite[1].translateY(fallSpeed);
                 }
                 sprite[i].rotate(rotate);
                 sprite[i].translateX((-velocity *dt )* moveSpeed);
@@ -108,19 +118,17 @@ public class Asteroid {
                 //asteroidCircle[i].setRadius(sprite[i].getWidth()/2);
             }
 
-
-
-
-
-
-
+        if (!secondaryAsteroidCanSpawn && !Visible)
+        {
+            sprite[1].setX(cameraWidth + sprite[1].getWidth());
+            asteroidCircle[1].setX(sprite[1].getX());
+        }
 
 
     }
 
-    public void setFallSpeed(float f){fallSpeed = f;}
-
-
+    public void setSecondaryAsteroidCanSpawn(boolean b){secondaryAsteroidCanSpawn = b;}
+    public void setVisibilty(boolean v){Visible = v;}
 
     private int asteroidY(float prev)
     {

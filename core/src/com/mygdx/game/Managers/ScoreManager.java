@@ -68,12 +68,13 @@ public class ScoreManager {
         if (score >=1500 ) {
             asteroid.setAsteroidTexture(1);
         }
-        if (score > 300 && score <1250f)
+        if (score > 300 && score <1250)
         {
-            asteroid.setFallSpeed(-.25f);
+           asteroid.setSecondaryAsteroidCanSpawn(true);
+            asteroid.setVisibilty(true);
         }else
         {
-            asteroid.setFallSpeed(0);
+          asteroid.setSecondaryAsteroidCanSpawn(false);
 
         }
 
