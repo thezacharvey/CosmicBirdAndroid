@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Managers.BackgroundManager;
@@ -27,6 +26,7 @@ import com.mygdx.game.Sprites.Heart;
 import com.mygdx.game.Sprites.ScoreMultiplier;
 import com.mygdx.game.Sprites.Snow;
 import com.mygdx.game.Sprites.Sun;
+import com.mygdx.game.UI.NumberGenerator;
 import com.mygdx.game.UI.UiManager;
 
 public class Main extends ApplicationAdapter {
@@ -63,6 +63,7 @@ public class Main extends ApplicationAdapter {
 	public static int health;
 	private boolean canGiveDamage;
 	private UiManager uiManager;
+	private NumberGenerator numberGenerator;
 
 	public Main(AdHandler handler)
 	{
@@ -75,7 +76,7 @@ public class Main extends ApplicationAdapter {
 	public void create () {
 		handler.showAds(true);
 		health =0;
-		score = 0;
+		score = 20;
 
 		soundManager = new SoundManager();
 		gameState = -1;		//Menu
@@ -156,6 +157,11 @@ public class Main extends ApplicationAdapter {
 		snow = new Snow(cameraManager);
 		languageManager = new LanguageManager(scoreSprite,gameSprite,highScoreSprite,tapToReplaySprite);
 		heart = new Heart(cameraManager,scoreManager,this);
+
+		numberGenerator = new NumberGenerator(cameraManager,scoreManager);
+
+
+
 		//uiManager = new UiManager(cameraManager);
 		//implement later
 	}
@@ -222,19 +228,18 @@ public class Main extends ApplicationAdapter {
 				batch.draw(tapToPlay, cameraManager.getCamWidth() / 2 - tapToPlay.getWidth() / 2, cameraManager.getCamHeight() / 2 - tapToPlay.getHeight() / 2);
 			} else if (gameState == 1) {
 
-
+				//Playing Game**
 
 				handler.showAds(false);
 
+				for (Sprite sprite: numberGenerator.getText(heart.getHealthStatus()[0].getY(),heart.getHealthStatus()[0].getHeight(),false))
+				{
 
-				if (hasScored) {
-					scoreSprite.setTexture(languageManager.getScoreTexture(1));
-				} else {
-					scoreSprite.setTexture(languageManager.getScoreTexture(0));
+					sprite.draw(batch);
 				}
-				//scoreSprite.draw(batch);
 
-				scoreFont.draw(batch, String.valueOf(score), autoAudjustScorePos(false).x,autoAudjustScorePos(false).y);
+
+				//	scoreFont.draw(batch, String.valueOf(score), autoAudjustScorePos(false).x,autoAudjustScorePos(false).y);
 			} else {
 				//	batch.draw(gameOver,cameraManager.getCamWidth()/2 - gameOver.getWidth()/2,cameraManager.getCamHeight()/2 - gameOver.getHeight()/2);
 				if (gameSprite.getScaleX() < 2.f) {
@@ -255,7 +260,13 @@ public class Main extends ApplicationAdapter {
 					newSprite.draw(batch);
 				}
 				if (highScoreSprite.getScaleX() >= 1f) {
-					scoreFont.draw(batch, String.valueOf(scoreManager.getPreferences().getInteger("highScore")),autoAudjustScorePos(true).x,autoAudjustScorePos(true).y);
+					//scoreFont.draw(batch, String.valueOf(scoreManager.getPreferences().getInteger("highScore")),autoAudjustScorePos(true).x,autoAudjustScorePos(true).y);Num
+					for (Sprite sprite: numberGenerator.getText(heart.getHealthStatus()[0].getY(),heart.getHealthStatus()[0].getHeight(),true))
+					{
+
+						sprite.draw(batch);
+					}
+
 				}
 
 			}
@@ -284,6 +295,10 @@ public class Main extends ApplicationAdapter {
 		//batch.draw(uiManager.getSprite(2),cameraManager.getCamWidth()/2,cameraManager.getCamHeight()/2);
 
 		//uiManager.getUiSprite().draw(batch);
+		//batch.draw(numberGenerator.getText(),cameraManager.getCamWidth()/2,cameraManager.getCamHeight()/2);
+
+
+
 
 		batch.end();
 
