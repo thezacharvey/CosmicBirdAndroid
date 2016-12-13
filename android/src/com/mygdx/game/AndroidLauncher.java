@@ -73,6 +73,7 @@ public class AndroidLauncher extends AndroidApplication implements AdHandler {
 
 				);
 
+
 		layout.addView(adView, adParams);
 
 		adView.loadAd(builder.build());

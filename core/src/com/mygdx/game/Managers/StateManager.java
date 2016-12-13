@@ -22,12 +22,14 @@ public class StateManager {
     private Coin coin;
     private Sprite splashSprite;
     private boolean showSplash;
+    private boolean startGame;
        private int tapCount;
     private BackgroundManager backgroundManager;
     private CameraManager cameraManager;
 
     public StateManager(Bird bird, Asteroid asteroid, Coin coin, CameraManager cameraManager,ScoreManager scoreManager,Sun sun,BackgroundManager backgroundManager)
     {
+        startGame =false;
         this.backgroundManager = backgroundManager;
         this.sun = sun;
         this.scoreManager = scoreManager;
@@ -67,13 +69,12 @@ public class StateManager {
             case 0:                 //menu
                     Main.birdDead =true;
                     bird.setY(Main.cameraManager.getCamHeight()/2 - bird.getTextureRegion().getRegionHeight()/2);
-                if (Gdx.input.justTouched())
-                    tapCount++;
-                if (tapCount >=1) {
+
+                if (startGame) {
                     Main.birdDead = false;
                     Main.gameState = 1;
                     Main.health =1;
-                    tapCount=0;
+                    startGame =false;
 
                 }
                 break;
@@ -97,6 +98,7 @@ public class StateManager {
 
     public boolean showSplashScreen(){return showSplash;}
     public Sprite getSplashSprite(){return splashSprite;}
+    public void setStartGame(boolean s){startGame =s;}
 
     private void resetGame()
     {

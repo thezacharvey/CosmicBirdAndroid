@@ -109,6 +109,19 @@ public class NumberGenerator {
         return x;
     }
 
+    public void dispose()
+    {
+        for (Sprite sprite: scoreSprite )
+        {
+            sprite.getTexture().dispose();
+        }
+        for (TextureRegion textureRegion : numbers)
+        {
+            textureRegion.getTexture().dispose();
+        }
+            font.dispose();
+    }
+
 
 
 
