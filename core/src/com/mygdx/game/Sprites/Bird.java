@@ -56,7 +56,7 @@ public class Bird {
 
         toggle =false;
 
-        gravity = .53f;
+        gravity = .50f;
         Gdx.app.log("gravity",String.valueOf(gravity));
         sprite = new Sprite(getTextureRegion());
         sprite.setX(getX());
@@ -94,8 +94,8 @@ public class Bird {
 
             if(Gdx.input.justTouched() && birdY < camH - Main.scoreTexture.getHeight())
             {
-                velocity = -cameraManager.getCamHeight() /26f;
-                sprite.setRotation(cameraManager.getCamHeight()/3.35f + dt);
+                velocity =  -(birdHeight/1.5f);
+                sprite.setRotation(45);
                // mousePos.set(Gdx.input.getX(),Gdx.input.getY());
                // Gdx.app.log("Cheese", String.valueOf(mousePos.x / cameraManager.getCamWidth()));   // possible screen side testing
             }
@@ -115,12 +115,12 @@ public class Bird {
     {
         if (birdY >= -birdHeight/2 || velocity < 0 &&  Main.gameState==1)
         {
-            velocity = velocity +gravity;
+            velocity = velocity +(gravity+dt);
             birdY -= velocity;
-            sprite.setY(getY() +dt);
-         //   if (gameSprite.getRotation())
-            if (sprite.getRotation() >= -91f)
-            sprite.rotate(-Main.cameraManager.getCamHeight()/sprite.getWidth()/4.75f);
+            sprite.setY(getY());
+
+            if (sprite.getRotation() >= -45f)
+            sprite.rotate(-birdWidth/6f);
 
         }
 

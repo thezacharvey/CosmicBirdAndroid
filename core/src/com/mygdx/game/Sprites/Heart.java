@@ -56,8 +56,6 @@ public class Heart implements ISpriteInterface {
         {
             healthStatus[i] = new Sprite(new Texture(Gdx.files.internal("heart.png")));
 
-
-
             if (i>0)
             {
                 healthStatus[i].setScale(.25f,.25f);

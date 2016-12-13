@@ -366,7 +366,7 @@ public class Main extends ApplicationAdapter {
 			}
 
 		}
-		if (Intersector.overlaps(heart.getCircle(),bird.getRectangle()))
+		if (Intersector.overlaps(heart.getCircle(),bird.getRectangle()) && !birdDead)
 		{
 			heart.setCollision(true);
 			if (health <3)

@@ -30,7 +30,7 @@ public class UiManager {
     private CameraManager cameraManager;
     private Vector3 mousePos,unproject;
     private Circle touchCircle;
-    private Rectangle muteRectangle,playRectangle,helpRectangle,resetRectangle;
+    private Rectangle muteRectangle,playRectangle,helpRectangle,resetRectangle,arrowRectangle;
     private boolean toggle,canClick;
     private SoundManager soundManager;
     private StateManager stateManager;
@@ -55,6 +55,7 @@ public class UiManager {
         playRectangle = new Rectangle();
         helpRectangle = new Rectangle();
         resetRectangle = new Rectangle();
+        arrowRectangle = new Rectangle();
 
 
         playSprite = new Sprite(play);
@@ -68,7 +69,7 @@ public class UiManager {
         toggle =false;
 
         uiSheet = new Texture(Gdx.files.internal("uisheet.png"));
-        int uiCount = 4;
+        int uiCount = 5;
 
         int uiWidth = uiSheet.getWidth() / uiCount;
         touchCircle.setRadius(uiWidth/15);
@@ -103,9 +104,12 @@ public class UiManager {
 
         }
         uiSprite.get(2).setRegion(uiRegion.get(3));
+        uiSprite.get(3).setRegion(uiRegion.get(4));
         resetScale=1.25f;
         uiSprite.get(2).setScale(resetScale);
         uiSprite.get(2).setPosition(cameraManager.getCamWidth()/2 -uiSprite.get(2).getWidth()/2,uiSprite.get(2).getHeight());
+        uiSprite.get(3).setPosition(cameraManager.getCamWidth()/2 -uiSprite.get(3).getWidth()/2,cameraManager.getCamHeight()+uiSprite.get(3).getHeight());
+
 
 
         helpRectangle.set(uiSprite.get(0).getX(),uiSprite.get(0).getY(),uiSprite.get(0).getRegionWidth(),uiSprite.get(0).getRegionHeight());
@@ -134,7 +138,11 @@ public class UiManager {
         if(Main.gameState ==0 || Main.gameState ==2) {
 
             update(Gdx.graphics.getDeltaTime());
-            for (int i=0; i < uiSprite.size()-1;i++)
+            Gdx.app.log("CAM",String.valueOf(Gdx.graphics.getWidth())+" unproject: "+String.valueOf(cameraManager.getCamera().unproject(new Vector3(cameraManager.getCamera().position.x,cameraManager.getCamHeight(),0))));
+
+            uiSprite.get(3).draw(batch);
+
+            for (int i=0; i < uiSprite.size()-2;i++)
             {
                 uiSprite.get(i).draw(batch);
             }
@@ -163,7 +171,7 @@ public class UiManager {
         reset = false;
     }
 
-    public Rectangle getRectangle(){return resetRectangle;}
+    public Rectangle getRectangle(){return arrowRectangle;}
 
 
     public void update(float dt)
@@ -188,7 +196,14 @@ public class UiManager {
             {
                 if (cameraManager.getCamera().position.y >= upY)
                 {
-                    panUp = false;
+                    uiSprite.get(3).setY(upY);
+                    arrowRectangle.set(uiSprite.get(3).getX(),uiSprite.get(3).getY(),uiSprite.get(3).getWidth(),uiSprite.get(3).getHeight());
+
+                    if (Gdx.input.justTouched() && Intersector.overlaps(touchCircle,arrowRectangle))
+                    {
+                        panUp = false;
+                    }
+
                 }
                     cameraManager.getCamera().position.interpolate(new Vector3(cameraManager.getCamOriginPos().x,cameraManager.getCamOriginPos().y+upY,cameraManager.getCamOriginPos().z),dt,Interpolation.bounceIn);
 
