@@ -15,11 +15,10 @@ public class LanguageManager {
 
     private Texture[] texture,gameOver,replayTexture;
     private String lang;
-    private Sprite scoreSprite,gameSprite,highscoreSprite,tapToReplaySprite;
-    public LanguageManager(Sprite scoreSprite,Sprite gameSprite, Sprite highscoreSprite, Sprite tapToReplaySprite)
+    private Sprite scoreSprite,gameSprite,highscoreSprite;
+    public LanguageManager(Sprite scoreSprite,Sprite gameSprite, Sprite highscoreSprite)
 
     {
-        this.tapToReplaySprite = tapToReplaySprite;
         this.highscoreSprite = highscoreSprite;
         this.gameSprite = gameSprite;
     this.scoreSprite = scoreSprite;
@@ -80,7 +79,6 @@ public class LanguageManager {
             gameSprite.setScale(2.85f,1);
             highscoreSprite.setTexture(gameOver[2]);
             highscoreSprite.setScale(0.35f,1);
-            tapToReplaySprite.setTexture(replayTexture[2]);
 
         }else if(lang.equals("pt_PR") || lang.equals("pt_BR" ) ||lang.equals("pt_PT"))
         {
@@ -99,7 +97,6 @@ public class LanguageManager {
             highscoreSprite.setTexture(gameOver[4]);
             highscoreSprite.setScale(1.25f,1.25f);
             scoreSprite.setScale(1f,1f);
-            tapToReplaySprite.setTexture(replayTexture[1]);
 
             //Portugeses (:
 
@@ -153,8 +150,6 @@ public class LanguageManager {
             } //English
 
             gameSprite.setTexture(gameOver[0]);
-
-            tapToReplaySprite.setTexture(replayTexture[0]);
         }
         else
         {

@@ -2,6 +2,7 @@ package com.mygdx.game.Managers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  * Created by z_ig_ on 11/9/2016.
@@ -12,6 +13,7 @@ public class CameraManager {
     private float camWidth, camHeight;
     private float camZoom;
     private float screenHeight,screenWidth;
+    private float originX,originY,originZ;
     private OrthographicCamera camera;
     public CameraManager(OrthographicCamera camera)
     {
@@ -92,6 +94,10 @@ public class CameraManager {
         camWidth = camera.viewportWidth;
         camHeight = camera.viewportHeight;
 
+        originX = camera.position.x;
+        originY = camera.position.y;
+        originZ = camera.position.z;
+
 
 
     }
@@ -99,5 +105,6 @@ public class CameraManager {
     public float getCamWidth(){return camWidth;}
     public float getCamHeight(){return camHeight;}
     public float getCamZoom(){return camZoom;}
+    public Vector3 getCamOriginPos(){return new Vector3(originX,originY,originZ);}
     public OrthographicCamera getCamera(){return camera;}
 }

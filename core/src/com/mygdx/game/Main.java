@@ -34,7 +34,7 @@ public class Main extends ApplicationAdapter {
 	SpriteBatch batch;
 
 	private Animation animation,newAnimation;
-  private static Texture gameOver,highScore, newTexture,taptoReplay;
+  private static Texture gameOver,highScore, newTexture;
 	public static Texture scoreTexture,score2Texture;
 	public static boolean birdDead;
 	private OrthographicCamera camera;
@@ -46,7 +46,7 @@ public class Main extends ApplicationAdapter {
 	private Bird bird;
 	private boolean hasScored; //changes Score Texture only
 	private Sun sun;
-   public static Sprite gameSprite,highScoreSprite,newSprite,tapToReplaySprite,bgSprite;
+   public static Sprite gameSprite,highScoreSprite,newSprite,bgSprite;
 	private Sprite scoreSprite;
 	private ScoreManager scoreManager;
 	private StateManager stateManager;
@@ -92,7 +92,6 @@ public class Main extends ApplicationAdapter {
 		gameOver= new Texture("gameover.png");
 		highScore = new Texture("highscore.png");
 		newTexture = new Texture("new.png");
-	     taptoReplay = new Texture(Gdx.files.internal("christmas/replaychristmas.png"));
 
 		//bg = new Texture(Gdx.files.internal("backgrounds/bg2.png"));
 		hasScored = false;
@@ -133,10 +132,6 @@ public class Main extends ApplicationAdapter {
 		newSprite.setY(cameraManager.getCamHeight()/2 + newSprite.getHeight());
 		newSprite.setX(cameraManager.getCamWidth()/2 -newSprite.getRegionWidth()/2 );
 
-		tapToReplaySprite = new Sprite(taptoReplay);
-		tapToReplaySprite.setX(cameraManager.getCamWidth()/2 - taptoReplay.getWidth()/2);
-		tapToReplaySprite.setY(tapToReplaySprite.getHeight()/2.35f);
-
 		backgroundManager = new BackgroundManager();
 
 		scoreSprite = new Sprite(scoreTexture);
@@ -155,7 +150,7 @@ public class Main extends ApplicationAdapter {
 		scoreMultiplier = new ScoreMultiplier(cameraManager);
 
 		snow = new Snow(cameraManager);
-		languageManager = new LanguageManager(scoreSprite,gameSprite,highScoreSprite,tapToReplaySprite);
+		languageManager = new LanguageManager(scoreSprite,gameSprite,highScoreSprite);
 		heart = new Heart(cameraManager,scoreManager,this);
 
 		numberGenerator = new NumberGenerator(cameraManager,scoreManager);
@@ -240,14 +235,10 @@ public class Main extends ApplicationAdapter {
 				if (highScoreSprite.getScaleX() <= 1f) {
 					highScoreSprite.scale(.125f);
 				}
-				if (tapToReplaySprite.getScaleX() < 1.75f) {
-					tapToReplaySprite.scale(.125f);
-				}
 
 				gameSprite.draw(batch);
 				highScoreSprite.draw(batch);
-				//tapToReplaySprite.setTexture(languageManager.getScoreTexture(0));
-				tapToReplaySprite.draw(batch);
+
 				if (scoreManager.gotNewHighScore()) {
 					newSprite.draw(batch);
 				}
@@ -288,7 +279,7 @@ public class Main extends ApplicationAdapter {
 		batch.end();
 
 		shapeRenderer.setProjectionMatrix(camera.combined);
-		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 	    shapeRenderer.setColor(Color.RED);
 		//shapeRenderer.circle(uiManager.getTouchCircle().x,uiManager.getTouchCircle().y,uiManager.getTouchCircle().radius);
 		//for (Circle circle : asteroid.getCircleArr())
@@ -316,13 +307,9 @@ public class Main extends ApplicationAdapter {
 		bird.update(dt);
 		sun.update(dt);
 		snow.update(dt);
-
-
 		uiManager.update(dt);
-
-
-		//heart.update(dt);
-		//Gdx.app.log("FPS",String.valueOf(Gdx.graphics.getFramesPerSecond()));
+		scoreManager.update();
+		heart.update(dt);
 
 		if (scoreManager.gotNewHighScore())
 		{
@@ -345,12 +332,7 @@ public class Main extends ApplicationAdapter {
 			hasScored = !hasScored;
 			scoreMultiplier.setCollision(true);
 
-
-			//	Gdx.app.log("jooz",String.valueOf(scoreManager.getPreferences().getInteger("highscore")));
 		}
-
-
-
 
 		for (int i=0; i < asteroid.getCircleArr().length;i++) {
 
@@ -395,9 +377,6 @@ public class Main extends ApplicationAdapter {
 
 
 		}
-
-		scoreManager.update();
-		heart.update(dt);
 		stateManager.handleState(gameState);
 
 
@@ -418,7 +397,6 @@ public class Main extends ApplicationAdapter {
 		coin.dispose();
 		scoreFont.dispose();
 		newTexture.dispose();
-		taptoReplay.dispose();
 		sun.dispose();
 		soundManager.dispose();
 		snow.dispose();

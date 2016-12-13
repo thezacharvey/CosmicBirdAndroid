@@ -23,7 +23,6 @@ public class StateManager {
     private Sprite splashSprite;
     private boolean showSplash;
     private boolean startGame;
-       private int tapCount;
     private BackgroundManager backgroundManager;
     private CameraManager cameraManager;
 
@@ -33,7 +32,6 @@ public class StateManager {
         this.backgroundManager = backgroundManager;
         this.sun = sun;
         this.scoreManager = scoreManager;
-        tapCount=0;
         this.cameraManager = cameraManager;
             this.bird = bird;
             this.coin = coin;
@@ -82,13 +80,6 @@ public class StateManager {
                 break;
             case 2:
                     bird.applyGravity(Gdx.graphics.getDeltaTime()); //dead
-
-                if (Gdx.input.justTouched())
-                    tapCount++;
-                if (tapCount >=3)
-                {
-                    resetGame();
-                }
                 break;
 
             default:
@@ -100,10 +91,9 @@ public class StateManager {
     public Sprite getSplashSprite(){return splashSprite;}
     public void setStartGame(boolean s){startGame =s;}
 
-    private void resetGame()
+    public void resetGame()
     {
         Main.birdDead =false;
-        tapCount =0;
         bird.setY(bird.getOriginXY().y + bird.getHeight()*2);
         asteroid.setX(asteroid.getOriginXY().x);
         coin.setX(coin.getOriginXY().x);
