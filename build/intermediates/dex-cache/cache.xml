@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="C:\Users\Zac\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.9.4\194b33382d6d58fad031521ba3331d926c476c9b\gdx-backend-android-1.9.4.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="194b33382d6d58fad031521ba3331d926c476c9b">
+        <dex dex="C:\Users\Zac\AndroidStudioProjects\CosmicBird\android\build\intermediates\transforms\dex\debug\folders\1000\10\gdx-backend-android-1.9.4_c52eefb6f09caf983e386b329a19eefe96c4474d\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Zac\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-ai\1.8.0\ec30677d8ab1a8b8aa4b853c5f4e4b1361f50bf5\gdx-ai-1.8.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="ec30677d8ab1a8b8aa4b853c5f4e4b1361f50bf5">
+        <dex dex="C:\Users\Zac\AndroidStudioProjects\CosmicBird\android\build\intermediates\transforms\dex\debug\folders\1000\10\gdx-ai-1.8.0_08dbc6729e9782bda96bf9e84e4a815f8a98bd57\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Zac\AndroidStudioProjects\CosmicBird\android\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="f88f72db74305d6ddece85173cbd4d670812a144">
+        <dex dex="C:\Users\Zac\AndroidStudioProjects\CosmicBird\android\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_d2b62644d95ca75c67da2c91864fa12f2e22b3a8\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Zac\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-box2d\1.9.4\98a0d25c9f0637fecac6e4aacf7287aa635964f5\gdx-box2d-1.9.4.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="98a0d25c9f0637fecac6e4aacf7287aa635964f5">
+        <dex dex="C:\Users\Zac\AndroidStudioProjects\CosmicBird\android\build\intermediates\transforms\dex\debug\folders\1000\10\gdx-box2d-1.9.4_11e2885dce86006a76d7353a937deff1658ff07a\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Zac\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.9.4\4b4b7962d1bc75af0438f5c81ec1010557bc9ee5\gdx-1.9.4.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="4b4b7962d1bc75af0438f5c81ec1010557bc9ee5">
+        <dex dex="C:\Users\Zac\AndroidStudioProjects\CosmicBird\android\build\intermediates\transforms\dex\debug\folders\1000\10\gdx-1.9.4_7859b74df43bcde40669970e700da272316d754f\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Zac\AndroidStudioProjects\CosmicBird\android\build\intermediates\exploded-aar\com.google.android.gms\play-services-ads\8.3.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="27775d59b16610ac76f1b83693fedd9520396332">
+        <dex dex="C:\Users\Zac\AndroidStudioProjects\CosmicBird\android\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-ads-8.3.0_4f5d469d50925bb4d4e6f2487f1df3dbe8970614\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Zac\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.0\support-annotations-22.2.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
+        <dex dex="C:\Users\Zac\AndroidStudioProjects\CosmicBird\android\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-22.2.0_cb4fb0a4a4a8ec1446f60a5b747ee8a5bb1ff672\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Zac\.gradle\caches\modules-2\files-2.1\com.badlogicgames.box2dlights\box2dlights\1.4\3d77ad5b4164fb32fc67e2446e35911bb0aaf0bd\box2dlights-1.4.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="3d77ad5b4164fb32fc67e2446e35911bb0aaf0bd">
+        <dex dex="C:\Users\Zac\AndroidStudioProjects\CosmicBird\android\build\intermediates\transforms\dex\debug\folders\1000\10\box2dlights-1.4_10d58025c97ee169d638beb2729ebd57daca56b5\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Zac\AndroidStudioProjects\CosmicBird\android\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="704327ba4d4a67257412e20c98836d5d0691f271">
+        <dex dex="C:\Users\Zac\AndroidStudioProjects\CosmicBird\android\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_c10163b0f532df82fbafa8b3e87017a3188fde91\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Zac\AndroidStudioProjects\CosmicBird\android\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\libs\internal_impl-22.2.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
+        <dex dex="C:\Users\Zac\AndroidStudioProjects\CosmicBird\android\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-22.2.0_b97e178931c9b379bbcaa262a1f2101eb01a7695\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Zac\AndroidStudioProjects\CosmicBird\android\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\8.3.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="345a1b5cf5b144ce18ba6962bc66a7e2f26c1c1b">
+        <dex dex="C:\Users\Zac\AndroidStudioProjects\CosmicBird\android\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-basement-8.3.0_db419bd769c7ecc8628be52f29cedebe747a6211\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Zac\AndroidStudioProjects\CosmicBird\android\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="23.0.1"
+        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
+        <dex dex="C:\Users\Zac\AndroidStudioProjects\CosmicBird\android\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-22.2.0_529de3a10b5ec5c28f2f97cfc8997aaf9b6a85e7\classes.dex" />
+    </item>
+
+</items>

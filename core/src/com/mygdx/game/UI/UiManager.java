@@ -12,8 +12,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.Main;
 import com.mygdx.game.Managers.CameraManager;
+import com.mygdx.game.Managers.ScoreManager;
 import com.mygdx.game.Managers.SoundManager;
 import com.mygdx.game.Managers.StateManager;
+import com.mygdx.game.Sprites.Asteroid;
 
 import java.util.ArrayList;
 
@@ -37,16 +39,33 @@ public class UiManager {
     private Sprite playSprite;
     private boolean pulseing,panUp,reset;
     private float originScale,resetScale;
+    private ScoreManager scoreManager;
+    private  float upY;
+    private Main main;
+    private Asteroid a;
+    private boolean canDrawTutorials;
+    private  Vector3 start;
 
-    public UiManager(CameraManager cameraManager, SoundManager soundManager, StateManager stateManager)
+    public UiManager(CameraManager cameraManager, SoundManager soundManager, StateManager stateManager, ScoreManager scoreManager,Main main)
     {
+        this.main = main;
         this.stateManager = stateManager;
         this.soundManager = soundManager;
+        this.scoreManager = scoreManager;
+        canDrawTutorials = false;
+
+        upY = cameraManager.getCamHeight() *2;
+
         touchCircle = new Circle();
         uiSprite = new ArrayList<Sprite>();
         mousePos = new Vector3(0,0,0);
         unproject = new Vector3(0,0,0);
+        a = new Asteroid(cameraManager.getCamera(),main);
         resetUIBooleans();
+
+
+        start = new Vector3(0,0,0);
+        start.set(-a.getSpriteArr()[0].getWidth(),(upY+cameraManager.getCamHeight())+a.getSpriteArr()[0].getHeight(),0);
 
         originScale =  .65f;
 
@@ -61,6 +80,7 @@ public class UiManager {
         playSprite = new Sprite(play);
         playSprite.setPosition(cameraManager.getCamWidth() / 2 - playSprite.getRegionWidth() / 2, cameraManager.getCamHeight() / 2-play.getHeight()/2);
         playRectangle.set(playSprite.getX(),playSprite.getY(),playSprite.getRegionWidth(),playSprite.getRegionHeight());
+        a.getSpriteArr()[0].setPosition(0,arrowRectangle.getY());
 
         canClick =true;
 
@@ -108,20 +128,41 @@ public class UiManager {
         resetScale=1.25f;
         uiSprite.get(2).setScale(resetScale);
         uiSprite.get(2).setPosition(cameraManager.getCamWidth()/2 -uiSprite.get(2).getWidth()/2,uiSprite.get(2).getHeight());
-        uiSprite.get(3).setPosition(cameraManager.getCamWidth()/2 -uiSprite.get(3).getWidth()/2,cameraManager.getCamHeight()+uiSprite.get(3).getHeight());
 
-
+        uiSprite.get(3).setPosition(cameraManager.getCamWidth()/2-uiSprite.get(3).getWidth()/2,upY);
+        arrowRectangle.set(uiSprite.get(3).getX(),uiSprite.get(3).getY(),uiSprite.get(3).getWidth(),uiSprite.get(3).getHeight());
 
         helpRectangle.set(uiSprite.get(0).getX(),uiSprite.get(0).getY(),uiSprite.get(0).getRegionWidth(),uiSprite.get(0).getRegionHeight());
         muteRectangle.set(uiSprite.get(1).getX(),uiSprite.get(1).getY(),uiSprite.get(1).getRegionWidth()/1.5f,uiSprite.get(1).getRegionHeight());
         resetRectangle.set(uiSprite.get(2).getX(),uiSprite.get(2).getY(),uiSprite.get(2).getRegionWidth(),uiSprite.get(2).getRegionHeight());
 
 
+        boolean m =scoreManager.getPreferences().getBoolean("mute",false);
+        if (!m)
+        {
+            uiSprite.get(1).setRegion(uiRegion.get(1));
+        }else
+        {
+            uiSprite.get(1).setRegion(uiRegion.get(2));
+        }
+        soundManager.mute(m);
 
     }
+
+    private  void savePrefs(boolean b)
+    {
+        scoreManager.getPreferences().putBoolean("mute",b);
+        scoreManager.getPreferences().flush();
+    }
+
+
     public void dispose()
     {
         for (Sprite sprite : uiSprite)
+        {
+            sprite.getTexture().dispose();
+        }
+        for (Sprite sprite : a.getSpriteArr())
         {
             sprite.getTexture().dispose();
         }
@@ -135,6 +176,8 @@ public class UiManager {
 
     public void render(SpriteBatch batch)
     {
+        cameraManager.debugRender(batch);
+
         if(Main.gameState ==0 || Main.gameState ==2) {
 
             update(Gdx.graphics.getDeltaTime());
@@ -154,6 +197,16 @@ public class UiManager {
             if (Main.gameState==0)
             {
                 playSprite.draw(batch);
+                canDrawTutorials =true;
+            }
+            else
+            {
+                canDrawTutorials = false;
+            }
+            if (canDrawTutorials)
+            {
+                a.getSpriteArr()[0].draw(batch);
+                a.getSpriteArr()[1].draw(batch);
             }
 
         }
@@ -169,6 +222,7 @@ public class UiManager {
         pulseing = false;
         panUp = false;
         reset = false;
+        canDrawTutorials =false;
     }
 
     public Rectangle getRectangle(){return arrowRectangle;}
@@ -176,8 +230,7 @@ public class UiManager {
 
     public void update(float dt)
     {
-
-        float upY = cameraManager.getCamHeight() *2;
+        cameraManager.debugUpdate(touchCircle);
 
         if (Main.gameState==2 || Main.gameState ==0)
         {
@@ -196,8 +249,6 @@ public class UiManager {
             {
                 if (cameraManager.getCamera().position.y >= upY)
                 {
-                    uiSprite.get(3).setY(upY);
-                    arrowRectangle.set(uiSprite.get(3).getX(),uiSprite.get(3).getY(),uiSprite.get(3).getWidth(),uiSprite.get(3).getHeight());
 
                     if (Gdx.input.justTouched() && Intersector.overlaps(touchCircle,arrowRectangle))
                     {
@@ -210,10 +261,10 @@ public class UiManager {
             }
             if (!panUp)
             {
-               // cameraManager.getCamera().translate(0,-0.5f);
                 cameraManager.getCamera().position.interpolate(cameraManager.getCamOriginPos(),dt,Interpolation.bounceIn);
-
+                //cameraManager.getCamera().zoom =.15f;
             }
+            animateInTutorials();
 
             if (Main.gameState ==0)
             {
@@ -258,6 +309,7 @@ public class UiManager {
                         uiSprite.get(1).setRegion(uiRegion.get(1));// unmuted
                         soundManager.mute(false);
                     }
+                    savePrefs(toggle);
                 }
 
 
@@ -297,6 +349,34 @@ public class UiManager {
                    sprite.scale(.005f);
                }
         }
+    }
+
+    private void animateInTutorials()
+    {
+
+        if (cameraManager.getCamera().position.y >=(cameraManager.getCamOriginPos().y+upY)-30 && canDrawTutorials)
+        {
+            //start.interpolate(new Vector3(arrowRectangle.getX(),arrowRectangle.getY(),0),0, new Interpolation.Bounce(3));
+            for (int i=0; i < a.getSpriteArr().length;i++)
+            {
+                start.lerp(new Vector3(0+(i*(a.getSpriteArr()[0].getWidth()/2-a.getSpriteArr()[i].getWidth()/2)),(upY+cameraManager.getCamHeight()/2)-a.getSpriteArr()[i].getHeight(),0),.005f);
+                a.getSpriteArr()[i].setPosition(start.x,start.y);
+                a.getSpriteArr()[i].rotate(.5f);
+            }
+
+        }else
+        {
+            for (int i=0; i < a.getSpriteArr().length;i++)
+            {
+                start.lerp(new Vector3(0+(i*(a.getSpriteArr()[0].getWidth()/2-a.getSpriteArr()[i].getWidth()/2)),upY+cameraManager.getCamHeight()+a.getSpriteArr()[0].getHeight(),0),0.005f);
+            }
+
+        }
+        for (int i=0; i < a.getSpriteArr().length;i++)
+        {
+            a.getSpriteArr()[i].setPosition(0+(i*(a.getSpriteArr()[0].getWidth()/2-a.getSpriteArr()[i].getWidth()/2)),start.y+(i* -a.getSpriteArr()[i].getHeight()));
+        }
+
     }
 
 

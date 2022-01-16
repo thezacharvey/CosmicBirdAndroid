@@ -155,7 +155,7 @@ public class Main extends ApplicationAdapter {
 
 		numberGenerator = new NumberGenerator(cameraManager,scoreManager);
 
-		uiManager = new UiManager(cameraManager,soundManager,stateManager);
+		uiManager = new UiManager(cameraManager,soundManager,stateManager,scoreManager,this);
 		//implement later
 	}
 
@@ -278,9 +278,10 @@ public class Main extends ApplicationAdapter {
 
 		batch.end();
 
+
 		shapeRenderer.setProjectionMatrix(camera.combined);
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-	    shapeRenderer.setColor(Color.RED);
+		//shapeRenderer.circle(cameraManager.getCamWidth()/2,cameraManager.getCamHeight()/2,4,8); //star
 		//shapeRenderer.circle(uiManager.getTouchCircle().x,uiManager.getTouchCircle().y,uiManager.getTouchCircle().radius);
 		//for (Circle circle : asteroid.getCircleArr())
 		//{

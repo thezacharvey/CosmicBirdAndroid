@@ -91,6 +91,15 @@ public class Bird {
         }
         if (!Main.birdDead)
         {
+            float roll = Gdx.input.getRoll();
+            if (roll > 0 && roll < 15 && sprite.getX() < cameraManager.getCamWidth())
+            {
+                sprite.translateX(dt*100f);
+            }
+            if (roll < 0 && roll > -15 && sprite.getX() >= originXY.x)
+            {
+                sprite.translateX(-dt*100f);
+            }
 
             if(Gdx.input.justTouched() && birdY < camH - Main.scoreTexture.getHeight())
             {
@@ -105,14 +114,15 @@ public class Bird {
             }
             rectangle.set(getX(),getY(),getWidth(),getHeight());
 
-                applyGravity(dt);
-        }
+        applyGravity(dt);
+    }
 
-        sprite.setRegion(getTextureRegion());
+    sprite.setRegion(getTextureRegion());
 
 
-    }      public void applyGravity(float dt)
-    {
+
+}      public void applyGravity(float dt)
+{
         if (birdY >= -birdHeight/2 || velocity < 0 &&  Main.gameState==1)
         {
             velocity = velocity +(gravity+dt);
@@ -136,7 +146,7 @@ public class Bird {
     public void setVelocity(float v){velocity =v;}
     public float getVelocity(){return velocity;}
     public Sprite getSprite(){return sprite;}
-    public float getX(){return birdX;}
+    public float getX(){return sprite.getX();}
     public float getWidth(){return birdWidth;}
     public float getHeight(){return birdHeight;}
     public float getY(){return birdY;}

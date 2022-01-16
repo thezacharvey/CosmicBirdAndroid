@@ -112,6 +112,7 @@ public class StateManager {
         Main.bgSprite.setTexture(backgroundManager.getBackground());
         Main.health =1;
         bird.getSprite().setAlpha(1f);
+        bird.getSprite().setX(bird.getOriginXY().x);
         bird.startFlickerAnimation(false);
         asteroid.setSecondaryAsteroidCanSpawn(false);
 

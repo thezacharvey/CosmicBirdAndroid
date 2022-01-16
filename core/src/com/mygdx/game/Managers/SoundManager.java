@@ -43,6 +43,7 @@ public class SoundManager {
 
     public void dispose()
     {
+        //clean up
         birdSound.dispose();
         coinSound.dispose();
         deathsound.dispose();

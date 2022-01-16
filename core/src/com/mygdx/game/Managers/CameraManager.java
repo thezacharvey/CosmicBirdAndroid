@@ -1,8 +1,17 @@
 package com.mygdx.game.Managers;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.GdxFileSystem;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+
+import org.w3c.dom.css.Rect;
 
 /**
  * Created by z_ig_ on 11/9/2016.
@@ -16,6 +25,8 @@ public class CameraManager {
     private float originX,originY,originZ;
     private OrthographicCamera camera;
     private    Vector3 unproject;
+    private Sprite debug;
+    private Rectangle rectangle;
     public CameraManager(OrthographicCamera camera)
     {
         this.camera = camera;
@@ -29,6 +40,34 @@ public class CameraManager {
         originY = camera.position.y;
         originZ = camera.position.z;
 
+        debug = new Sprite(new Texture(Gdx.files.internal("debug.png")));
+        debug.setPosition(getCamWidth()/2 - debug.getWidth(),  debug.getHeight());
+        rectangle = new Rectangle(debug.getX(),debug.getY(),debug.getWidth(),debug.getHeight());
+    }
+
+    private void debugInfomation()
+    {
+            Gdx.app.log("DEBUG-CAM",String.valueOf("Version :" +Gdx.app.getVersion()));
+            Gdx.app.log("DEBUG-CAM",String.valueOf("Graphics Width/Height :" + Gdx.graphics.getWidth() + ","+Gdx.graphics.getHeight()));
+            Gdx.app.log("DEBUG-CAM",String.valueOf("Graphics isContRender :" + Gdx.graphics.isContinuousRendering()));
+            Gdx.app.log("DEBUG-CAM",String.valueOf("Native Orientation:" +Gdx.input.getNativeOrientation()));
+            Gdx.app.log("DEBUG-CAM",String.valueOf("Pitch :" +Gdx.input.getPitch()));
+            Gdx.app.log("DEBUG-CAM",String.valueOf("Roll :" +Gdx.input.getRoll()));
+            Gdx.app.log("DEBUG-CAM",String.valueOf("Rotation :" +Gdx.input.getRotation()));
+            debug.rotate(45f);
+
+    }
+
+    public void debugUpdate(Circle touchCircle)
+    {
+        if (Gdx.input.justTouched() && Intersector.overlaps(touchCircle,rectangle))
+        {
+            debugInfomation();
+        }
+    }
+    public void debugRender(SpriteBatch batch)
+    {
+        debug.draw(batch);
     }
 
     public void setCamSize()
